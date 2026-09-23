@@ -73,6 +73,11 @@ jobs:
               if expected not in source:
                   errors.append(f"Missing installer branding setting: {expected}")
 
+          cmake_files = list(root.rglob("CMakeLists.txt")) + list(root.rglob("*.cmake"))
+          for path in cmake_files:
+              if "COMPONENT AmneziaVPN" in path.read_text(encoding="utf-8", errors="replace"):
+                  errors.append(f"Legacy installer component remains in {path.relative_to(root)}")
+
           tray_header = (root / "client/ui/utils/systemTrayNotificationHandler.h").read_text(encoding="utf-8")
           for legacy_name in ["default.png", "active.png", "error.png"]:
               if legacy_name in tray_header:
