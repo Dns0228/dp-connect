@@ -23,6 +23,7 @@ public:
     Q_PROPERTY(bool isNotificationPermissionGranted READ isNotificationPermissionGranted NOTIFY onNotificationStateChanged)
     Q_PROPERTY(bool isKillSwitchEnabled READ isKillSwitchEnabled WRITE toggleKillSwitch NOTIFY killSwitchEnabledChanged)
     Q_PROPERTY(bool strictKillSwitchEnabled READ isStrictKillSwitchEnabled WRITE toggleStrictKillSwitch NOTIFY strictKillSwitchEnabledChanged)
+    Q_PROPERTY(bool dpStealthEnabled READ isDpStealthEnabled WRITE toggleDpStealth NOTIFY dpStealthEnabledChanged)
 
     Q_PROPERTY(bool isDevModeEnabled READ isDevModeEnabled NOTIFY devModeEnabled)
     Q_PROPERTY(QString gatewayEndpoint READ getGatewayEndpoint WRITE setGatewayEndpoint NOTIFY gatewayEndpointChanged)
@@ -88,6 +89,9 @@ public slots:
     bool isStrictKillSwitchEnabled();
     void toggleStrictKillSwitch(bool enable);
 
+    bool isDpStealthEnabled();
+    void toggleDpStealth(bool enable);
+
     bool isNotificationPermissionGranted();
     void requestNotificationPermission();
 
@@ -113,6 +117,7 @@ signals:
     void loggingStateChanged();
     void killSwitchEnabledChanged();
     void strictKillSwitchEnabledChanged(bool enabled);
+    void dpStealthEnabledChanged(bool enabled);
 
     void restoreBackupFinished();
     void changeSettingsFinished(const QString &finishedMessage);

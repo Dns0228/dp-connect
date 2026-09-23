@@ -70,6 +70,9 @@ public:
     void setKillSwitchEnabled(bool enabled);
     bool isStrictKillSwitchEnabled() const;
     void setStrictKillSwitchEnabled(bool enabled);
+
+    bool isDpStealthEnabled() const;
+    void setDpStealthEnabled(bool enabled);
     
     bool isAutoConnect() const;
     void setAutoConnect(bool enabled);
@@ -126,4 +129,3 @@ private:
 };
 
 #endif // SECUREAPPSETTINGSREPOSITORY_H
-

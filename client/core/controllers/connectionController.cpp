@@ -28,7 +28,8 @@ ConnectionController::ConnectionController(SecureServersRepository* serversRepos
       m_appSettingsRepository(appSettingsRepository),
       m_vpnConnection(vpnConnection)
 {
-    connect(m_vpnConnection, &VpnConnection::connectionStateChanged, this, &ConnectionController::connectionStateChanged);
+    connect(m_vpnConnection, &VpnConnection::connectionStateChanged,
+            this, &ConnectionController::onVpnConnectionStateChanged);
     connect(this, &ConnectionController::openConnectionRequested, m_vpnConnection, &VpnConnection::connectToVpn, Qt::QueuedConnection);
     connect(this, &ConnectionController::closeConnectionRequested, m_vpnConnection, &VpnConnection::disconnectFromVpn, Qt::QueuedConnection);
     connect(this, &ConnectionController::killSwitchModeChangedRequested, m_vpnConnection, &VpnConnection::onKillSwitchModeChanged, Qt::QueuedConnection);
@@ -40,6 +41,11 @@ ConnectionController::ConnectionController(SecureServersRepository* serversRepos
 bool ConnectionController::isConnected() const
 {
     return m_vpnConnection && m_vpnConnection->connectionState() == Vpn::ConnectionState::Connected;
+}
+
+QString ConnectionController::activeTransportName() const
+{
+    return m_activeTransportName;
 }
 
 void ConnectionController::setConnectionState(Vpn::ConnectionState state)
@@ -137,6 +143,14 @@ ErrorCode ConnectionController::prepareConnection(const QString &serverId,
                                                  QJsonObject& vpnConfiguration,
                                                  DockerContainer& container)
 {
+    return prepareConnectionForContainer(serverId, DockerContainer::None, vpnConfiguration, container);
+}
+
+ErrorCode ConnectionController::prepareConnectionForContainer(const QString &serverId,
+                                                               DockerContainer requestedContainer,
+                                                               QJsonObject &vpnConfiguration,
+                                                               DockerContainer &container)
+{
     ContainerConfig containerConfigModel;
     QPair<QString, QString> dns;
     QString hostName;
@@ -151,7 +165,8 @@ ErrorCode ConnectionController::prepareConnection(const QString &serverId,
     case serverConfigUtils::ConfigType::SelfHostedAdmin: {
         const auto cfg = m_serversRepository->selfHostedAdminConfig(serverId);
         if (!cfg.has_value()) return ErrorCode::InternalError;
-        container = cfg->defaultContainer;
+        container = requestedContainer == DockerContainer::None ? cfg->defaultContainer : requestedContainer;
+        if (!cfg->containers.contains(container)) return ErrorCode::NoInstalledContainersError;
         containerConfigModel = cfg->containerConfig(container);
         dns = cfg->getDnsPair(m_appSettingsRepository->useAmneziaDns(), primaryDns, secondaryDns);
         hostName = cfg->hostName;
@@ -161,7 +176,8 @@ ErrorCode ConnectionController::prepareConnection(const QString &serverId,
     case serverConfigUtils::ConfigType::SelfHostedUser: {
         const auto cfg = m_serversRepository->selfHostedUserConfig(serverId);
         if (!cfg.has_value()) return ErrorCode::InternalError;
-        container = cfg->defaultContainer;
+        container = requestedContainer == DockerContainer::None ? cfg->defaultContainer : requestedContainer;
+        if (!cfg->containers.contains(container)) return ErrorCode::NoInstalledContainersError;
         containerConfigModel = cfg->containerConfig(container);
         dns = cfg->getDnsPair(primaryDns, secondaryDns);
         hostName = cfg->hostName;
@@ -171,7 +187,8 @@ ErrorCode ConnectionController::prepareConnection(const QString &serverId,
     case serverConfigUtils::ConfigType::Native: {
         const auto cfg = m_serversRepository->nativeConfig(serverId);
         if (!cfg.has_value()) return ErrorCode::InternalError;
-        container = cfg->defaultContainer;
+        container = requestedContainer == DockerContainer::None ? cfg->defaultContainer : requestedContainer;
+        if (!cfg->containers.contains(container)) return ErrorCode::NoInstalledContainersError;
         containerConfigModel = cfg->containerConfig(container);
         dns = cfg->getDnsPair(primaryDns, secondaryDns);
         hostName = cfg->hostName;
@@ -183,7 +200,8 @@ ErrorCode ConnectionController::prepareConnection(const QString &serverId,
     case serverConfigUtils::ConfigType::ExternalPremium: {
         const auto cfg = m_serversRepository->apiV2Config(serverId);
         if (!cfg.has_value()) return ErrorCode::InternalError;
-        container = cfg->defaultContainer;
+        container = requestedContainer == DockerContainer::None ? cfg->defaultContainer : requestedContainer;
+        if (!cfg->containers.contains(container)) return ErrorCode::NoInstalledContainersError;
         containerConfigModel = cfg->containerConfig(container);
         dns = cfg->getDnsPair(primaryDns, secondaryDns);
         hostName = cfg->hostName;
@@ -208,27 +226,182 @@ ErrorCode ConnectionController::prepareConnection(const QString &serverId,
 
 ErrorCode ConnectionController::openConnection(const QString &serverId)
 {
-    QJsonObject vpnConfiguration;
-    DockerContainer container;
-
-    ErrorCode errorCode = prepareConnection(serverId, vpnConfiguration, container);
-    if (errorCode != ErrorCode::NoError) {
-        return errorCode;
-    }
-
     const auto apiV2 = m_serversRepository->apiV2Config(serverId);
     if (apiV2.has_value() && !apiV2->sendPayload.isEmpty()) {
         PayloadSender::sendAll(apiV2->sendPayload);
     }
 
-    emit openConnectionRequested(serverId, container, vpnConfiguration);
-    return ErrorCode::NoError;
+    resetStealthSession();
+    m_userDisconnectRequested = false;
+    m_activeServerId = serverId;
+
+    if (m_appSettingsRepository->isDpStealthEnabled()) {
+        m_stealthCandidates = stealthCandidatesForServer(serverId);
+    }
+
+    if (m_stealthCandidates.isEmpty()) {
+        DockerContainer defaultContainer = DockerContainer::None;
+        const ErrorCode defaultError = defaultContainerForServer(serverId, defaultContainer);
+        if (defaultError != ErrorCode::NoError) {
+            resetStealthSession();
+            return defaultError;
+        }
+        m_stealthCandidates.append(defaultContainer);
+    }
+
+    m_stealthSessionActive = m_stealthCandidates.size() > 1;
+    return openNextStealthCandidate();
 }
 
 void ConnectionController::closeConnection()
 {
     if (m_vpnConnection) {
+        m_userDisconnectRequested = true;
+        resetStealthSession();
         emit closeConnectionRequested();
+    }
+}
+
+QList<DockerContainer> ConnectionController::stealthCandidatesForServer(const QString &serverId) const
+{
+    QList<DockerContainer> installed;
+
+    const auto appendInstalled = [this, &installed](const auto &config) {
+        for (auto it = config.containers.cbegin(); it != config.containers.cend(); ++it) {
+            const DockerContainer candidate = it.key();
+            if (ContainerUtils::containerService(candidate) != ServiceType::Vpn
+                    || !ContainerUtils::isSupportedByCurrentPlatform(candidate)
+                    || ContainerUtils::isUnsupportedContainer(candidate)
+                    || !it.value().protocolConfig.hasClientConfig()) {
+                continue;
+            }
+            installed.append(candidate);
+        }
+    };
+
+    switch (m_serversRepository->serverKind(serverId)) {
+    case serverConfigUtils::ConfigType::SelfHostedAdmin: {
+        const auto config = m_serversRepository->selfHostedAdminConfig(serverId);
+        if (config.has_value()) appendInstalled(*config);
+        break;
+    }
+    case serverConfigUtils::ConfigType::SelfHostedUser: {
+        const auto config = m_serversRepository->selfHostedUserConfig(serverId);
+        if (config.has_value()) appendInstalled(*config);
+        break;
+    }
+    case serverConfigUtils::ConfigType::Native: {
+        const auto config = m_serversRepository->nativeConfig(serverId);
+        if (config.has_value()) appendInstalled(*config);
+        break;
+    }
+    case serverConfigUtils::ConfigType::AmneziaPremiumV2:
+    case serverConfigUtils::ConfigType::AmneziaFreeV3:
+    case serverConfigUtils::ConfigType::ExternalPremium: {
+        const auto config = m_serversRepository->apiV2Config(serverId);
+        if (config.has_value()) appendInstalled(*config);
+        break;
+    }
+    default:
+        break;
+    }
+
+    // REALITY is the least recognizable installed transport. DP WG follows as
+    // the fast UDP option; the remaining protocols provide progressively more
+    // compatible fallbacks for restricted networks.
+    const QList<DockerContainer> priority {
+        DockerContainer::Xray,
+        DockerContainer::Awg2,
+        DockerContainer::Awg,
+        DockerContainer::OpenVpn,
+        DockerContainer::WireGuard,
+        DockerContainer::Ipsec
+    };
+
+    QList<DockerContainer> ordered;
+    for (const DockerContainer candidate : priority) {
+        if (installed.contains(candidate) && !ordered.contains(candidate)) {
+            ordered.append(candidate);
+        }
+    }
+    return ordered;
+}
+
+ErrorCode ConnectionController::openNextStealthCandidate()
+{
+    ErrorCode lastError = ErrorCode::NoInstalledContainersError;
+    while (++m_stealthCandidateIndex < m_stealthCandidates.size()) {
+        QJsonObject vpnConfiguration;
+        DockerContainer container = DockerContainer::None;
+        lastError = prepareConnectionForContainer(m_activeServerId,
+                                                  m_stealthCandidates.at(m_stealthCandidateIndex),
+                                                  vpnConfiguration,
+                                                  container);
+        if (lastError != ErrorCode::NoError) {
+            continue;
+        }
+
+        qInfo() << "DP Stealth: connecting with candidate"
+                << ContainerUtils::containerToString(container)
+                << (m_stealthCandidateIndex + 1) << "of" << m_stealthCandidates.size();
+        const QString transportName = ContainerUtils::containerHumanNames().value(container);
+        if (m_activeTransportName != transportName) {
+            m_activeTransportName = transportName;
+            emit activeTransportChanged(m_activeTransportName);
+        }
+        m_switchingStealthCandidate = true;
+        emit openConnectionRequested(m_activeServerId, container, vpnConfiguration);
+        return ErrorCode::NoError;
+    }
+
+    resetStealthSession();
+    return lastError;
+}
+
+void ConnectionController::onVpnConnectionStateChanged(Vpn::ConnectionState state)
+{
+    if (state == Vpn::ConnectionState::Connecting) {
+        m_switchingStealthCandidate = false;
+        emit connectionStateChanged(state);
+        return;
+    }
+
+    if (m_switchingStealthCandidate && state == Vpn::ConnectionState::Disconnected) {
+        return;
+    }
+
+    const bool mayFallback = m_stealthSessionActive
+            && !m_userDisconnectRequested
+            && (state == Vpn::ConnectionState::Error || state == Vpn::ConnectionState::Disconnected)
+            && (m_stealthCandidateIndex + 1 < m_stealthCandidates.size());
+
+    if (mayFallback) {
+        qWarning() << "DP Stealth: candidate failed, switching transport";
+        const ErrorCode error = openNextStealthCandidate();
+        if (error == ErrorCode::NoError) {
+            return;
+        }
+    }
+
+    emit connectionStateChanged(state);
+
+    if (state == Vpn::ConnectionState::Error
+            || state == Vpn::ConnectionState::Disconnected
+            || state == Vpn::ConnectionState::Unknown) {
+        resetStealthSession();
+    }
+}
+
+void ConnectionController::resetStealthSession()
+{
+    m_activeServerId.clear();
+    m_stealthCandidates.clear();
+    m_stealthCandidateIndex = -1;
+    m_stealthSessionActive = false;
+    m_switchingStealthCandidate = false;
+    if (!m_activeTransportName.isEmpty()) {
+        m_activeTransportName.clear();
+        emit activeTransportChanged(m_activeTransportName);
     }
 }
 

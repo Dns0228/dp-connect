@@ -164,6 +164,15 @@ PageType {
                 Layout.alignment: Qt.AlignCenter
             }
 
+            CaptionTextType {
+                Layout.alignment: Qt.AlignHCenter
+                visible: SettingsController.dpStealthEnabled
+                         && (ConnectionController.isConnected || ConnectionController.isConnectionInProgress)
+                         && ConnectionController.activeTransportName.length > 0
+                text: qsTr("DP Stealth · %1").arg(ConnectionController.activeTransportName)
+                color: AmneziaStyle.color.mutedGray
+            }
+
             BasicButtonType {
                 id: splitTunnelingButton
                 objectName: "splitTunnelingButton"

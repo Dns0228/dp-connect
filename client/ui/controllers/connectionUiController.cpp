@@ -19,6 +19,8 @@ ConnectionUiController::ConnectionUiController(ConnectionController* connectionC
       m_serversController(serversController)
 {
     connect(m_connectionController, &ConnectionController::connectionStateChanged, this, &ConnectionUiController::onConnectionStateChanged);
+    connect(m_connectionController, &ConnectionController::activeTransportChanged,
+            this, [this](const QString &) { emit activeTransportChanged(); });
 
     connect(this, &ConnectionUiController::connectButtonClicked, this, &ConnectionUiController::toggleConnection, Qt::QueuedConnection);
 
@@ -119,6 +121,11 @@ Vpn::ConnectionState ConnectionUiController::getCurrentConnectionState()
 QString ConnectionUiController::connectionStateText() const
 {
     return m_connectionStateText;
+}
+
+QString ConnectionUiController::activeTransportName() const
+{
+    return m_connectionController->activeTransportName();
 }
 
 void ConnectionUiController::toggleConnection()

@@ -344,6 +344,16 @@ void SecureAppSettingsRepository::setStrictKillSwitchEnabled(bool enabled)
     setValue("Conf/strictKillSwitchEnabled", enabled);
 }
 
+bool SecureAppSettingsRepository::isDpStealthEnabled() const
+{
+    return value("Conf/dpStealthEnabled", false).toBool();
+}
+
+void SecureAppSettingsRepository::setDpStealthEnabled(bool enabled)
+{
+    setValue("Conf/dpStealthEnabled", enabled);
+}
+
 bool SecureAppSettingsRepository::isAutoConnect() const
 {
     return value("Conf/autoConnect", false).toBool();

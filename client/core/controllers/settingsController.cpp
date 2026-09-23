@@ -119,6 +119,7 @@ QByteArray SettingsController::backupAppConfig() const
     config["Conf/killSwitchEnabled"] = isKillSwitchEnabled();
     config["Conf/strictKillSwitchEnabled"] = isStrictKillSwitchEnabled();
     config["Conf/useAmneziaDns"] = isAmneziaDnsEnabled();
+    config["Conf/dpStealthEnabled"] = isDpStealthEnabled();
 
     return QJsonDocument(config).toJson();
 }
@@ -308,6 +309,16 @@ bool SettingsController::isStrictKillSwitchEnabled() const
 void SettingsController::toggleStrictKillSwitch(bool enable)
 {
     m_appSettingsRepository->setStrictKillSwitchEnabled(enable);
+}
+
+bool SettingsController::isDpStealthEnabled() const
+{
+    return m_appSettingsRepository->isDpStealthEnabled();
+}
+
+void SettingsController::toggleDpStealth(bool enable)
+{
+    m_appSettingsRepository->setDpStealthEnabled(enable);
 }
 
 QString SettingsController::getInstallationUuid(bool createIfNotExists) const

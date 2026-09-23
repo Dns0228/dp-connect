@@ -18,6 +18,7 @@ public:
     Q_PROPERTY(bool isConnected READ isConnected NOTIFY connectionStateChanged)
     Q_PROPERTY(bool isConnectionInProgress READ isConnectionInProgress NOTIFY connectionStateChanged)
     Q_PROPERTY(QString connectionStateText READ connectionStateText NOTIFY connectionStateChanged)
+    Q_PROPERTY(QString activeTransportName READ activeTransportName NOTIFY activeTransportChanged)
 
     explicit ConnectionUiController(ConnectionController* connectionController,
                                     ServersController* serversController,
@@ -28,6 +29,7 @@ public:
     bool isConnected() const;
     bool isConnectionInProgress() const;
     QString connectionStateText() const;
+    QString activeTransportName() const;
 
 public slots:
     void toggleConnection();
@@ -44,6 +46,7 @@ public slots:
 
 signals:
     void connectionStateChanged();
+    void activeTransportChanged();
 
     void connectionErrorOccurred(ErrorCode errorCode);
 

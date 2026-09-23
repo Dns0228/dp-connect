@@ -184,6 +184,7 @@ void SettingsUiController::restoreAppConfigFromData(const QByteArray &data)
         emit restoreBackupFinished();
         emit autoStartChanged();
         emit startMinimizedChanged();
+        emit dpStealthEnabledChanged(isDpStealthEnabled());
 
         if (m_settingsController->unsupportedFormatConfigsSkippedCount() > 0) {
             emit errorOccurred(ErrorCode::RestoreBackupUnsupportedConfigsSkipped);
@@ -202,6 +203,7 @@ void SettingsUiController::restoreAppConfigFromData(const QByteArray &data, cons
         emit restoreBackupFinished();
         emit autoStartChanged();
         emit startMinimizedChanged();
+        emit dpStealthEnabledChanged(isDpStealthEnabled());
         if (m_settingsController->unsupportedFormatConfigsSkippedCount() > 0) {
             emit errorOccurred(ErrorCode::RestoreBackupUnsupportedConfigsSkipped);
         }
@@ -221,6 +223,7 @@ void SettingsUiController::clearSettings()
     emit autoStartChanged();
     emit startMinimizedChanged();
     emit resetLanguageToSystem();
+    emit dpStealthEnabledChanged(isDpStealthEnabled());
 
     emit changeSettingsFinished(tr("All settings have been reset to default values"));
 
@@ -328,6 +331,17 @@ void SettingsUiController::toggleStrictKillSwitch(bool enable)
 {
     m_settingsController->toggleStrictKillSwitch(enable);
     emit strictKillSwitchEnabledChanged(enable);
+}
+
+bool SettingsUiController::isDpStealthEnabled()
+{
+    return m_settingsController->isDpStealthEnabled();
+}
+
+void SettingsUiController::toggleDpStealth(bool enable)
+{
+    m_settingsController->toggleDpStealth(enable);
+    emit dpStealthEnabledChanged(enable);
 }
 
 bool SettingsUiController::isNotificationPermissionGranted()

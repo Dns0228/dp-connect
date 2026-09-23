@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QJsonObject>
+#include <QList>
 #include <QPair>
 #include <memory>
 
@@ -49,6 +50,7 @@ public:
     ErrorCode lastConnectionError() const;
 
     bool isConnected() const;
+    QString activeTransportName() const;
     void setConnectionState(Vpn::ConnectionState state);
 
     QJsonObject createConnectionConfiguration(const QPair<QString, QString> &dns,
@@ -65,6 +67,7 @@ public:
 
 signals:
     void connectionStateChanged(Vpn::ConnectionState state);
+    void activeTransportChanged(const QString &transportName);
     void openConnectionRequested(const QString &serverId, DockerContainer container, const QJsonObject &vpnConfiguration);
     void closeConnectionRequested();
     void killSwitchModeChangedRequested(bool enabled);
@@ -75,10 +78,26 @@ signals:
 
 private:
     ErrorCode defaultContainerForServer(const QString &serverId, DockerContainer &container) const;
+    ErrorCode prepareConnectionForContainer(const QString &serverId,
+                                            DockerContainer requestedContainer,
+                                            QJsonObject &vpnConfiguration,
+                                            DockerContainer &container);
+    QList<DockerContainer> stealthCandidatesForServer(const QString &serverId) const;
+    ErrorCode openNextStealthCandidate();
+    void onVpnConnectionStateChanged(Vpn::ConnectionState state);
+    void resetStealthSession();
 
     SecureServersRepository* m_serversRepository;
     SecureAppSettingsRepository* m_appSettingsRepository;
     VpnConnection* m_vpnConnection;
+
+    QString m_activeServerId;
+    QList<DockerContainer> m_stealthCandidates;
+    qsizetype m_stealthCandidateIndex = -1;
+    bool m_stealthSessionActive = false;
+    bool m_switchingStealthCandidate = false;
+    bool m_userDisconnectRequested = false;
+    QString m_activeTransportName;
 };
 
 #endif

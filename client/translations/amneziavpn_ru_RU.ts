@@ -504,6 +504,11 @@ Already installed containers were found on the server. All installed containers 
 <context>
     <name>PageHome</name>
     <message>
+        <location filename="../ui/qml/Pages2/PageHome.qml" line="171"/>
+        <source>DP Stealth · %1</source>
+        <translation>DP Stealth · %1</translation>
+    </message>
+    <message>
         <location filename="../ui/qml/Pages2/PageHome.qml" line="121"/>
         <source>Logging enabled</source>
         <translation>Логирование включено</translation>
@@ -4267,6 +4272,16 @@ Create one from the current settings.</source>
 </context>
 <context>
     <name>PageSettingsConnection</name>
+    <message>
+        <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="65"/>
+        <source>DP Stealth (beta)</source>
+        <translation>DP Stealth (бета)</translation>
+    </message>
+    <message>
+        <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="66"/>
+        <source>Automatically selects the most censorship-resistant installed transport and switches to a fallback when a connection attempt fails. Install XRay/REALITY and DP WG on the same server for the best result.</source>
+        <translation>Автоматически выбирает наиболее устойчивый к блокировкам установленный транспорт и переключается на резервный при ошибке подключения. Для лучшего результата установите XRay/REALITY и DP WG на одном сервере.</translation>
+    </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="49"/>
         <source>Connection</source>

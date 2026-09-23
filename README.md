@@ -15,8 +15,9 @@ DP Connect is a self-hosted VPN client by **DP project**. It deploys and manages
 - Server status screen.
 - Password-protected backups using AES-256-GCM and PBKDF2-HMAC-SHA256.
 - Installable PWA with encrypted profile storage, QR codes, and offline support.
+- DP Stealth beta mode selects XRay/REALITY or DP WG and automatically tries the next installed transport after a connection failure.
 
-The implementation notes are in [DP_CONNECT_CHANGES.md](DP_CONNECT_CHANGES.md), [DP_CONNECT_CRYPTO.md](DP_CONNECT_CRYPTO.md), and [DP_CONNECT_IMPROVEMENTS.md](DP_CONNECT_IMPROVEMENTS.md).
+The implementation notes are in [DP_CONNECT_CHANGES.md](DP_CONNECT_CHANGES.md), [DP_CONNECT_CRYPTO.md](DP_CONNECT_CRYPTO.md), [DP_CONNECT_IMPROVEMENTS.md](DP_CONNECT_IMPROVEMENTS.md), and [docs/DP_STEALTH.md](docs/DP_STEALTH.md).
 
 ## Get the source
 

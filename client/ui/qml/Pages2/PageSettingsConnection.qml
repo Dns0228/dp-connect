@@ -57,6 +57,25 @@ PageType {
             width: listView.width
 
             SwitcherType {
+                id: dpStealthSwitch
+
+                Layout.fillWidth: true
+                Layout.margins: 16
+
+                text: qsTr("DP Stealth (beta)")
+                descriptionText: qsTr("Automatically selects the most censorship-resistant installed transport and switches to a fallback when a connection attempt fails. Install XRay/REALITY and DP WG on the same server for the best result.")
+
+                checked: SettingsController.dpStealthEnabled
+                onToggled: function() {
+                    if (checked !== SettingsController.dpStealthEnabled) {
+                        SettingsController.dpStealthEnabled = checked
+                    }
+                }
+            }
+
+            DividerType {}
+
+            SwitcherType {
                 id: amneziaDnsSwitch
 
                 Layout.fillWidth: true
