@@ -14,6 +14,7 @@ DP Connect is a self-hosted VPN client by **DP project**. It deploys and manages
 - Device activity, traffic, rename and access revocation.
 - Server status screen.
 - Password-protected backups using AES-256-GCM and PBKDF2-HMAC-SHA256.
+- Installable PWA with encrypted profile storage, QR codes, and offline support.
 
 The implementation notes are in [DP_CONNECT_CHANGES.md](DP_CONNECT_CHANGES.md), [DP_CONNECT_CRYPTO.md](DP_CONNECT_CRYPTO.md), and [DP_CONNECT_IMPROVEMENTS.md](DP_CONNECT_IMPROVEMENTS.md).
 
@@ -31,6 +32,12 @@ git submodule update --init --recursive
 ```
 
 The project uses CMake, Qt 6.10, Conan 2, OpenSSL, and the platform toolchain. Manual GitHub Actions builds are defined in `.github/workflows/dp-connect-build.yml`.
+
+## PWA client
+
+The web client is in [`pwa`](pwa). It imports a DP WG profile, encrypts it in the browser with AES-256-GCM, and can display a QR code or download/share the `.conf` file with a native VPN client. Core functions work offline after the first load.
+
+Web browsers cannot create an operating-system VPN interface, so the tunnel itself is established by native DP Connect or another compatible WireGuard client.
 
 ## Origin and license
 

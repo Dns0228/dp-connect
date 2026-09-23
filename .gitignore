@@ -12,6 +12,8 @@ winbuild*.bat
 .vscode/
 .venv/
 .cursor*
+pwa/node_modules/
+pwa/dist/
 
 
 # Qt-es
@@ -145,4 +147,3 @@ macos-signed-build.sh
 macos-with-sign-build.sh
 DeveloperIdApplicationCertificate.p12
 DeveloperIdInstallerCertificate.p12
-
