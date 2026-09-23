@@ -35,6 +35,8 @@ The project uses CMake, Qt 6.10, Conan 2, OpenSSL, and the platform toolchain. M
 
 ## PWA client
 
+[Open DP Connect PWA](https://dns0228.github.io/dp-connect/)
+
 The web client is in [`pwa`](pwa). It imports a DP WG profile, encrypts it in the browser with AES-256-GCM, and can display a QR code or download/share the `.conf` file with a native VPN client. Core functions work offline after the first load.
 
 Web browsers cannot create an operating-system VPN interface, so the tunnel itself is established by native DP Connect or another compatible WireGuard client.
