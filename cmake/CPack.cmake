@@ -1,4 +1,4 @@
-set(CPACK_PACKAGE_NAME              "DPConnect")
+set(CPACK_PACKAGE_NAME              "DP Connect")
 set(CPACK_PACKAGE_VENDOR            "DP project")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "DP Connect")
 set(CPACK_PACKAGE_VERSION           ${AMNEZIAVPN_VERSION})
@@ -17,6 +17,12 @@ set(CPACK_PROJECT_CONFIG_FILE       ${CMAKE_CURRENT_LIST_DIR}/CPackOptions.cmake
 set(CPACK_RESOURCE_FILE_LICENSE     ${CMAKE_SOURCE_DIR}/deploy/data/LICENSE.txt)
 
 list(PREPEND CPACK_COMPONENTS_ALL AmneziaVPN)
+
+# The component identifier is kept for compatibility with existing install and
+# signing rules. Give it a branded, user-facing name for every CPack generator,
+# including WiX/MSI (the IFW-specific settings below do not affect WiX).
+set(CPACK_COMPONENT_AMNEZIAVPN_DISPLAY_NAME "DP Connect")
+set(CPACK_COMPONENT_AMNEZIAVPN_DESCRIPTION "DP Connect by DP project")
 
 if(APPLE)
     set(CPACK_GENERATOR productbuild)
