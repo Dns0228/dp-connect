@@ -64,6 +64,10 @@ jobs:
           AMNEZIA_BUILD_TESTS: ON
         run: deploy\build.bat --installer all
 
+      - name: Run DP Connect cryptographic tests
+        shell: pwsh
+        run: ctest --test-dir deploy/build -C Release --output-on-failure -R "BackupEncryptionTest|WireguardKeyGenerationTest"
+
       - name: Collect installers
         shell: pwsh
         run: |
@@ -112,6 +116,9 @@ jobs:
           QT_INSTALL_DIR: ${{ runner.temp }}
           AMNEZIA_BUILD_TESTS: ON
         run: deploy/build.sh --generator Ninja --installer all
+
+      - name: Run DP Connect cryptographic tests
+        run: ctest --test-dir deploy/build -C Release --output-on-failure -R "BackupEncryptionTest|WireguardKeyGenerationTest"
 
       - name: Collect installer
         run: |
