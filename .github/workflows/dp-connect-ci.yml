@@ -49,6 +49,9 @@ jobs:
               "client/tests/testBackupEncryption.cpp",
               "client/tests/testWireguardKeyGeneration.cpp",
               "client/ui/qml/Pages2/PageSettingsServerStatus.qml",
+              "client/images/tray/default.svg",
+              "client/images/tray/active.svg",
+              "client/images/tray/error.svg",
           ]
           for relative in required:
               if not (root / relative).is_file():
@@ -67,6 +70,11 @@ jobs:
           for expected in installer_branding:
               if expected not in cpack:
                   errors.append(f"Missing installer branding setting: {expected}")
+
+          tray_header = (root / "client/ui/utils/systemTrayNotificationHandler.h").read_text(encoding="utf-8")
+          for legacy_name in ["default.png", "active.png", "error.png"]:
+              if legacy_name in tray_header:
+                  errors.append(f"Legacy tray icon is still referenced: {legacy_name}")
 
           print(f"Validated {len(translations)} translation files and {len(qrc_files)} resource manifests")
           for error in errors:

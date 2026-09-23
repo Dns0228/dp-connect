@@ -54,9 +54,9 @@ private:
     QAction* m_statusLabel = nullptr;    
     QAction* m_separator = nullptr;
 
-    const QString ConnectedTrayIconName = "active.png";
-    const QString DisconnectedTrayIconName = "default.png";
-    const QString ErrorTrayIconName = "error.png";
+    const QString ConnectedTrayIconName = "active.svg";
+    const QString DisconnectedTrayIconName = "default.svg";
+    const QString ErrorTrayIconName = "error.svg";
     QString  websiteUrl = "https://amnezia.org";
 };
 

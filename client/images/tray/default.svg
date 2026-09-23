@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 64 64">
+  <title>DP Connect disconnected</title>
+  <g fill="#8B949E" fill-rule="evenodd">
+    <path d="M8 14h12c12 0 19 7 19 18s-7 18-19 18H8V14zm8 8v20h4c7 0 11-4 11-10s-4-10-11-10h-4z"/>
+    <path d="M40 14h10c8 0 13 5 13 12s-5 12-13 12h-2v12h-8V14zm8 8v8h2c3 0 5-1 5-4s-2-4-5-4h-2z"/>
+  </g>
+</svg>

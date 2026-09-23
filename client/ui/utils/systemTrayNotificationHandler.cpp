@@ -89,9 +89,9 @@ void SystemTrayNotificationHandler::setTrayIcon(const QString &iconPath)
 #ifdef Q_OS_MAC
     m_statusIcon->setIcon(iconPath);
 #else
-    QIcon trayIconMask(QPixmap(iconPath).scaled(128,128));
-    trayIconMask.setIsMask(true);
-    m_systemTrayIcon.setIcon(trayIconMask);
+    const QPixmap pixmap(iconPath);
+    m_systemTrayIcon.setIcon(QIcon(pixmap.scaled(128, 128, Qt::KeepAspectRatio,
+                                                  Qt::SmoothTransformation)));
 #endif
 }
 
@@ -188,4 +188,3 @@ void SystemTrayNotificationHandler::showHideWindow() {
 //#endif
 //  }
 }
-
