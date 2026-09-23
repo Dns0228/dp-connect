@@ -43,6 +43,7 @@
         <file>openvpn/start.sh</file>
         <file>openvpn/template.ovpn</file>
         <file>prepare_host.sh</file>
+        <file>preflight_server.sh</file>
         <file>remove_all_containers.sh</file>
         <file>remove_container.sh</file>
         <file>setup_host_firewall.sh</file>

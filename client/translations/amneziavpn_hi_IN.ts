@@ -429,8 +429,8 @@ Already installed containers were found on the server. All installed containers 
     <message>
         <location filename="../ui/utils/notificationHandler.cpp" line="57"/>
         <location filename="../ui/utils/notificationHandler.cpp" line="64"/>
-        <source>AmneziaVPN</source>
-        <translation>AmneziaVPN</translation>
+        <source>DP Connect</source>
+        <translation>DP Connect</translation>
     </message>
     <message>
         <location filename="../ui/utils/notificationHandler.cpp" line="58"/>
@@ -444,8 +444,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/utils/notificationHandler.cpp" line="88"/>
-        <source>AmneziaVPN notification</source>
-        <translation>AmneziaVPN अधिसूचना</translation>
+        <source>DP Connect notification</source>
+        <translation>DP Connect अधिसूचना</translation>
     </message>
     <message>
         <location filename="../ui/utils/notificationHandler.cpp" line="89"/>
@@ -513,8 +513,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageHome.qml" line="426"/>
-        <source>AmneziaWG 2.0 is outdated and no longer supported. Continued use requires a fresh installation of the AmneziaWG 3.1 container.</source>
-        <translation>AmneziaWG 2.0 पुराना है और अब समर्थित नहीं है। उपयोग जारी रखने के लिए AmneziaWG 3.1 कंटेनर की नई स्थापना आवश्यक है।</translation>
+        <source>DP WG 2.0 is outdated and no longer supported. Continued use requires a fresh installation of the DP WG 3.1 container.</source>
+        <translation>DP WG 2.0 पुराना है और अब समर्थित नहीं है। उपयोग जारी रखने के लिए DP WG 3.1 कंटेनर की नई स्थापना आवश्यक है।</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageHome.qml" line="472"/>
@@ -543,8 +543,8 @@ Already installed containers were found on the server. All installed containers 
     <name>PageProtocolAwgClientSettings</name>
     <message>
         <location filename="../ui/qml/Pages2/PageProtocolAwgClientSettings.qml" line="56"/>
-        <source>AmneziaWG settings</source>
-        <translation>AmneziaWG सेटिंग्स</translation>
+        <source>DP WG settings</source>
+        <translation>DP WG सेटिंग्स</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageProtocolAwgClientSettings.qml" line="80"/>
@@ -666,8 +666,8 @@ Already installed containers were found on the server. All installed containers 
     <name>PageProtocolAwgSettings</name>
     <message>
         <location filename="../ui/qml/Pages2/PageProtocolAwgSettings.qml" line="68"/>
-        <source>AmneziaWG settings</source>
-        <translation>AmneziaWG सेटिंग्स</translation>
+        <source>DP WG settings</source>
+        <translation>DP WG सेटिंग्स</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageProtocolAwgSettings.qml" line="81"/>
@@ -2032,8 +2032,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageServiceDnsSettings.qml" line="79"/>
-        <source>Cannot remove AmneziaDNS from running server</source>
-        <translation>चल रहे सर्वर से Amnezia DNS को नहीं हटाया जा सकता</translation>
+        <source>Cannot remove DP DNS from running server</source>
+        <translation>चल रहे सर्वर से DP DNS को नहीं हटाया जा सकता</translation>
     </message>
 </context>
 <context>
@@ -3367,8 +3367,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettings.qml" line="177"/>
-        <source>About AmneziaVPN</source>
-        <translation>AmneziaVPN के बारे में</translation>
+        <source>About DP Connect</source>
+        <translation>DP Connect के बारे में</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettings.qml" line="188"/>
@@ -3380,8 +3380,8 @@ Create one from the current settings.</source>
     <name>PageSettingsAbout</name>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="21"/>
-        <source>You have the latest version of AmneziaVPN</source>
-        <translation>आपके पास AmneziaVPN का नवीनतम संस्करण है</translation>
+        <source>You have the latest version of DP Connect</source>
+        <translation>आपके पास DP Connect का नवीनतम संस्करण है</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="25"/>
@@ -3390,13 +3390,13 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="73"/>
-        <source>Support Amnezia</source>
-        <translation>Amnezia का समर्थन करें</translation>
+        <source>Support DP Connect</source>
+        <translation>DP Connect का समर्थन करें</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="88"/>
-        <source>Amnezia is a free and open-source application. You can support the developers if you like it.</source>
-        <translation>Amnezia एक निःशुल्क और ओपन-सोर्स एप्लिकेशन है। यदि आपको यह पसंद है तो आप डेवलपर्स का समर्थन कर सकते हैं।.</translation>
+        <source>DP Connect is a free and open-source application. You can support the developers if you like it.</source>
+        <translation>DP Connect एक निःशुल्क और ओपन-सोर्स एप्लिकेशन है। यदि आपको यह पसंद है तो आप डेवलपर्स का समर्थन कर सकते हैं।.</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="98"/>
@@ -3649,16 +3649,16 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiInstructions.qml" line="102"/>
-        <source>Setup guides on the Amnezia website</source>
-        <translation>Amnezia वेबसाइट पर सेटअप गाइड</translation>
+        <source>Setup guides on the DP Connect website</source>
+        <translation>DP Connect वेबसाइट पर सेटअप गाइड</translation>
     </message>
 </context>
 <context>
     <name>PageSettingsApiNativeConfigs</name>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiNativeConfigs.qml" line="23"/>
-        <source>Save AmneziaVPN config</source>
-        <translation>AmneziaVPN कॉन्फ़िगरेशन सहेजें</translation>
+        <source>Save DP Connect config</source>
+        <translation>DP Connect कॉन्फ़िगरेशन सहेजें</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiNativeConfigs.qml" line="60"/>
@@ -3667,8 +3667,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiNativeConfigs.qml" line="61"/>
-        <source>For router setup or the AmneziaWG app</source>
-        <translation>राउटर सेटअप या AmneziaWG ऐप के लिए</translation>
+        <source>For router setup or the DP WG app</source>
+        <translation>राउटर सेटअप या DP WG ऐप के लिए</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiNativeConfigs.qml" line="73"/>
@@ -3893,8 +3893,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiSubscriptionKey.qml" line="121"/>
-        <source>Save AmneziaVPN config</source>
-        <translation>AmneziaVPN कॉन्फ़िगरेशन सहेजें</translation>
+        <source>Save DP Connect config</source>
+        <translation>DP Connect कॉन्फ़िगरेशन सहेजें</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiSubscriptionKey.qml" line="122"/>
@@ -3913,8 +3913,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiSubscriptionKey.qml" line="191"/>
-        <source>To read the QR code in the Amnezia app, tap + in the main menu → &apos;QR code&apos;</source>
-        <translation>Amnezia ऐप में QR कोड पढ़ने के लिए, मुख्य मेनू में + दबाएँ → &apos;QR कोड&apos;</translation>
+        <source>To read the QR code in the DP Connect app, tap + in the main menu → &apos;QR code&apos;</source>
+        <translation>DP Connect ऐप में QR कोड पढ़ने के लिए, मुख्य मेनू में + दबाएँ → &apos;QR कोड&apos;</translation>
     </message>
 </context>
 <context>
@@ -4127,8 +4127,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApplication.qml" line="264"/>
-        <source>All settings will be reset to default. All installed AmneziaVPN services will still remain on the server.</source>
-        <translation>सभी सेटिंग्स डिफ़ॉल्ट पर रीसेट हो जाएंगी. सभी स्थापित AmneziaVPN सेवाएँ अभी भी सर्वर पर रहेंगी।.</translation>
+        <source>All settings will be reset to default. All installed DP Connect services will still remain on the server.</source>
+        <translation>सभी सेटिंग्स डिफ़ॉल्ट पर रीसेट हो जाएंगी. सभी स्थापित DP Connect सेवाएँ अभी भी सर्वर पर रहेंगी।.</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApplication.qml" line="265"/>
@@ -4165,8 +4165,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsBackup.qml" line="88"/>
-        <source>The backup will contain your passwords and private keys for all servers added to AmneziaVPN. Keep this information in a secure place.</source>
-        <translation>बैकअप में AmneziaVPN में जोड़े गए सभी सर्वरों के लिए आपके पासवर्ड और निजी कुंजी शामिल होंगी। इस जानकारी को सुरक्षित स्थान पर रखें.</translation>
+        <source>The backup will contain your passwords and private keys for all servers added to DP Connect. Keep this information in a secure place.</source>
+        <translation>बैकअप में DP Connect में जोड़े गए सभी सर्वरों के लिए आपके पासवर्ड और निजी कुंजी शामिल होंगी। इस जानकारी को सुरक्षित स्थान पर रखें.</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsBackup.qml" line="102"/>
@@ -4234,13 +4234,13 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="65"/>
-        <source>Use AmneziaDNS</source>
-        <translation>AmneziaDNS का प्रयोग करें</translation>
+        <source>Use DP DNS</source>
+        <translation>DP DNS का प्रयोग करें</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="66"/>
-        <source>If AmneziaDNS is installed on the server</source>
-        <translation>यदि AmneziaDNS सर्वर पर स्थापित है</translation>
+        <source>If DP DNS is installed on the server</source>
+        <translation>यदि DP DNS सर्वर पर स्थापित है</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="83"/>
@@ -4249,8 +4249,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="84"/>
-        <source>When AmneziaDNS is not used or installed</source>
-        <translation>जब AmneziaDNS का उपयोग या स्थापित नहीं किया जाता है</translation>
+        <source>When DP DNS is not used or installed</source>
+        <translation>जब DP DNS का उपयोग या स्थापित नहीं किया जाता है</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="99"/>
@@ -4297,8 +4297,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsDns.qml" line="67"/>
-        <source>If AmneziaDNS is not used or installed</source>
-        <translation>यदि AmneziaDNS का उपयोग या स्थापित नहीं किया गया है</translation>
+        <source>If DP DNS is not used or installed</source>
+        <translation>यदि DP DNS का उपयोग या स्थापित नहीं किया गया है</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsDns.qml" line="84"/>
@@ -4559,8 +4559,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsLogging.qml" line="182"/>
-        <source>AmneziaVPN logs</source>
-        <translation>AmneziaVPN लॉग</translation>
+        <source>DP Connect logs</source>
+        <translation>DP Connect लॉग</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsLogging.qml" line="192"/>
@@ -4587,8 +4587,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsLogging.qml" line="211"/>
-        <source>AmneziaVPN-service logs</source>
-        <translation>AmneziaVPN-सेवा लॉग</translation>
+        <source>DPConnect-service logs</source>
+        <translation>DP Connect-सेवा लॉग</translation>
     </message>
 </context>
 <context>
@@ -4613,8 +4613,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="98"/>
-        <source>Check the server for previously installed Amnezia services</source>
-        <translation>पहले से स्थापित Amnezia सेवाओं के लिए सर्वर की जाँच करें</translation>
+        <source>Check the server for previously installed DP Connect services</source>
+        <translation>पहले से स्थापित DP Connect सेवाओं के लिए सर्वर की जाँच करें</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="99"/>
@@ -4669,8 +4669,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="147"/>
-        <source>All installed AmneziaVPN services will still remain on the server.</source>
-        <translation>सभी स्थापित AmneziaVPN सेवाएँ अभी भी सर्वर पर रहेंगी.</translation>
+        <source>All installed DP Connect services will still remain on the server.</source>
+        <translation>सभी स्थापित DP Connect सेवाएँ अभी भी सर्वर पर रहेंगी.</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="153"/>
@@ -4679,13 +4679,13 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="172"/>
-        <source>Clear server from Amnezia software</source>
-        <translation>Amnezia सॉफ़्टवेयर से सर्वर साफ़ करें</translation>
+        <source>Clear server from DP Connect software</source>
+        <translation>DP Connect सॉफ़्टवेयर से सर्वर साफ़ करें</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="176"/>
-        <source>Do you want to clear server from Amnezia software?</source>
-        <translation>क्या आप Amnezia सॉफ़्टवेयर से सर्वर साफ़ करना चाहते हैं?</translation>
+        <source>Do you want to clear server from DP Connect software?</source>
+        <translation>क्या आप DP Connect सॉफ़्टवेयर से सर्वर साफ़ करना चाहते हैं?</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="177"/>
@@ -4694,8 +4694,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="183"/>
-        <source>Cannot clear server from Amnezia software during active connection</source>
-        <translation>सक्रिय कनेक्शन के दौरान Amnezia सॉफ़्टवेयर से सर्वर साफ़ नहीं किया जा सकता</translation>
+        <source>Cannot clear server from DP Connect software during active connection</source>
+        <translation>सक्रिय कनेक्शन के दौरान DP Connect सॉफ़्टवेयर से सर्वर साफ़ नहीं किया जा सकता</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="201"/>
@@ -4745,8 +4745,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerProtocol.qml" line="71"/>
-        <source>AmneziaWG 2.0 is outdated and does not include the latest security improvements, but it will continue to work. Moving to AmneziaWG 3.1 by deploying a new container on the server is recommended for stronger protocol security</source>
-        <translation>AmneziaWG 2.0 पुराना है और इसमें नवीनतम सुरक्षा सुधार शामिल नहीं हैं, लेकिन यह काम करता रहेगा। मज़बूत प्रोटोकॉल सुरक्षा के लिए सर्वर पर नया कंटेनर तैनात कर AmneziaWG 3.1 पर जाने की सलाह दी जाती है</translation>
+        <source>DP WG 2.0 is outdated and does not include the latest security improvements, but it will continue to work. Moving to DP WG 3.1 by deploying a new container on the server is recommended for stronger protocol security</source>
+        <translation>DP WG 2.0 पुराना है और इसमें नवीनतम सुरक्षा सुधार शामिल नहीं हैं, लेकिन यह काम करता रहेगा। मज़बूत प्रोटोकॉल सुरक्षा के लिए सर्वर पर नया कंटेनर तैनात कर DP WG 3.1 पर जाने की सलाह दी जाती है</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerProtocol.qml" line="90"/>
@@ -5057,8 +5057,8 @@ Create one from the current settings.</source>
     <name>PageSetupWizardApiServicesList</name>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardApiServicesList.qml" line="52"/>
-        <source>VPN by Amnezia</source>
-        <translation>Amnezia का VPN</translation>
+        <source>VPN by DP Connect</source>
+        <translation>DP Connect का VPN</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardApiServicesList.qml" line="53"/>
@@ -5184,13 +5184,13 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="260"/>
-        <source>Site Amnezia</source>
-        <translation>Amnezia वेबसाइट</translation>
+        <source>Site DP Connect</source>
+        <translation>DP Connect वेबसाइट</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="284"/>
-        <source>VPN by Amnezia</source>
-        <translation>Amnezia का VPN</translation>
+        <source>VPN by DP Connect</source>
+        <translation>DP Connect का VPN</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="285"/>
@@ -5204,8 +5204,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="304"/>
-        <source>Configure Amnezia VPN on your own server</source>
-        <translation>अपने सर्वर पर Amnezia VPN कॉन्फ़िगर करें</translation>
+        <source>Configure DP Connect on your own server</source>
+        <translation>अपने सर्वर पर DP Connect कॉन्फ़िगर करें</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="316"/>
@@ -5274,8 +5274,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardCredentials.qml" line="144"/>
-        <source>All data you enter will remain strictly confidential and will not be shared or disclosed to the Amnezia or any third parties</source>
-        <translation>आपके द्वारा दर्ज किया गया सभी डेटा पूरी तरह से गोपनीय रहेगा और Amnezia या किसी तीसरे पक्ष को साझा या प्रकट नहीं किया जाएगा</translation>
+        <source>All data you enter will remain strictly confidential and will not be shared or disclosed to the DP Connect or any third parties</source>
+        <translation>आपके द्वारा दर्ज किया गया सभी डेटा पूरी तरह से गोपनीय रहेगा और DP Connect या किसी तीसरे पक्ष को साझा या प्रकट नहीं किया जाएगा</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardCredentials.qml" line="157"/>
@@ -5284,8 +5284,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardCredentials.qml" line="158"/>
-        <source>Amnezia hosting. VPN servers without complicated settings and headaches</source>
-        <translation>Amnezia होस्टिंग। जटिल सेटिंग्स और झंझट के बिना VPN सर्वर</translation>
+        <source>DP Connect hosting. VPN servers without complicated settings and headaches</source>
+        <translation>DP Connect होस्टिंग। जटिल सेटिंग्स और झंझट के बिना VPN सर्वर</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardCredentials.qml" line="179"/>
@@ -5376,13 +5376,13 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardInstalling.qml" line="63"/>
-        <source>Amnezia has detected that your server is currently </source>
-        <translation>Amnezia ने पता लगाया है कि आपका सर्वर वर्तमान में है </translation>
+        <source>DP Connect has detected that your server is currently </source>
+        <translation>DP Connect ने पता लगाया है कि आपका सर्वर वर्तमान में है </translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardInstalling.qml" line="64"/>
-        <source>busy installing other software. Amnezia installation </source>
-        <translation>अन्य सॉफ़्टवेयर स्थापित करने में व्यस्त। Amnezia की स्थापना </translation>
+        <source>busy installing other software. DP Connect installation </source>
+        <translation>अन्य सॉफ़्टवेयर स्थापित करने में व्यस्त। DP Connect की स्थापना </translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardInstalling.qml" line="65"/>
@@ -5578,8 +5578,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="51"/>
-        <source>Save AmneziaVPN config</source>
-        <translation>AmneziaVPN कॉन्फ़िगरेशन सहेजें</translation>
+        <source>Save DP Connect config</source>
+        <translation>DP Connect कॉन्फ़िगरेशन सहेजें</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="58"/>
@@ -5593,8 +5593,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="72"/>
-        <source>Save AmneziaWG config</source>
-        <translation>AmneziaWG कॉन्फ़िगरेशन सहेजें</translation>
+        <source>Save DP WG config</source>
+        <translation>DP WG कॉन्फ़िगरेशन सहेजें</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="79"/>
@@ -5613,8 +5613,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="108"/>
-        <source>For the AmneziaVPN app</source>
-        <translation>AmneziaVPN ऐप के लिए</translation>
+        <source>For the DP Connect app</source>
+        <translation>DP Connect ऐप के लिए</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="113"/>
@@ -5628,8 +5628,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="123"/>
-        <source>AmneziaWG native format</source>
-        <translation>AmneziaWG मूल प्रारूप</translation>
+        <source>DP WG native format</source>
+        <translation>DP WG मूल प्रारूप</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="128"/>
@@ -5781,8 +5781,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShareConnection.qml" line="30"/>
-        <source>Save AmneziaVPN config</source>
-        <translation>AmneziaVPN कॉन्फ़िगरेशन सहेजें</translation>
+        <source>Save DP Connect config</source>
+        <translation>DP Connect कॉन्फ़िगरेशन सहेजें</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShareConnection.qml" line="150"/>
@@ -5802,8 +5802,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShareConnection.qml" line="326"/>
-        <source>To read the QR code in the Amnezia app, tap + in the main menu → &apos;QR code&apos;</source>
-        <translation>Amnezia ऐप में QR कोड पढ़ने के लिए, मुख्य मेनू में + दबाएँ → &apos;QR कोड&apos;</translation>
+        <source>To read the QR code in the DP Connect app, tap + in the main menu → &apos;QR code&apos;</source>
+        <translation>DP Connect ऐप में QR कोड पढ़ने के लिए, मुख्य मेनू में + दबाएँ → &apos;QR कोड&apos;</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShareConnection.qml" line="342"/>
@@ -6128,8 +6128,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="73"/>
-        <source>This legacy Amnezia subscription format is no longer supported</source>
-        <translation>यह पुराना Amnezia सदस्यता प्रारूप अब समर्थित नहीं है</translation>
+        <source>This legacy DP Connect subscription format is no longer supported</source>
+        <translation>यह पुराना DP Connect सदस्यता प्रारूप अब समर्थित नहीं है</translation>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="74"/>
@@ -6216,10 +6216,10 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="95"/>
-        <source>Your Amnezia Premium subscription has expired.
+        <source>Your VPN subscription has expired.
  Please check your email for renewal instructions.
  If you haven&apos;t received an email, please contact our support.</source>
-        <translation>आपकी Amnezia Premium सदस्यता समाप्त हो गई है।
+        <translation>आपकी VPN सदस्यता समाप्त हो गई है।
  नवीनीकरण निर्देशों के लिए कृपया अपना ईमेल देखें।
  यदि आपको ईमेल नहीं मिला है, तो कृपया हमारी सहायता टीम से संपर्क करें।</translation>
     </message>
@@ -6290,8 +6290,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="62"/>
-        <source>Amnezia helper service error</source>
-        <translation>Amnezia Amnezia सहायक सेवा त्रुटि</translation>
+        <source>DP Connect helper service error</source>
+        <translation>DP Connect DP Connect सहायक सेवा त्रुटि</translation>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="63"/>
@@ -6431,8 +6431,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="77"/>
-        <source>AmneziaDNS</source>
-        <translation>AmneziaDNS</translation>
+        <source>DP DNS</source>
+        <translation>DP DNS</translation>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="78"/>
@@ -6482,14 +6482,14 @@ Create one from the current settings.</source>
         <source>OpenVPN is one of the most popular and reliable VPN protocols. It uses SSL/TLS encryption, supports a wide variety of devices and operating systems, and is continuously improved by the community due to its open-source nature. It provides a good balance between speed and security but is easily recognized by DPI systems, making it susceptible to blocking.
 
 Features:
-* Available on all AmneziaVPN platforms
+* Available on all DP Connect platforms
 * Normal battery consumption on mobile devices
 * Flexible customization for various devices and OS
 * Operates over both TCP and UDP protocols</source>
         <translation>OpenVPN सबसे लोकप्रिय और भरोसेमंद VPN प्रोटोकॉल में से एक है। यह SSL/TLS एन्क्रिप्शन का उपयोग करता है, विभिन्न प्रकार के उपकरणों और ऑपरेटिंग सिस्टम का समर्थन करता है, और ओपन-सोर्स होने के कारण समुदाय द्वारा लगातार बेहतर बनाया जाता है। यह गति और सुरक्षा के बीच अच्छा संतुलन देता है, लेकिन DPI सिस्टम इसे आसानी से पहचान लेते हैं, जिससे यह अवरोधन के प्रति संवेदनशील हो जाता है।
 
 विशेषताएँ:
-* सभी AmneziaVPN प्लेटफ़ॉर्म पर उपलब्ध
+* सभी DP Connect प्लेटफ़ॉर्म पर उपलब्ध
 * मोबाइल उपकरणों पर सामान्य बैटरी खपत
 * विभिन्न उपकरणों और OS के लिए लचीला अनुकूलन
 * TCP और UDP दोनों प्रोटोकॉल पर काम करता है</translation>
@@ -6499,7 +6499,7 @@ Features:
         <source>WireGuard is a modern, streamlined VPN protocol offering stable connectivity and excellent performance across all devices. It uses fixed encryption settings, delivering lower latency and higher data transfer speeds compared to OpenVPN. However, WireGuard is easily identifiable by DPI systems due to its distinctive packet signatures, making it susceptible to blocking.
 
 Features:
-* Available on all AmneziaVPN platforms
+* Available on all DP Connect platforms
 * Low power consumption on mobile devices
 * Minimal configuration required
 * Easily detected by DPI systems (susceptible to blocking)
@@ -6507,7 +6507,7 @@ Features:
         <translation>WireGuard एक आधुनिक और सुव्यवस्थित VPN प्रोटोकॉल है जो सभी उपकरणों पर स्थिर कनेक्टिविटी और उत्कृष्ट प्रदर्शन देता है। यह निश्चित एन्क्रिप्शन सेटिंग्स का उपयोग करता है, जिससे OpenVPN की तुलना में कम विलंबता और अधिक डेटा स्थानांतरण गति मिलती है। हालाँकि, अपने विशिष्ट पैकेट हस्ताक्षरों के कारण WireGuard को DPI सिस्टम आसानी से पहचान लेते हैं, जिससे यह अवरोधन के प्रति संवेदनशील हो जाता है।
 
 विशेषताएँ:
-* सभी AmneziaVPN प्लेटफ़ॉर्म पर उपलब्ध
+* सभी DP Connect प्लेटफ़ॉर्म पर उपलब्ध
 * मोबाइल उपकरणों पर कम बिजली खपत
 * न्यूनतम कॉन्फ़िगरेशन की आवश्यकता
 * DPI सिस्टम द्वारा आसानी से पहचाना जाता है (अवरोधन के प्रति संवेदनशील)
@@ -6515,22 +6515,22 @@ Features:
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="151"/>
-        <source>AmneziaWG is a modern VPN protocol based on WireGuard, combining simplified architecture with high performance across all devices. It addresses WireGuard&apos;s main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, making VPN traffic indistinguishable from regular internet traffic.
+        <source>DP WG is a modern VPN protocol based on WireGuard, combining simplified architecture with high performance across all devices. It addresses WireGuard&apos;s main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, making VPN traffic indistinguishable from regular internet traffic.
 
-AmneziaWG is an excellent choice for those seeking a fast, stealthy VPN connection.
+DP WG is an excellent choice for those seeking a fast, stealthy VPN connection.
 
 Features:
-* Available on all AmneziaVPN platforms
+* Available on all DP Connect platforms
 * Low battery consumption on mobile devices
 * Minimal settings required
 * Undetectable by traffic analysis systems (DPI)
 * Operates over UDP protocol</source>
-        <translation>AmneziaWG, WireGuard पर आधारित एक आधुनिक VPN प्रोटोकॉल है, जो सरल आर्किटेक्चर को सभी उपकरणों पर उच्च प्रदर्शन के साथ जोड़ता है। यह उन्नत ऑब्फ़सकेशन तकनीकों के माध्यम से WireGuard की मुख्य कमज़ोरी (DPI सिस्टम द्वारा आसान पहचान) को दूर करता है, जिससे VPN ट्रैफ़िक सामान्य इंटरनेट ट्रैफ़िक से अलग नहीं दिखता।
+        <translation>DP WG, WireGuard पर आधारित एक आधुनिक VPN प्रोटोकॉल है, जो सरल आर्किटेक्चर को सभी उपकरणों पर उच्च प्रदर्शन के साथ जोड़ता है। यह उन्नत ऑब्फ़सकेशन तकनीकों के माध्यम से WireGuard की मुख्य कमज़ोरी (DPI सिस्टम द्वारा आसान पहचान) को दूर करता है, जिससे VPN ट्रैफ़िक सामान्य इंटरनेट ट्रैफ़िक से अलग नहीं दिखता।
 
-जो लोग तेज़ और अदृश्य VPN कनेक्शन चाहते हैं, उनके लिए AmneziaWG एक उत्कृष्ट विकल्प है।
+जो लोग तेज़ और अदृश्य VPN कनेक्शन चाहते हैं, उनके लिए DP WG एक उत्कृष्ट विकल्प है।
 
 विशेषताएँ:
-* सभी AmneziaVPN प्लेटफ़ॉर्म पर उपलब्ध
+* सभी DP Connect प्लेटफ़ॉर्म पर उपलब्ध
 * मोबाइल उपकरणों पर कम बैटरी खपत
 * न्यूनतम सेटिंग्स की आवश्यकता
 * ट्रैफ़िक विश्लेषण सिस्टम (DPI) द्वारा पता नहीं लगाया जा सकता
@@ -6562,7 +6562,7 @@ VMess, VLESS और XTLS-Vision जैसे पुराने प्रोट�
         <source>IKEv2, combined with IPSec encryption, is a modern and reliable VPN protocol. It reconnects quickly when switching networks or devices, making it ideal for dynamic network environments. While it provides good security and speed, it&apos;s easily recognized by DPI systems and susceptible to blocking.
 
 Features:
-* Available in AmneziaVPN only on Windows
+* Available in DP Connect only on Windows
 * Low battery consumption on mobile devices
 * Minimal configuration required
 * Detectable by DPI analysis systems(easily blocked)
@@ -6570,7 +6570,7 @@ Features:
         <translation>IKEv2, IPSec एन्क्रिप्शन के साथ मिलकर एक आधुनिक और भरोसेमंद VPN प्रोटोकॉल बनाता है। नेटवर्क या उपकरण बदलने पर यह तेज़ी से पुनः कनेक्ट हो जाता है, जिससे यह बदलते नेटवर्क वातावरण के लिए आदर्श है। यह अच्छी सुरक्षा और गति देता है, लेकिन DPI सिस्टम इसे आसानी से पहचान लेते हैं और यह अवरोधन के प्रति संवेदनशील है।
 
 विशेषताएँ:
-* AmneziaVPN में केवल Windows पर उपलब्ध
+* DP Connect में केवल Windows पर उपलब्ध
 * मोबाइल उपकरणों पर कम बैटरी खपत
 * न्यूनतम कॉन्फ़िगरेशन की आवश्यकता
 * DPI विश्लेषण सिस्टम द्वारा पहचाना जा सकता है (आसानी से अवरुद्ध)
@@ -6598,8 +6598,8 @@ Features:
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="348"/>
-        <source>AmneziaWG protocol will be installed. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
-        <translation>AmneziaWG प्रोटोकॉल स्थापित किया जाएगा। यह उच्च कनेक्शन गति प्रदान करता है और सबसे कठिन नेटवर्क परिस्थितियों में भी स्थिर संचालन सुनिश्चित करता है।</translation>
+        <source>DP WG protocol will be installed. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
+        <translation>DP WG प्रोटोकॉल स्थापित किया जाएगा। यह उच्च कनेक्शन गति प्रदान करता है और सबसे कठिन नेटवर्क परिस्थितियों में भी स्थिर संचालन सुनिश्चित करता है।</translation>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="96"/>
@@ -6610,8 +6610,8 @@ Features:
         <location filename="../core/utils/containers/containerUtils.cpp" line="99"/>
         <location filename="../core/utils/containers/containerUtils.cpp" line="102"/>
         <location filename="../ui/models/containersModel.cpp" line="41"/>
-        <source>AmneziaWG is a special protocol from Amnezia based on WireGuard. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
-        <translation>AmneziaWG, WireGuard पर आधारित Amnezia का एक विशेष प्रोटोकॉल है। यह उच्च कनेक्शन गति प्रदान करता है और सबसे कठिन नेटवर्क परिस्थितियों में भी स्थिर संचालन सुनिश्चित करता है।</translation>
+        <source>DP WG is a VPN protocol based on WireGuard. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
+        <translation>DP WG, WireGuard पर आधारित DP Connect का एक विशेष प्रोटोकॉल है। यह उच्च कनेक्शन गति प्रदान करता है और सबसे कठिन नेटवर्क परिस्थितियों में भी स्थिर संचालन सुनिश्चित करता है।</translation>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="105"/>
@@ -6630,7 +6630,7 @@ Features:
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="189"/>
-        <source>After installation, Amnezia will create a
+        <source>After installation, DP Connect will create a
 
  file storage on your server. You will be able to access it using
  FileZilla or other SFTP clients, as well as mount the disk on your device to access
@@ -6638,7 +6638,7 @@ Features:
 
 For more detailed information, you can
  find it in the support section under &quot;Create SFTP file storage.&quot; </source>
-        <translation>इंस्टालेशन के बाद, Amnezia एक बनाएगा
+        <translation>इंस्टालेशन के बाद, DP Connect एक बनाएगा
 
  आपके सर्वर पर फ़ाइल भंडारण। आप इसका उपयोग करके इसे एक्सेस कर पाएंगे
  FileZilla या अन्य SFTP क्लाइंट, साथ ही एक्सेस करने के लिए अपने डिवाइस पर डिस्क को माउंट करें
@@ -7191,9 +7191,9 @@ For more detailed information, you can
     </message>
     <message>
         <location filename="../ui/qml/main2.qml" line="401"/>
-        <source>This legacy Amnezia subscription type can no longer be used to connect in this application version.
+        <source>This legacy DP Connect subscription type can no longer be used to connect in this application version.
 Remove the server from the app to continue.</source>
-        <translation>इस पुराने Amnezia सदस्यता प्रकार का उपयोग इस एप्लिकेशन संस्करण में कनेक्ट करने के लिए नहीं किया जा सकता।
+        <translation>इस पुराने DP Connect सदस्यता प्रकार का उपयोग इस एप्लिकेशन संस्करण में कनेक्ट करने के लिए नहीं किया जा सकता।
 जारी रखने के लिए सर्वर को ऐप से हटाएँ।</translation>
     </message>
     <message>

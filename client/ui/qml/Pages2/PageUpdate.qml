@@ -18,12 +18,13 @@ PageType {
 
     Connections {
         target: UpdateController
+        enabled: AppUpdatesEnabled
 
         function onUpdateStateChanged() {
             if (UpdateController.updateState === UpdateState.ReadyToInstall) {
                 PageController.showNotificationMessage(qsTr("Done. Install the update"))
             } else if (UpdateController.updateState === UpdateState.DownloadError) {
-                PageController.showNotificationMessage(qsTr("Download failed. Download manually from amnezia.org"))
+                PageController.showNotificationMessage(qsTr("Download failed. Contact your app provider for an update."))
             }
         }
     }
@@ -44,6 +45,7 @@ PageType {
 
     ImageButtonType {
         id: supportButton
+        visible: AppUpdatesEnabled
 
         anchors.verticalCenter: backButton.verticalCenter
         anchors.right: parent.right
@@ -232,7 +234,8 @@ PageType {
             disabledColor: AmneziaStyle.color.surfaceInverse
             textColor: AmneziaStyle.color.textInverted
 
-            enabled: UpdateController.updateState !== UpdateState.Downloading
+            visible: AppUpdatesEnabled
+            enabled: AppUpdatesEnabled && UpdateController.updateState !== UpdateState.Downloading
 
             leftImageSource: !UpdateController.isStoreUpdate && UpdateController.updateState === UpdateState.ReadyToInstall
                              ? "qrc:/images/controls/download.svg" : ""
@@ -250,6 +253,9 @@ PageType {
             }
 
             clickedFunc: function() {
+                if (!AppUpdatesEnabled) {
+                    return
+                }
                 if (UpdateController.isStoreUpdate) {
                     UpdateController.update()
                     return

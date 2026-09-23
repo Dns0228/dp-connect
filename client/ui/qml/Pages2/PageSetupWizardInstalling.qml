@@ -21,13 +21,18 @@ PageType {
     }
     Component.onDestruction: PageController.disableTabBar(false)
 
-    property bool isTimerRunning: true
-    property string progressBarText: qsTr("Usually it takes no more than 5 minutes")
+    property bool isTimerRunning: false
+    property string progressBarText: qsTr("Connecting to the server")
     property bool isCancelButtonVisible: false
     property int installingContainerIndex: -1
 
     Connections {
         target: InstallController
+
+        function onInstallationStageChanged(message, step, totalSteps) {
+            root.progressBarText = message
+            progressBar.value = step / totalSteps
+        }
 
         function onInstallContainerFinished(finishedMessage, isServiceInstall) {
             PageController.closePage() // close installing page
@@ -60,14 +65,14 @@ PageType {
         function onServerIsBusy(isBusy) {
             if (isBusy) {
                 root.isCancelButtonVisible = true
-                root.progressBarText = qsTr("Amnezia has detected that your server is currently ") +
-                                       qsTr("busy installing other software. Amnezia installation ") +
+                root.progressBarText = qsTr("DP Connect has detected that your server is currently ") +
+                                       qsTr("busy installing other software. DP Connect installation ") +
                                        qsTr("will pause until the server finishes installing other software")
                 root.isTimerRunning = false
             } else {
                 root.isCancelButtonVisible = false
-                root.progressBarText = qsTr("Usually it takes no more than 5 minutes")
-                root.isTimerRunning = true
+                root.progressBarText = qsTr("Resuming installation")
+                root.isTimerRunning = false
             }
         }
     }

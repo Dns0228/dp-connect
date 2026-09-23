@@ -48,37 +48,37 @@ PageType {
             switch (type) {
             case PageShare.ConfigType.AmneziaConnection: {
                 ExportController.generateConnectionConfig(serverId, containerIndex, clientNameTextField.textField.text);
-                configCaption = qsTr("Save AmneziaVPN config")
+                configCaption = qsTr("Save DP Connect config")
                 configExtension = ".vpn"
-                configFileName = "amnezia_config"
+                configFileName = "dp_connect_config"
                 break;
             }
             case PageShare.ConfigType.OpenVpn: {
                 ExportController.generateOpenVpnConfig(serverId, clientNameTextField.textField.text)
                 configCaption = qsTr("Save OpenVPN config")
                 configExtension = ".ovpn"
-                configFileName = "amnezia_for_openvpn"
+                configFileName = "dp_connect_for_openvpn"
                 break
             }
             case PageShare.ConfigType.WireGuard: {
                 ExportController.generateWireGuardConfig(serverId, clientNameTextField.textField.text)
                 configCaption = qsTr("Save WireGuard config")
                 configExtension = ".conf"
-                configFileName = "amnezia_for_wireguard"
+                configFileName = "dp_connect_for_wireguard"
                 break
             }
             case PageShare.ConfigType.Awg: {
                 ExportController.generateAwgConfig(serverId, containerIndex, clientNameTextField.textField.text)
-                configCaption = qsTr("Save AmneziaWG config")
+                configCaption = qsTr("Save DP WG config")
                 configExtension = ".conf"
-                configFileName = "amnezia_for_awg"
+                configFileName = "dp_connect_for_awg"
                 break
             }
             case PageShare.ConfigType.Xray: {
                 ExportController.generateXrayConfig(serverId, clientNameTextField.textField.text)
                 configCaption = qsTr("Save XRay config")
                 configExtension = ".json"
-                configFileName = "amnezia_for_xray"
+                configFileName = "dp_connect_for_xray"
                 break
             }
             }
@@ -99,13 +99,19 @@ PageType {
     property bool isSearchBarVisible: false
     property bool showContent: false
     property bool shareButtonEnabled: true
+    property bool selectedContainerUsesPublicKey: {
+        var container = ServersUiController.processedContainerIndex
+        return container === ContainerProps.containerFromString("amnezia-wireguard")
+                || container === ContainerProps.containerFromString("amnezia-awg")
+                || container === ContainerProps.containerFromString("amnezia-awg2")
+    }
     property list<QtObject> connectionTypesModel: [
         amneziaConnectionFormat
     ]
 
     QtObject {
         id: amneziaConnectionFormat
-        readonly property string name: qsTr("For the AmneziaVPN app")
+        readonly property string name: qsTr("For the DP Connect app")
         readonly property int type: PageShare.ConfigType.AmneziaConnection
     }
     QtObject {
@@ -120,7 +126,7 @@ PageType {
     }
     QtObject {
         id: awgConnectionFormat
-        readonly property string name: qsTr("AmneziaWG native format")
+        readonly property string name: qsTr("DP WG native format")
         readonly property int type: PageShare.ConfigType.Awg
     }
     QtObject {
@@ -245,7 +251,7 @@ PageType {
                         checked: accessTypeSelector.currentIndex === 1
 
                         implicitWidth: (root.width - 32) / 2
-                        text: qsTr("Users")
+                        text: qsTr("Devices")
 
                         onClicked: {
                             accessTypeSelector.currentIndex = 1
@@ -279,8 +285,8 @@ PageType {
 
                 visible: accessTypeSelector.currentIndex === 0
 
-                headerText: qsTr("User name")
-                textField.text: "New client"
+                headerText: qsTr("Device name")
+                textField.text: qsTr("New device")
                 textField.maximumLength: 20
 
                 checkEmptyText: true
@@ -556,7 +562,7 @@ PageType {
 
                 visible: accessTypeSelector.currentIndex === 1 && !root.isSearchBarVisible
 
-                headerText: qsTr("Users")
+                headerText: qsTr("Devices")
                 actionButtonImage: "qrc:/images/controls/search.svg"
                 actionButtonFunction: function() {
                     root.isSearchBarVisible = true
@@ -634,6 +640,9 @@ PageType {
                 reuseItems: true
 
                 delegate: Item {
+                    property bool isRecentlyActive: latestHandshakeEpoch > 0
+                                                    && (Date.now() / 1000 - latestHandshakeEpoch) < 180
+
                     implicitWidth: clientsListView.width
                     implicitHeight: delegateContent.implicitHeight
 
@@ -652,6 +661,11 @@ PageType {
                             Layout.fillWidth: true
 
                             text: clientName
+                            descriptionText: isRecentlyActive
+                                             ? qsTr("Active now")
+                                             : (latestHandshake !== ""
+                                                ? qsTr("Last activity: %1").arg(latestHandshake)
+                                                : qsTr("Never connected"))
                             rightImageSource: "qrc:/images/controls/chevron-right.svg"
 
                             clickedFunction: function() {
@@ -690,6 +704,42 @@ PageType {
                                     maximumLineCount: 2
                                     wrapMode: Text.Wrap
                                     elide: Qt.ElideRight
+                                }
+
+                                ParagraphTextType {
+                                    Layout.maximumWidth: parent.width
+                                    text: isRecentlyActive
+                                          ? qsTr("Active now")
+                                          : (latestHandshake !== "" ? qsTr("Offline") : qsTr("Never connected"))
+                                    color: isRecentlyActive ? AmneziaStyle.color.goldenApricot
+                                                            : AmneziaStyle.color.mutedGray
+                                }
+
+                                ParagraphTextType {
+                                    Layout.maximumWidth: parent.width
+                                    wrapMode: Text.WrapAnywhere
+                                    color: AmneziaStyle.color.mutedGray
+                                    text: root.selectedContainerUsesPublicKey
+                                          ? qsTr("Public key: %1").arg(clientId)
+                                          : qsTr("Device ID: %1").arg(clientId)
+                                }
+
+                                BasicButtonType {
+                                    Layout.fillWidth: true
+                                    Layout.topMargin: 8
+                                    defaultColor: AmneziaStyle.color.transparent
+                                    hoveredColor: AmneziaStyle.color.translucentWhite
+                                    pressedColor: AmneziaStyle.color.sheerWhite
+                                    textColor: AmneziaStyle.color.paleGray
+                                    borderWidth: 1
+                                    text: root.selectedContainerUsesPublicKey
+                                          ? qsTr("Copy public key") : qsTr("Copy device ID")
+                                    clickedFunc: function() {
+                                        GC.copyToClipBoard(clientId)
+                                        PageController.showNotificationMessage(
+                                                    root.selectedContainerUsesPublicKey
+                                                    ? qsTr("Public key copied") : qsTr("Device ID copied"))
+                                    }
                                 }
 
                                 ParagraphTextType {
@@ -787,7 +837,7 @@ PageType {
                                             TextFieldWithHeaderType {
                                                 id: clientNameEditor
                                                 Layout.fillWidth: true
-                                                headerText: qsTr("Client name")
+                                                headerText: qsTr("Device name")
                                                 textField.text: clientName
                                                 textField.maximumLength: 20
                                                 checkEmptyText: true
@@ -837,8 +887,8 @@ PageType {
                                     text: qsTr("Revoke")
 
                                     clickedFunc: function() {
-                                        var headerText = qsTr("Revoke the config for a user - %1?").arg(clientName)
-                                        var descriptionText = qsTr("The user will no longer be able to connect to your server.")
+                                        var headerText = qsTr("Disable access for %1?").arg(clientName)
+                                        var descriptionText = qsTr("This device will no longer be able to connect to your server.")
                                         var yesButtonText = qsTr("Continue")
                                         var noButtonText = qsTr("Cancel")
 

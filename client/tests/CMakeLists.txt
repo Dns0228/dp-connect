@@ -185,6 +185,15 @@ if(NOT ANDROID)
         test_common
     )
 
+    add_executable(test_backup_encryption
+        testBackupEncryption.cpp
+    )
+
+    target_link_libraries(test_backup_encryption PRIVATE
+        Qt6::Test
+        test_common
+    )
+
     add_executable(test_connection
         testConnection.cpp
     )
@@ -199,6 +208,15 @@ if(NOT ANDROID)
     )
 
     target_link_libraries(test_openssl_library PRIVATE
+        Qt6::Test
+        test_common
+    )
+
+    add_executable(test_wireguard_key_generation
+        testWireguardKeyGeneration.cpp
+    )
+
+    target_link_libraries(test_wireguard_key_generation PRIVATE
         Qt6::Test
         test_common
     )
@@ -409,8 +427,10 @@ if(NOT ANDROID)
     add_test(NAME UiAppSTModelAndControllerTest    COMMAND test_ui_app_st_model_and_controller)
     add_test(NAME UiAllowedDnsModelAndControllerTest COMMAND test_ui_allowed_dns_model_and_controller)
     add_test(NAME BackupExportImportTest           COMMAND test_backup_export_import)
+    add_test(NAME BackupEncryptionTest             COMMAND test_backup_encryption)
     add_test(NAME ConnectionTest                   COMMAND test_connection)
     add_test(NAME OpenSSLLibraryTest               COMMAND test_openssl_library)
+    add_test(NAME WireguardKeyGenerationTest       COMMAND test_wireguard_key_generation)
 endif()
 
 # Android tests are executed on-device via androidtestrunner in CI (see .github/workflows/tests.yml).

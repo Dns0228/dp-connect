@@ -1,6 +1,8 @@
-FROM amneziavpn/amneziawg-go:latest
+# The immutable multi-architecture DP WG build published by the DP project workflow.
+FROM ghcr.io/dns0228/dp-wg-go@sha256:727a5a9b8cd0698865d2d00b1e92d93c6c48c3c81d52a5128e24fb4ef3d2cf27
 
-LABEL maintainer="AmneziaVPN"
+LABEL org.opencontainers.image.title="DP WG self-host server" \
+      org.opencontainers.image.source="https://github.com/Dns0228/dp-wg-go"
 
 #Install required packages
 RUN apk add --no-cache bash curl dumb-init
@@ -44,4 +46,3 @@ RUN echo -e " \n\
 
 ENTRYPOINT [ "dumb-init", "/opt/amnezia/start.sh" ]
 CMD [ "" ]
-

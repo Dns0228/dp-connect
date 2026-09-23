@@ -79,6 +79,33 @@ InstallUiController::InstallUiController(InstallController *installController,
 {
     connect(m_installController, &InstallController::configValidated, this, &InstallUiController::configValidated);
     connect(m_installController, &InstallController::validationErrorOccurred, this, &InstallUiController::installationErrorOccurred);
+    connect(m_installController, &InstallController::installationStageChanged, this,
+            [this](const QString &stageId) {
+        static const QStringList stages {
+            QStringLiteral("inspecting_server"), QStringLiteral("checking_access"),
+            QStringLiteral("checking_server"), QStringLiteral("checking_port"),
+            QStringLiteral("preparing_docker"), QStringLiteral("preparing_host"),
+            QStringLiteral("downloading_image"), QStringLiteral("starting_container"),
+            QStringLiteral("configuring_protocol"), QStringLiteral("verifying_service"),
+            QStringLiteral("creating_profile")
+        };
+        const int index = stages.indexOf(stageId);
+        QString message;
+        if (stageId == QLatin1String("inspecting_server")) message = tr("Inspecting the server");
+        else if (stageId == QLatin1String("checking_access")) message = tr("Checking administrator access");
+        else if (stageId == QLatin1String("checking_server")) message = tr("Checking server package manager");
+        else if (stageId == QLatin1String("preparing_docker")) message = tr("Preparing Docker");
+        else if (stageId == QLatin1String("checking_port")) message = tr("Checking the selected port");
+        else if (stageId == QLatin1String("preparing_host")) message = tr("Preparing server directories");
+        else if (stageId == QLatin1String("downloading_image")) message = tr("Downloading DP WG");
+        else if (stageId == QLatin1String("starting_container")) message = tr("Starting the DP WG container");
+        else if (stageId == QLatin1String("configuring_protocol")) message = tr("Configuring the encrypted tunnel");
+        else if (stageId == QLatin1String("verifying_service")) message = tr("Verifying the running service");
+        else if (stageId == QLatin1String("creating_profile")) message = tr("Creating a device profile");
+        if (index >= 0) {
+            emit installationStageChanged(message, index + 1, stages.size());
+        }
+    });
 }
 
 InstallUiController::~InstallUiController()
@@ -102,61 +129,53 @@ void InstallUiController::install(DockerContainer container, int port, Transport
         m_processedServerCredentials = ServerCredentials();
     }
 
-    QString finishMessage;
-    ErrorCode errorCode;
-
+    int containersCountBefore = 0;
     if (isNewServer) {
         int existingServerIndex = -1;
         if (m_installController->isServerAlreadyExists(serverCredentials, existingServerIndex)) {
             emit serverAlreadyExists(existingServerIndex);
             return;
         }
-
-        bool wasContainerInstalled = false;
-        errorCode = m_installController->installServer(serverCredentials, container, port, transportProto, wasContainerInstalled);
-        if (errorCode) {
-            emit installationErrorOccurred(errorCode);
-            return;
-        }
-
-        const QString newServerId = m_serversController->getServerId(m_serversController->getServersCount() - 1);
-        const auto admin = m_serversController->selfHostedAdminConfig(newServerId);
-        if (!admin.has_value()) {
-            emit installationErrorOccurred(ErrorCode::InternalError);
-            return;
-        }
-        QMap<DockerContainer, ContainerConfig> containers = admin->containers;
-        int containersCount = containers.size();
-
-        if (wasContainerInstalled) {
-            finishMessage = tr("%1 installed successfully. ").arg(ContainerUtils::containerHumanNames().value(container));
-        } else {
-            finishMessage = tr("%1 is already installed on the server. ").arg(ContainerUtils::containerHumanNames().value(container));
-        }
-
-        if (containersCount > 1) {
-            finishMessage += tr("\nAdded containers that were already installed on the server");
-        }
-
-        if (!m_connectionController->isConnected()) {
-            m_serversController->setDefaultServer(newServerId);
-        }
-
-        emit installServerFinished(finishMessage);
     } else {
         const auto adminBefore = m_serversController->selfHostedAdminConfig(serverId);
         if (!adminBefore.has_value()) {
             emit installationErrorOccurred(ErrorCode::InternalError);
             return;
         }
-        QMap<DockerContainer, ContainerConfig> containers = adminBefore->containers;
-        int containersCount = containers.size();
+        containersCountBefore = adminBefore->containers.size();
+    }
 
-        bool wasContainerInstalled = false;
-        errorCode = m_installController->installContainer(serverId, container, port, transportProto,
-                                                          wasContainerInstalled);
-        if (errorCode) {
+    using InstallResult = std::pair<ErrorCode, bool>;
+    auto *watcher = new QFutureWatcher<InstallResult>(this);
+    QObject::connect(watcher, &QFutureWatcher<InstallResult>::finished, this,
+                     [this, watcher, isNewServer, serverId, container, containersCountBefore]() {
+        const InstallResult result = watcher->result();
+        watcher->deleteLater();
+        const ErrorCode errorCode = result.first;
+        const bool wasContainerInstalled = result.second;
+        if (errorCode != ErrorCode::NoError) {
             emit installationErrorOccurred(errorCode);
+            return;
+        }
+
+        QString finishMessage = wasContainerInstalled
+                ? tr("%1 installed successfully. ").arg(ContainerUtils::containerHumanNames().value(container))
+                : tr("%1 is already installed on the server. ").arg(ContainerUtils::containerHumanNames().value(container));
+
+        if (isNewServer) {
+            const QString newServerId = m_serversController->getServerId(m_serversController->getServersCount() - 1);
+            const auto admin = m_serversController->selfHostedAdminConfig(newServerId);
+            if (!admin.has_value()) {
+                emit installationErrorOccurred(ErrorCode::InternalError);
+                return;
+            }
+            if (admin->containers.size() > 1) {
+                finishMessage += tr("\nAdded containers that were already installed on the server");
+            }
+            if (!m_connectionController->isConnected()) {
+                m_serversController->setDefaultServer(newServerId);
+            }
+            emit installServerFinished(finishMessage);
             return;
         }
 
@@ -165,17 +184,8 @@ void InstallUiController::install(DockerContainer container, int port, Transport
             emit installationErrorOccurred(ErrorCode::InternalError);
             return;
         }
-        QMap<DockerContainer, ContainerConfig> newContainers = adminAfter->containers;
-        int newContainersCount = newContainers.size();
-
-        bool hasNewContainers = (newContainersCount - containersCount) > (wasContainerInstalled ? 1 : 0);
-
-        if (wasContainerInstalled) {
-            finishMessage = tr("%1 installed successfully. ").arg(ContainerUtils::containerHumanNames().value(container));
-        } else {
-            finishMessage = tr("%1 is already installed on the server. ").arg(ContainerUtils::containerHumanNames().value(container));
-        }
-
+        const bool hasNewContainers = (adminAfter->containers.size() - containersCountBefore)
+                > (wasContainerInstalled ? 1 : 0);
         if (hasNewContainers) {
             finishMessage += tr("\nAlready installed containers were found on the server. "
                                 "All installed containers have been added to the application");
@@ -185,9 +195,19 @@ void InstallUiController::install(DockerContainer container, int port, Transport
         if (!m_connectionController->isConnected() && !isServiceInstall) {
             m_serversController->setDefaultContainer(serverId, container);
         }
-
         emit installContainerFinished(finishMessage, isServiceInstall);
-    }
+    });
+
+    InstallController *installController = m_installController;
+    QFuture<InstallResult> future = QtConcurrent::run(
+            [installController, isNewServer, serverCredentials, serverId, container, port, transportProto]() {
+        bool wasContainerInstalled = false;
+        const ErrorCode errorCode = isNewServer
+                ? installController->installServer(serverCredentials, container, port, transportProto, wasContainerInstalled)
+                : installController->installContainer(serverId, container, port, transportProto, wasContainerInstalled);
+        return InstallResult { errorCode, wasContainerInstalled };
+    });
+    watcher->setFuture(future);
 }
 
 void InstallUiController::scanServerForInstalledContainers(const QString &serverId)
@@ -427,6 +447,34 @@ void InstallUiController::refreshContainerStatus(const QString &serverId, int co
     watcher->setFuture(future);
 }
 
+void InstallUiController::refreshServerOverview(const QString &serverId, int containerIndex)
+{
+    const DockerContainer container = static_cast<DockerContainer>(containerIndex);
+    using OverviewResult = std::pair<ErrorCode, QMap<QString, QString>>;
+    InstallController *installController = m_installController;
+    auto *watcher = new QFutureWatcher<OverviewResult>(this);
+    QObject::connect(watcher, &QFutureWatcher<OverviewResult>::finished, this, [this, watcher]() {
+        const OverviewResult result = watcher->result();
+        watcher->deleteLater();
+        if (result.first != ErrorCode::NoError) {
+            emit installationErrorOccurred(result.first);
+            emit serverOverviewRefreshed(QVariantMap {});
+            return;
+        }
+        QVariantMap overview;
+        for (auto iterator = result.second.cbegin(); iterator != result.second.cend(); ++iterator) {
+            overview.insert(iterator.key(), iterator.value());
+        }
+        emit serverOverviewRefreshed(overview);
+    });
+    QFuture<OverviewResult> future = QtConcurrent::run([installController, serverId, container]() {
+        QMap<QString, QString> overview;
+        const ErrorCode errorCode = installController->queryServerOverview(serverId, container, overview);
+        return OverviewResult { errorCode, overview };
+    });
+    watcher->setFuture(future);
+}
+
 void InstallUiController::refreshContainerDiagnostics(const QString &serverId, int containerIndex, int port)
 {
     const DockerContainer container = static_cast<DockerContainer>(containerIndex);
@@ -627,6 +675,40 @@ bool InstallUiController::checkSshConnection()
         }
     }
     return true;
+}
+
+QVariantMap InstallUiController::checkServerPreflight()
+{
+    QMap<QString, QString> rawReport;
+    const ErrorCode errorCode = m_installController->checkServerPreflight(m_processedServerCredentials, rawReport);
+    if (errorCode != ErrorCode::NoError) {
+        emit installationErrorOccurred(errorCode);
+        return { { QStringLiteral("completed"), false } };
+    }
+
+    QVariantMap report;
+    for (auto iterator = rawReport.cbegin(); iterator != rawReport.cend(); ++iterator) {
+        report.insert(iterator.key(), iterator.value());
+    }
+
+    const QString architecture = rawReport.value(QStringLiteral("architecture")).toLower();
+    const bool architectureSupported = architecture == QLatin1String("x86_64")
+            || architecture == QLatin1String("amd64")
+            || architecture == QLatin1String("aarch64")
+            || architecture == QLatin1String("arm64");
+    const bool packageManagerSupported = rawReport.value(QStringLiteral("package_manager")) != QLatin1String("unknown");
+    const bool sudoReady = rawReport.value(QStringLiteral("sudo_ready")) == QLatin1String("true");
+    const int memoryMb = rawReport.value(QStringLiteral("memory_mb")).toInt();
+    const int diskFreeMb = rawReport.value(QStringLiteral("disk_free_mb")).toInt();
+
+    report.insert(QStringLiteral("completed"), true);
+    report.insert(QStringLiteral("architecture_supported"), architectureSupported);
+    report.insert(QStringLiteral("package_manager_supported"), packageManagerSupported);
+    report.insert(QStringLiteral("sudo_ready"), sudoReady);
+    report.insert(QStringLiteral("memory_recommended"), memoryMb >= 512);
+    report.insert(QStringLiteral("disk_recommended"), diskFreeMb >= 2048);
+    report.insert(QStringLiteral("ready"), architectureSupported && packageManagerSupported && sudoReady);
+    return report;
 }
 
 void InstallUiController::setEncryptedPassphrase(QString passphrase)

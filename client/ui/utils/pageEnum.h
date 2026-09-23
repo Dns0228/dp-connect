@@ -18,6 +18,7 @@ namespace PageLoader
         PageSettings,
         PageSettingsServerData,
         PageSettingsServerInfo,
+        PageSettingsServerStatus,
         PageSettingsServerProtocols,
         PageSettingsServerServices,
         PageSettingsServerProtocol,
@@ -51,6 +52,7 @@ namespace PageLoader
 
         PageSetupWizardStart,
         PageSetupWizardCredentials,
+        PageSetupWizardPreflight,
         PageSetupWizardProtocols,
         PageSetupWizardEasy,
         PageSetupWizardProtocolSettings,

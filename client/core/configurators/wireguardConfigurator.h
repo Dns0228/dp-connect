@@ -52,7 +52,6 @@ private:
     bool m_isAwg;
     QString m_serverConfigPath;
     QString m_serverPublicKeyPath;
-    QString m_serverPskKeyPath;
     amnezia::ProtocolScriptType m_configTemplate;
     QString m_protocolName;
     QString m_defaultPort;

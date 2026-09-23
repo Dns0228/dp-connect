@@ -1,0 +1,65 @@
+name: DP Connect source checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate resources, translations and DP Connect wiring
+        shell: python
+        run: |
+          import pathlib
+          import sys
+          import xml.etree.ElementTree as ET
+
+          root = pathlib.Path.cwd()
+          errors = []
+
+          translations = list(root.glob("client/translations/*.ts"))
+          for path in translations:
+              try:
+                  ET.parse(path)
+              except Exception as exc:
+                  errors.append(f"Invalid translation XML {path}: {exc}")
+
+          qrc_files = list(root.rglob("*.qrc"))
+          for path in qrc_files:
+              try:
+                  tree = ET.parse(path)
+                  for entry in tree.findall(".//file"):
+                      target = (path.parent / (entry.text or "")).resolve()
+                      if not target.exists():
+                          errors.append(f"Missing resource {target} referenced by {path}")
+              except Exception as exc:
+                  errors.append(f"Invalid resource XML {path}: {exc}")
+
+          required = [
+              "client/core/utils/backupCrypto.cpp",
+              "client/server_scripts/preflight_server.sh",
+              "client/tests/testBackupEncryption.cpp",
+              "client/tests/testWireguardKeyGeneration.cpp",
+              "client/ui/qml/Pages2/PageSettingsServerStatus.qml",
+          ]
+          for relative in required:
+              if not (root / relative).is_file():
+                  errors.append(f"Missing required DP Connect file: {relative}")
+
+          source_list = (root / "client/cmake/sources.cmake").read_text(encoding="utf-8")
+          for relative in ["core/utils/backupCrypto.cpp", "core/utils/backupCrypto.h"]:
+              if relative not in source_list:
+                  errors.append(f"sources.cmake does not include {relative}")
+
+          print(f"Validated {len(translations)} translation files and {len(qrc_files)} resource manifests")
+          for error in errors:
+              print(f"::error::{error}")
+          sys.exit(1 if errors else 0)

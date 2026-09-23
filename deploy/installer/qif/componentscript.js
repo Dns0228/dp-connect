@@ -64,12 +64,12 @@ Component.prototype.createOperations = function()
     if (runningOnWindows()) {
 
         component.addOperation("CreateShortcut", "@TargetDir@/" + appExecutableFileName(),
-                               QDesktopServices.storageLocation(QDesktopServices.DesktopLocation) + "/" + appName() + ".lnk",
+                               QDesktopServices.storageLocation(QDesktopServices.DesktopLocation) + "/DP Connect.lnk",
                                "workingDirectory=@TargetDir@", "iconPath=@TargetDir@\\" + appExecutableFileName(), "iconId=0");
 
 
         component.addElevatedOperation("CreateShortcut", "@TargetDir@/" + appExecutableFileName(),
-                                       installer.value("AllUsersStartMenuProgramsPath") + "/" + appName() + ".lnk",
+                                       installer.value("AllUsersStartMenuProgramsPath") + "/DP Connect.lnk",
                                        "workingDirectory=@TargetDir@", "iconPath=@TargetDir@\\" + appExecutableFileName(), "iconId=0");
 
         if (!vcRuntimeIsInstalled()) {

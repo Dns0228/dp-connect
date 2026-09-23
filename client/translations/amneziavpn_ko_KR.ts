@@ -429,8 +429,8 @@ Already installed containers were found on the server. All installed containers 
     <message>
         <location filename="../ui/utils/notificationHandler.cpp" line="57"/>
         <location filename="../ui/utils/notificationHandler.cpp" line="64"/>
-        <source>AmneziaVPN</source>
-        <translation>AmneziaVPN</translation>
+        <source>DP Connect</source>
+        <translation>DP Connect</translation>
     </message>
     <message>
         <location filename="../ui/utils/notificationHandler.cpp" line="58"/>
@@ -444,8 +444,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/utils/notificationHandler.cpp" line="88"/>
-        <source>AmneziaVPN notification</source>
-        <translation>AmneziaVPN 알림</translation>
+        <source>DP Connect notification</source>
+        <translation>DP Connect 알림</translation>
     </message>
     <message>
         <location filename="../ui/utils/notificationHandler.cpp" line="89"/>
@@ -513,8 +513,8 @@ Already installed containers were found on the server. All installed containers 
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageHome.qml" line="426"/>
-        <source>AmneziaWG 2.0 is outdated and no longer supported. Continued use requires a fresh installation of the AmneziaWG 3.1 container.</source>
-        <translation>AmneziaWG 2.0은 오래되어 더 이상 지원되지 않습니다. 계속 사용하려면 AmneziaWG 3.1 컨테이너를 새로 설치해야 합니다.</translation>
+        <source>DP WG 2.0 is outdated and no longer supported. Continued use requires a fresh installation of the DP WG 3.1 container.</source>
+        <translation>DP WG 2.0은 오래되어 더 이상 지원되지 않습니다. 계속 사용하려면 DP WG 3.1 컨테이너를 새로 설치해야 합니다.</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageHome.qml" line="472"/>
@@ -543,8 +543,8 @@ Already installed containers were found on the server. All installed containers 
     <name>PageProtocolAwgClientSettings</name>
     <message>
         <location filename="../ui/qml/Pages2/PageProtocolAwgClientSettings.qml" line="56"/>
-        <source>AmneziaWG settings</source>
-        <translation>AmneziaWG 설정</translation>
+        <source>DP WG settings</source>
+        <translation>DP WG 설정</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageProtocolAwgClientSettings.qml" line="80"/>
@@ -666,8 +666,8 @@ Already installed containers were found on the server. All installed containers 
     <name>PageProtocolAwgSettings</name>
     <message>
         <location filename="../ui/qml/Pages2/PageProtocolAwgSettings.qml" line="68"/>
-        <source>AmneziaWG settings</source>
-        <translation>AmneziaWG 설정</translation>
+        <source>DP WG settings</source>
+        <translation>DP WG 설정</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageProtocolAwgSettings.qml" line="81"/>
@@ -2032,8 +2032,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageServiceDnsSettings.qml" line="79"/>
-        <source>Cannot remove AmneziaDNS from running server</source>
-        <translation>실행 중인 서버에서는 AmneziaDNS를 삭제할 수 없습니다</translation>
+        <source>Cannot remove DP DNS from running server</source>
+        <translation>실행 중인 서버에서는 DP DNS를 삭제할 수 없습니다</translation>
     </message>
 </context>
 <context>
@@ -3367,8 +3367,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettings.qml" line="177"/>
-        <source>About AmneziaVPN</source>
-        <translation>AmneziaVPN 정보</translation>
+        <source>About DP Connect</source>
+        <translation>DP Connect 정보</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettings.qml" line="188"/>
@@ -3380,8 +3380,8 @@ Create one from the current settings.</source>
     <name>PageSettingsAbout</name>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="21"/>
-        <source>You have the latest version of AmneziaVPN</source>
-        <translation>최신 버전의 AmneziaVPN을 사용 중입니다</translation>
+        <source>You have the latest version of DP Connect</source>
+        <translation>최신 버전의 DP Connect을 사용 중입니다</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="25"/>
@@ -3390,12 +3390,12 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="73"/>
-        <source>Support Amnezia</source>
-        <translation>Amnezia 후원하기</translation>
+        <source>Support DP Connect</source>
+        <translation>DP Connect 후원하기</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsAbout.qml" line="88"/>
-        <source>Amnezia is a free and open-source application. You can support the developers if you like it.</source>
+        <source>DP Connect is a free and open-source application. You can support the developers if you like it.</source>
         <translation>Amnezia는 무료 오픈 소스 애플리케이션입니다. 마음에 드신다면 개발자들을 후원해 주세요.</translation>
     </message>
     <message>
@@ -3649,16 +3649,16 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiInstructions.qml" line="102"/>
-        <source>Setup guides on the Amnezia website</source>
-        <translation>Amnezia 웹사이트의 설정 가이드</translation>
+        <source>Setup guides on the DP Connect website</source>
+        <translation>DP Connect 웹사이트의 설정 가이드</translation>
     </message>
 </context>
 <context>
     <name>PageSettingsApiNativeConfigs</name>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiNativeConfigs.qml" line="23"/>
-        <source>Save AmneziaVPN config</source>
-        <translation>AmneziaVPN 구성 저장</translation>
+        <source>Save DP Connect config</source>
+        <translation>DP Connect 구성 저장</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiNativeConfigs.qml" line="60"/>
@@ -3667,8 +3667,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiNativeConfigs.qml" line="61"/>
-        <source>For router setup or the AmneziaWG app</source>
-        <translation>라우터 설정 또는 AmneziaWG 앱용</translation>
+        <source>For router setup or the DP WG app</source>
+        <translation>라우터 설정 또는 DP WG 앱용</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiNativeConfigs.qml" line="73"/>
@@ -3893,8 +3893,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiSubscriptionKey.qml" line="121"/>
-        <source>Save AmneziaVPN config</source>
-        <translation>AmneziaVPN 구성 저장</translation>
+        <source>Save DP Connect config</source>
+        <translation>DP Connect 구성 저장</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiSubscriptionKey.qml" line="122"/>
@@ -3913,8 +3913,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApiSubscriptionKey.qml" line="191"/>
-        <source>To read the QR code in the Amnezia app, tap + in the main menu → &apos;QR code&apos;</source>
-        <translation>Amnezia 앱에서 QR 코드를 읽으려면 기본 메뉴에서 +를 누른 다음 &apos;QR 코드&apos;를 누르세요</translation>
+        <source>To read the QR code in the DP Connect app, tap + in the main menu → &apos;QR code&apos;</source>
+        <translation>DP Connect 앱에서 QR 코드를 읽으려면 기본 메뉴에서 +를 누른 다음 &apos;QR 코드&apos;를 누르세요</translation>
     </message>
 </context>
 <context>
@@ -4127,8 +4127,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApplication.qml" line="264"/>
-        <source>All settings will be reset to default. All installed AmneziaVPN services will still remain on the server.</source>
-        <translation>모든 설정이 기본값으로 초기화됩니다. 설치된 AmneziaVPN 서비스는 서버에 그대로 유지됩니다.</translation>
+        <source>All settings will be reset to default. All installed DP Connect services will still remain on the server.</source>
+        <translation>모든 설정이 기본값으로 초기화됩니다. 설치된 DP Connect 서비스는 서버에 그대로 유지됩니다.</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsApplication.qml" line="265"/>
@@ -4165,8 +4165,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsBackup.qml" line="88"/>
-        <source>The backup will contain your passwords and private keys for all servers added to AmneziaVPN. Keep this information in a secure place.</source>
-        <translation>백업에는 AmneziaVPN에 추가된 모든 서버의 비밀번호와 개인 키가 포함됩니다. 이 정보를 안전한 곳에 보관하세요.</translation>
+        <source>The backup will contain your passwords and private keys for all servers added to DP Connect. Keep this information in a secure place.</source>
+        <translation>백업에는 DP Connect에 추가된 모든 서버의 비밀번호와 개인 키가 포함됩니다. 이 정보를 안전한 곳에 보관하세요.</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsBackup.qml" line="102"/>
@@ -4234,13 +4234,13 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="65"/>
-        <source>Use AmneziaDNS</source>
-        <translation>AmneziaDNS 사용</translation>
+        <source>Use DP DNS</source>
+        <translation>DP DNS 사용</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="66"/>
-        <source>If AmneziaDNS is installed on the server</source>
-        <translation>서버에 AmneziaDNS가 설치된 경우</translation>
+        <source>If DP DNS is installed on the server</source>
+        <translation>서버에 DP DNS가 설치된 경우</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="83"/>
@@ -4249,8 +4249,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="84"/>
-        <source>When AmneziaDNS is not used or installed</source>
-        <translation>AmneziaDNS를 사용하지 않거나 설치하지 않은 경우</translation>
+        <source>When DP DNS is not used or installed</source>
+        <translation>DP DNS를 사용하지 않거나 설치하지 않은 경우</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsConnection.qml" line="99"/>
@@ -4297,8 +4297,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsDns.qml" line="67"/>
-        <source>If AmneziaDNS is not used or installed</source>
-        <translation>AmneziaDNS를 사용하지 않거나 설치하지 않은 경우</translation>
+        <source>If DP DNS is not used or installed</source>
+        <translation>DP DNS를 사용하지 않거나 설치하지 않은 경우</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsDns.qml" line="84"/>
@@ -4559,8 +4559,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsLogging.qml" line="182"/>
-        <source>AmneziaVPN logs</source>
-        <translation>AmneziaVPN 로그</translation>
+        <source>DP Connect logs</source>
+        <translation>DP Connect 로그</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsLogging.qml" line="192"/>
@@ -4587,8 +4587,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsLogging.qml" line="211"/>
-        <source>AmneziaVPN-service logs</source>
-        <translation>AmneziaVPN 서비스 로그</translation>
+        <source>DPConnect-service logs</source>
+        <translation>DP Connect 서비스 로그</translation>
     </message>
 </context>
 <context>
@@ -4613,8 +4613,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="98"/>
-        <source>Check the server for previously installed Amnezia services</source>
-        <translation>서버에서 이전에 설치된 Amnezia 서비스 확인</translation>
+        <source>Check the server for previously installed DP Connect services</source>
+        <translation>서버에서 이전에 설치된 DP Connect 서비스 확인</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="99"/>
@@ -4669,8 +4669,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="147"/>
-        <source>All installed AmneziaVPN services will still remain on the server.</source>
-        <translation>설치된 모든 AmneziaVPN 서비스는 서버에 그대로 유지됩니다.</translation>
+        <source>All installed DP Connect services will still remain on the server.</source>
+        <translation>설치된 모든 DP Connect 서비스는 서버에 그대로 유지됩니다.</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="153"/>
@@ -4679,13 +4679,13 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="172"/>
-        <source>Clear server from Amnezia software</source>
-        <translation>서버에서 Amnezia 소프트웨어 제거</translation>
+        <source>Clear server from DP Connect software</source>
+        <translation>서버에서 DP Connect 소프트웨어 제거</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="176"/>
-        <source>Do you want to clear server from Amnezia software?</source>
-        <translation>서버에서 Amnezia 소프트웨어를 제거하시겠습니까?</translation>
+        <source>Do you want to clear server from DP Connect software?</source>
+        <translation>서버에서 DP Connect 소프트웨어를 제거하시겠습니까?</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="177"/>
@@ -4694,8 +4694,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="183"/>
-        <source>Cannot clear server from Amnezia software during active connection</source>
-        <translation>연결된 상태에서는 서버에서 Amnezia 소프트웨어를 제거할 수 없습니다</translation>
+        <source>Cannot clear server from DP Connect software during active connection</source>
+        <translation>연결된 상태에서는 서버에서 DP Connect 소프트웨어를 제거할 수 없습니다</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerData.qml" line="201"/>
@@ -4745,8 +4745,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerProtocol.qml" line="71"/>
-        <source>AmneziaWG 2.0 is outdated and does not include the latest security improvements, but it will continue to work. Moving to AmneziaWG 3.1 by deploying a new container on the server is recommended for stronger protocol security</source>
-        <translation>AmneziaWG 2.0은 오래되어 최신 보안 개선 사항이 포함되어 있지 않지만 계속 작동합니다. 더 강력한 프로토콜 보안을 위해 서버에 새 컨테이너를 배포하여 AmneziaWG 3.1로 이전하는 것을 권장합니다</translation>
+        <source>DP WG 2.0 is outdated and does not include the latest security improvements, but it will continue to work. Moving to DP WG 3.1 by deploying a new container on the server is recommended for stronger protocol security</source>
+        <translation>DP WG 2.0은 오래되어 최신 보안 개선 사항이 포함되어 있지 않지만 계속 작동합니다. 더 강력한 프로토콜 보안을 위해 서버에 새 컨테이너를 배포하여 DP WG 3.1로 이전하는 것을 권장합니다</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSettingsServerProtocol.qml" line="90"/>
@@ -5054,8 +5054,8 @@ Create one from the current settings.</source>
     <name>PageSetupWizardApiServicesList</name>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardApiServicesList.qml" line="52"/>
-        <source>VPN by Amnezia</source>
-        <translation>Amnezia VPN</translation>
+        <source>VPN by DP Connect</source>
+        <translation>DP Connect</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardApiServicesList.qml" line="53"/>
@@ -5181,13 +5181,13 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="260"/>
-        <source>Site Amnezia</source>
-        <translation>Amnezia 웹사이트</translation>
+        <source>Site DP Connect</source>
+        <translation>DP Connect 웹사이트</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="284"/>
-        <source>VPN by Amnezia</source>
-        <translation>Amnezia VPN</translation>
+        <source>VPN by DP Connect</source>
+        <translation>DP Connect</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="285"/>
@@ -5201,8 +5201,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="304"/>
-        <source>Configure Amnezia VPN on your own server</source>
-        <translation>자체 서버에 Amnezia VPN 설정</translation>
+        <source>Configure DP Connect on your own server</source>
+        <translation>자체 서버에 DP Connect 설정</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardConfigSource.qml" line="316"/>
@@ -5271,8 +5271,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardCredentials.qml" line="144"/>
-        <source>All data you enter will remain strictly confidential and will not be shared or disclosed to the Amnezia or any third parties</source>
-        <translation>입력한 모든 데이터는 엄격하게 기밀로 유지되며 Amnezia 또는 제3자에게 공유되거나 공개되지 않습니다</translation>
+        <source>All data you enter will remain strictly confidential and will not be shared or disclosed to the DP Connect or any third parties</source>
+        <translation>입력한 모든 데이터는 엄격하게 기밀로 유지되며 DP Connect 또는 제3자에게 공유되거나 공개되지 않습니다</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardCredentials.qml" line="157"/>
@@ -5281,8 +5281,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardCredentials.qml" line="158"/>
-        <source>Amnezia hosting. VPN servers without complicated settings and headaches</source>
-        <translation>Amnezia 호스팅. 복잡한 설정도 번거로움도 없는 VPN 서버</translation>
+        <source>DP Connect hosting. VPN servers without complicated settings and headaches</source>
+        <translation>DP Connect 호스팅. 복잡한 설정도 번거로움도 없는 VPN 서버</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardCredentials.qml" line="179"/>
@@ -5373,13 +5373,13 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardInstalling.qml" line="63"/>
-        <source>Amnezia has detected that your server is currently </source>
+        <source>DP Connect has detected that your server is currently </source>
         <translation>Amnezia가 서버에서 현재 </translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardInstalling.qml" line="64"/>
-        <source>busy installing other software. Amnezia installation </source>
-        <translation>다른 소프트웨어가 설치 중임을 감지했습니다. Amnezia 설치는 </translation>
+        <source>busy installing other software. DP Connect installation </source>
+        <translation>다른 소프트웨어가 설치 중임을 감지했습니다. DP Connect 설치는 </translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageSetupWizardInstalling.qml" line="65"/>
@@ -5575,8 +5575,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="51"/>
-        <source>Save AmneziaVPN config</source>
-        <translation>AmneziaVPN 구성 저장</translation>
+        <source>Save DP Connect config</source>
+        <translation>DP Connect 구성 저장</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="58"/>
@@ -5590,8 +5590,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="72"/>
-        <source>Save AmneziaWG config</source>
-        <translation>AmneziaWG 구성 저장</translation>
+        <source>Save DP WG config</source>
+        <translation>DP WG 구성 저장</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="79"/>
@@ -5610,8 +5610,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="108"/>
-        <source>For the AmneziaVPN app</source>
-        <translation>AmneziaVPN 앱용</translation>
+        <source>For the DP Connect app</source>
+        <translation>DP Connect 앱용</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="113"/>
@@ -5625,8 +5625,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="123"/>
-        <source>AmneziaWG native format</source>
-        <translation>AmneziaWG 기본 형식</translation>
+        <source>DP WG native format</source>
+        <translation>DP WG 기본 형식</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShare.qml" line="128"/>
@@ -5778,8 +5778,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShareConnection.qml" line="30"/>
-        <source>Save AmneziaVPN config</source>
-        <translation>AmneziaVPN 구성 저장</translation>
+        <source>Save DP Connect config</source>
+        <translation>DP Connect 구성 저장</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShareConnection.qml" line="150"/>
@@ -5799,8 +5799,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShareConnection.qml" line="326"/>
-        <source>To read the QR code in the Amnezia app, tap + in the main menu → &apos;QR code&apos;</source>
-        <translation>Amnezia 앱에서 QR 코드를 읽으려면 기본 메뉴에서 +를 누른 다음 &apos;QR 코드&apos;를 누르세요</translation>
+        <source>To read the QR code in the DP Connect app, tap + in the main menu → &apos;QR code&apos;</source>
+        <translation>DP Connect 앱에서 QR 코드를 읽으려면 기본 메뉴에서 +를 누른 다음 &apos;QR 코드&apos;를 누르세요</translation>
     </message>
     <message>
         <location filename="../ui/qml/Pages2/PageShareConnection.qml" line="342"/>
@@ -6112,8 +6112,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="73"/>
-        <source>This legacy Amnezia subscription format is no longer supported</source>
-        <translation>이전 Amnezia 구독 형식은 더 이상 지원되지 않습니다</translation>
+        <source>This legacy DP Connect subscription format is no longer supported</source>
+        <translation>이전 DP Connect 구독 형식은 더 이상 지원되지 않습니다</translation>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="74"/>
@@ -6155,10 +6155,10 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="95"/>
-        <source>Your Amnezia Premium subscription has expired.
+        <source>Your VPN subscription has expired.
  Please check your email for renewal instructions.
  If you haven&apos;t received an email, please contact our support.</source>
-        <translation>Amnezia Premium 구독이 만료되었습니다.
+        <translation>VPN 구독이 만료되었습니다.
 갱신 안내를 이메일에서 확인하세요.
 이메일을 받지 못했다면 지원팀에 문의하세요.</translation>
     </message>
@@ -6224,8 +6224,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="62"/>
-        <source>Amnezia helper service error</source>
-        <translation>Amnezia 보조 서비스 오류</translation>
+        <source>DP Connect helper service error</source>
+        <translation>DP Connect 보조 서비스 오류</translation>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="63"/>
@@ -6468,8 +6468,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="348"/>
-        <source>AmneziaWG protocol will be installed. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
-        <translation>AmneziaWG 프로토콜이 설치됩니다. 높은 연결 속도를 제공하며 가장 까다로운 네트워크 환경에서도 안정적인 작동을 보장합니다.</translation>
+        <source>DP WG protocol will be installed. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
+        <translation>DP WG 프로토콜이 설치됩니다. 높은 연결 속도를 제공하며 가장 까다로운 네트워크 환경에서도 안정적인 작동을 보장합니다.</translation>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="78"/>
@@ -6484,8 +6484,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="77"/>
-        <source>AmneziaDNS</source>
-        <translation>AmneziaDNS</translation>
+        <source>DP DNS</source>
+        <translation>DP DNS</translation>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="89"/>
@@ -6501,8 +6501,8 @@ Create one from the current settings.</source>
         <location filename="../core/utils/containers/containerUtils.cpp" line="99"/>
         <location filename="../core/utils/containers/containerUtils.cpp" line="102"/>
         <location filename="../ui/models/containersModel.cpp" line="41"/>
-        <source>AmneziaWG is a special protocol from Amnezia based on WireGuard. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
-        <translation>AmneziaWG는 WireGuard를 기반으로 한 Amnezia의 특수 프로토콜입니다. 높은 연결 속도를 제공하며 가장 까다로운 네트워크 환경에서도 안정적인 작동을 보장합니다.</translation>
+        <source>DP WG is a VPN protocol based on WireGuard. It provides high connection speed and ensures stable operation even in the most challenging network conditions.</source>
+        <translation>DP WG는 WireGuard를 기반으로 한 Amnezia의 특수 프로토콜입니다. 높은 연결 속도를 제공하며 가장 까다로운 네트워크 환경에서도 안정적인 작동을 보장합니다.</translation>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="105"/>
@@ -6519,14 +6519,14 @@ Create one from the current settings.</source>
         <source>OpenVPN is one of the most popular and reliable VPN protocols. It uses SSL/TLS encryption, supports a wide variety of devices and operating systems, and is continuously improved by the community due to its open-source nature. It provides a good balance between speed and security but is easily recognized by DPI systems, making it susceptible to blocking.
 
 Features:
-* Available on all AmneziaVPN platforms
+* Available on all DP Connect platforms
 * Normal battery consumption on mobile devices
 * Flexible customization for various devices and OS
 * Operates over both TCP and UDP protocols</source>
         <translation>OpenVPN은 가장 인기 있고 신뢰할 수 있는 VPN 프로토콜 중 하나입니다. SSL/TLS 암호화를 사용하고 다양한 장치와 운영 체제를 지원하며 오픈 소스 특성 덕분에 커뮤니티를 통해 지속적으로 개선됩니다. 속도와 보안의 균형이 좋지만 DPI 시스템에서 쉽게 식별되어 차단에 취약합니다.
 
 특징:
-* 모든 AmneziaVPN 플랫폼에서 사용 가능
+* 모든 DP Connect 플랫폼에서 사용 가능
 * 모바일 장치에서 보통 수준의 배터리 소비
 * 다양한 장치와 OS를 위한 유연한 설정
 * TCP 및 UDP 프로토콜 모두에서 작동</translation>
@@ -6536,7 +6536,7 @@ Features:
         <source>WireGuard is a modern, streamlined VPN protocol offering stable connectivity and excellent performance across all devices. It uses fixed encryption settings, delivering lower latency and higher data transfer speeds compared to OpenVPN. However, WireGuard is easily identifiable by DPI systems due to its distinctive packet signatures, making it susceptible to blocking.
 
 Features:
-* Available on all AmneziaVPN platforms
+* Available on all DP Connect platforms
 * Low power consumption on mobile devices
 * Minimal configuration required
 * Easily detected by DPI systems (susceptible to blocking)
@@ -6544,7 +6544,7 @@ Features:
         <translation>WireGuard는 모든 장치에서 안정적인 연결과 뛰어난 성능을 제공하는 현대적이고 간결한 VPN 프로토콜입니다. 고정된 암호화 설정을 사용하여 OpenVPN보다 지연 시간이 짧고 데이터 전송 속도가 빠릅니다. 그러나 고유한 패킷 특성으로 인해 DPI 시스템에서 쉽게 식별되어 차단에 취약합니다.
 
 특징:
-* 모든 AmneziaVPN 플랫폼에서 사용 가능
+* 모든 DP Connect 플랫폼에서 사용 가능
 * 모바일 장치에서 낮은 전력 소비
 * 최소한의 설정만 필요
 * DPI 시스템에서 쉽게 탐지됨(차단에 취약)
@@ -6552,22 +6552,22 @@ Features:
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="151"/>
-        <source>AmneziaWG is a modern VPN protocol based on WireGuard, combining simplified architecture with high performance across all devices. It addresses WireGuard&apos;s main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, making VPN traffic indistinguishable from regular internet traffic.
+        <source>DP WG is a modern VPN protocol based on WireGuard, combining simplified architecture with high performance across all devices. It addresses WireGuard&apos;s main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, making VPN traffic indistinguishable from regular internet traffic.
 
-AmneziaWG is an excellent choice for those seeking a fast, stealthy VPN connection.
+DP WG is an excellent choice for those seeking a fast, stealthy VPN connection.
 
 Features:
-* Available on all AmneziaVPN platforms
+* Available on all DP Connect platforms
 * Low battery consumption on mobile devices
 * Minimal settings required
 * Undetectable by traffic analysis systems (DPI)
 * Operates over UDP protocol</source>
-        <translation>AmneziaWG는 WireGuard를 기반으로 한 현대적인 VPN 프로토콜로, 단순한 구조와 모든 장치에서의 높은 성능을 제공합니다. 고급 난독화 기술을 통해 WireGuard의 주요 취약점(DPI 시스템에서 쉽게 탐지되는 점)을 해결하여 VPN 트래픽을 일반 인터넷 트래픽과 구별할 수 없게 합니다.
+        <translation>DP WG는 WireGuard를 기반으로 한 현대적인 VPN 프로토콜로, 단순한 구조와 모든 장치에서의 높은 성능을 제공합니다. 고급 난독화 기술을 통해 WireGuard의 주요 취약점(DPI 시스템에서 쉽게 탐지되는 점)을 해결하여 VPN 트래픽을 일반 인터넷 트래픽과 구별할 수 없게 합니다.
 
-빠르고 은밀한 VPN 연결을 원하는 사용자에게 AmneziaWG는 탁월한 선택입니다.
+빠르고 은밀한 VPN 연결을 원하는 사용자에게 DP WG는 탁월한 선택입니다.
 
 특징:
-* 모든 AmneziaVPN 플랫폼에서 사용 가능
+* 모든 DP Connect 플랫폼에서 사용 가능
 * 모바일 장치에서 낮은 배터리 소비
 * 최소한의 설정만 필요
 * 트래픽 분석 시스템(DPI)에서 탐지되지 않음
@@ -6599,7 +6599,7 @@ VMess, VLESS, XTLS-Vision과 같은 기존 프로토콜과 달리 REALITY는 고
         <source>IKEv2, combined with IPSec encryption, is a modern and reliable VPN protocol. It reconnects quickly when switching networks or devices, making it ideal for dynamic network environments. While it provides good security and speed, it&apos;s easily recognized by DPI systems and susceptible to blocking.
 
 Features:
-* Available in AmneziaVPN only on Windows
+* Available in DP Connect only on Windows
 * Low battery consumption on mobile devices
 * Minimal configuration required
 * Detectable by DPI analysis systems(easily blocked)
@@ -6607,7 +6607,7 @@ Features:
         <translation>IPSec 암호화와 결합된 IKEv2는 현대적이고 안정적인 VPN 프로토콜입니다. 네트워크나 장치를 전환할 때 빠르게 다시 연결되므로 동적인 네트워크 환경에 적합합니다. 보안성과 속도는 좋지만 DPI 시스템에서 쉽게 식별되어 차단될 수 있습니다.
 
 특징:
-* Windows에서만 AmneziaVPN으로 사용 가능
+* Windows에서만 DP Connect으로 사용 가능
 * 모바일 장치에서 낮은 배터리 소비
 * 최소한의 설정만 필요
 * DPI 분석 시스템에서 탐지됨(쉽게 차단 가능)
@@ -6615,7 +6615,7 @@ Features:
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="189"/>
-        <source>After installation, Amnezia will create a
+        <source>After installation, DP Connect will create a
 
  file storage on your server. You will be able to access it using
  FileZilla or other SFTP clients, as well as mount the disk on your device to access
@@ -7188,9 +7188,9 @@ For more detailed information, you can
     </message>
     <message>
         <location filename="../ui/qml/main2.qml" line="401"/>
-        <source>This legacy Amnezia subscription type can no longer be used to connect in this application version.
+        <source>This legacy DP Connect subscription type can no longer be used to connect in this application version.
 Remove the server from the app to continue.</source>
-        <translation>이 애플리케이션 버전에서는 기존 Amnezia 구독 유형으로 더 이상 연결할 수 없습니다.
+        <translation>이 애플리케이션 버전에서는 기존 DP Connect 구독 유형으로 더 이상 연결할 수 없습니다.
 계속하려면 앱에서 서버를 제거하세요.</translation>
     </message>
     <message>

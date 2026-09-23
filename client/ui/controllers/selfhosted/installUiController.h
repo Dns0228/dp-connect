@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QProcess>
+#include <QVariantMap>
 
 #include "core/utils/containerEnum.h"
 #include "core/utils/containers/containerUtils.h"
@@ -75,6 +76,7 @@ public slots:
     void removeContainer(const QString &serverId, int containerIndex);
     void setContainerEnabled(const QString &serverId, int containerIndex, bool enabled);
     void refreshContainerStatus(const QString &serverId, int containerIndex);
+    Q_INVOKABLE void refreshServerOverview(const QString &serverId, int containerIndex);
     void refreshContainerDiagnostics(const QString &serverId, int containerIndex, int port);
     void fetchContainerSecret(const QString &serverId, int containerIndex);
 
@@ -85,6 +87,8 @@ public slots:
     void mountSftpDrive(const QString &serverId, const QString &port, const QString &password, const QString &username);
 
     bool checkSshConnection();
+
+    Q_INVOKABLE QVariantMap checkServerPreflight();
 
     void setEncryptedPassphrase(QString passphrase);
 
@@ -104,6 +108,7 @@ public slots:
     bool defaultTransportProtoChangeable(int protocolIndex);
 
 signals:
+    void installationStageChanged(const QString &message, int step, int totalSteps);
     void installContainerFinished(const QString &finishMessage, bool isServiceInstall);
     void installServerFinished(const QString &finishMessage);
 
@@ -117,6 +122,7 @@ signals:
     void removeContainerFinished(const QString &finishedMessage);
     void setContainerEnabledFinished(bool enabled);
     void containerStatusRefreshed(int status, int errorCode);
+    void serverOverviewRefreshed(const QVariantMap &overview);
     void containerDiagnosticsRefreshed(bool portReachable, bool upstreamReachable, int clientsConnected,
                                        const QString &lastConfigRefresh, const QString &statsEndpoint);
     void containerSecretFetched(const QString &secret);

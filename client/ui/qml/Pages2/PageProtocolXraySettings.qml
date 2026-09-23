@@ -91,8 +91,8 @@ PageType {
                 BaseHeaderType {
                     Layout.fillWidth: true
                     headerText: qsTr("XRay VLESS settings")
-                    descriptionLinkText: qsTr("More about settings")
-                    descriptionLinkUrl: "https://docs.amnezia.org"
+                    descriptionLinkText: ""
+                    descriptionLinkUrl: ""
                 }
 
                 ImageButtonType {

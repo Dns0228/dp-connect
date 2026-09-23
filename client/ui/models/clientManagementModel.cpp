@@ -31,6 +31,7 @@ QVariant ClientManagementModel::data(const QModelIndex &index, int role) const
     case ClientNameRole: return userData.value(configKey::clientName).toString();
     case CreationDateRole: return userData.value(configKey::creationDate).toString();
     case LatestHandshakeRole: return userData.value(configKey::latestHandshake).toString();
+    case LatestHandshakeEpochRole: return userData.value(configKey::latestHandshakeEpoch).toString().toLongLong();
     case DataReceivedRole: return userData.value(configKey::dataReceived).toString();
     case DataSentRole: return userData.value(configKey::dataSent).toString();
     case AllowedIpsRole: return userData.value(configKey::allowedIps).toString();
@@ -67,6 +68,7 @@ QHash<int, QByteArray> ClientManagementModel::roleNames() const
     roles[ClientNameRole] = "clientName";
     roles[CreationDateRole] = "creationDate";
     roles[LatestHandshakeRole] = "latestHandshake";
+    roles[LatestHandshakeEpochRole] = "latestHandshakeEpoch";
     roles[DataReceivedRole] = "dataReceived";
     roles[DataSentRole] = "dataSent";
     roles[AllowedIpsRole] = "allowedIps";

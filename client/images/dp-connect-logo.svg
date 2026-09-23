@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="248" viewBox="0 0 360 248">
+  <title>DP Connect by DP project</title>
+  <rect x="140" y="30" width="80" height="80" rx="22" fill="#77E0C2"/>
+  <g transform="translate(140 30) scale(1.25)" fill="#10171C" fill-rule="evenodd">
+    <path d="M12 18h8c9 0 14 5 14 14s-5 14-14 14h-8V18zm6 6v16h2c5 0 8-3 8-8s-3-8-8-8h-2z"/>
+    <path d="M37 18h8c7 0 11 4 11 10s-4 10-11 10h-2v8h-6V18zm6 6v8h2c3 0 5-1 5-4s-2-4-5-4h-2z"/>
+  </g>
+  <text x="180" y="164" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="36" font-weight="600" fill="#F3F6F5">DP Connect</text>
+  <text x="180" y="198" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-size="16" fill="#A3B6B0">by DP project</text>
+</svg>

@@ -3,6 +3,7 @@
 #include "core/models/protocolConfig.h"
 
 #include <QCoreApplication>
+#include <QDateTime>
 #include <QDebug>
 #include <QEventLoop>
 #include <QFutureWatcher>
@@ -107,24 +108,29 @@ ErrorCode InstallController::setupContainer(const ServerCredentials &credentials
     SshSession sshSession;
     ErrorCode e = ErrorCode::NoError;
 
+    emit installationStageChanged(QStringLiteral("checking_access"));
     e = isUserInSudo(credentials, sshSession);
     if (e)
         return e;
 
+    emit installationStageChanged(QStringLiteral("checking_server"));
     e = isServerDpkgBusy(credentials, sshSession);
     if (e)
         return e;
 
-    e = installDockerWorker(credentials, container, sshSession);
-    if (e)
-        return e;
-
     if (!isUpdate) {
+        emit installationStageChanged(QStringLiteral("checking_port"));
         e = isServerPortBusy(credentials, container, config, sshSession);
         if (e)
             return e;
     }
 
+    emit installationStageChanged(QStringLiteral("preparing_docker"));
+    e = installDockerWorker(credentials, container, sshSession);
+    if (e)
+        return e;
+
+    emit installationStageChanged(QStringLiteral("preparing_host"));
     e = prepareHostWorker(credentials, container, sshSession);
     if (e)
         return e;
@@ -135,14 +141,17 @@ ErrorCode InstallController::setupContainer(const ServerCredentials &credentials
             || container == DockerContainer::Telemt || container == DockerContainer::TProxy);
     sshSession.runScript(credentials, buildRemoveContainerScript(removeContainerVars, removeDataVolume));
 
+    emit installationStageChanged(QStringLiteral("downloading_image"));
     e = buildContainerWorker(credentials, container, config, sshSession);
     if (e)
         return e;
 
+    emit installationStageChanged(QStringLiteral("starting_container"));
     e = runContainerWorker(credentials, container, config, sshSession);
     if (e)
         return e;
 
+    emit installationStageChanged(QStringLiteral("configuring_protocol"));
     e = configureContainerWorker(credentials, container, config, sshSession);
     if (e)
         return e;
@@ -157,7 +166,45 @@ ErrorCode InstallController::setupContainer(const ServerCredentials &credentials
 
     setupServerFirewall(credentials, sshSession);
 
-    return startupContainerWorker(credentials, container, config, sshSession);
+    e = startupContainerWorker(credentials, container, config, sshSession);
+    if (e)
+        return e;
+
+    emit installationStageChanged(QStringLiteral("verifying_service"));
+    QString containerState;
+    auto readState = [&containerState](const QString &data, libssh::Client &) {
+        containerState += data;
+        return ErrorCode::NoError;
+    };
+    const QString verifyCommand = QStringLiteral(
+            "sudo docker inspect --format '{{.State.Running}}' %1 2>/dev/null")
+            .arg(ContainerUtils::containerToString(container));
+    e = sshSession.runScript(credentials, verifyCommand, readState, readState);
+    if (e != ErrorCode::NoError || containerState.trimmed() != QLatin1String("true")) {
+        return ErrorCode::ServerContainerMissingError;
+    }
+
+    if (container == DockerContainer::Awg2 || container == DockerContainer::Awg
+        || container == DockerContainer::WireGuard) {
+        const bool isDpWg = container == DockerContainer::Awg2;
+        const QString tool = isDpWg ? QStringLiteral("awg") : QStringLiteral("wg");
+        const QString interfaceName = container == DockerContainer::Awg2
+                ? QStringLiteral("awg0") : QStringLiteral("wg0");
+        QString publicKey;
+        auto readPublicKey = [&publicKey](const QString &data, libssh::Client &) {
+            publicKey += data;
+            return ErrorCode::NoError;
+        };
+        const QString verifyTunnelCommand = QStringLiteral(
+                "sudo docker exec %1 %2 show %3 public-key 2>/dev/null")
+                .arg(ContainerUtils::containerToString(container), tool, interfaceName);
+        e = sshSession.runScript(credentials, verifyTunnelCommand, readPublicKey, readPublicKey);
+        if (e != ErrorCode::NoError || publicKey.trimmed().isEmpty()) {
+            return ErrorCode::ServerContainerMissingError;
+        }
+    }
+
+    return ErrorCode::NoError;
 }
 
 ErrorCode InstallController::updateServerConfig(const QString &serverId, DockerContainer container, const ContainerConfig &oldConfig,
@@ -643,57 +690,56 @@ ErrorCode InstallController::isServerPortBusy(const ServerCredentials &credentia
         transportProto = ProtocolUtils::transportProtoToString(ProtocolUtils::defaultTransportProto(protocol), protocol);
     }
 
-    // Match exact host ports in lsof output (e.g. *:80) but not prefixes like *:8025 or *:8080.
     QStringList portsToCheck;
-    portsToCheck << port;
+    bool primaryPortValid = false;
+    const int primaryPort = port.toInt(&primaryPortValid);
+    if (primaryPortValid && primaryPort >= 1 && primaryPort <= 65535) {
+        portsToCheck << QString::number(primaryPort);
+    } else if (!config.protocolConfig.port().isEmpty()
+               || ProtocolUtils::defaultPort(protocol) > 0) {
+        return ErrorCode::InternalError;
+    }
     for (const QString &fixedPort : fixedPorts) {
         if (!portsToCheck.contains(fixedPort)) {
             portsToCheck << fixedPort;
         }
     }
-    QStringList portRegexParts;
+    QStringList hexadecimalPorts;
     for (const QString &p : portsToCheck) {
-        portRegexParts << QString(":%1([^0-9]|$)").arg(p);
+        bool converted = false;
+        const int numericPort = p.toInt(&converted);
+        if (!converted || numericPort < 1 || numericPort > 65535) {
+            return ErrorCode::InternalError;
+        }
+        hexadecimalPorts << QString::number(numericPort, 16).rightJustified(4, QLatin1Char('0')).toUpper();
     }
-    const QString portRegex = portRegexParts.join(QLatin1Char('|'));
-
-    QString script = QString("which lsof > /dev/null 2>&1 || true && sudo lsof -i -P -n 2>/dev/null | grep -E '%1'")
-                               .arg(portRegex);
-
-    if (transportProto == "tcpandudp") {
-        QString tcpProtoScript = script;
-        QString udpProtoScript = script;
-        tcpProtoScript.append(" | grep -i tcp");
-        udpProtoScript.append(" | grep -i udp");
-        tcpProtoScript.append(" | grep LISTEN");
-
-        ErrorCode errorCode = sshSession.runScript(
-                credentials,
-                sshSession.replaceVars(tcpProtoScript, amnezia::genBaseVars(credentials, container, QString(), QString())),
-                cbReadStdOut, cbReadStdErr);
-        if (errorCode != ErrorCode::NoError) {
-            return errorCode;
-        }
-
-        errorCode = sshSession.runScript(
-                credentials,
-                sshSession.replaceVars(udpProtoScript, amnezia::genBaseVars(credentials, container, QString(), QString())),
-                cbReadStdOut, cbReadStdErr);
-        if (errorCode != ErrorCode::NoError) {
-            return errorCode;
-        }
-
-        if (!stdOut.isEmpty()) {
-            return ErrorCode::ServerPortAlreadyAllocatedError;
-        }
+    if (hexadecimalPorts.isEmpty()) {
         return ErrorCode::NoError;
     }
+    const QString portPattern = hexadecimalPorts.join(QLatin1Char('|'));
 
-    script = script.append(" | grep -i %1").arg(transportProto);
-
-    if (transportProto == "tcp") {
-        script = script.append(" | grep LISTEN");
+    // Linux exposes bound sockets in /proc even on minimal VPS images where lsof,
+    // ss or netstat are not installed. TCP entries must be in LISTEN state (0A);
+    // any UDP binding reserves the selected local port.
+    QStringList procFiles;
+    QString stateCondition;
+    if (transportProto == QLatin1String("tcp")) {
+        procFiles << QStringLiteral("/proc/net/tcp") << QStringLiteral("/proc/net/tcp6");
+        stateCondition = QStringLiteral("$4 == \"0A\"");
+    } else if (transportProto == QLatin1String("udp")) {
+        procFiles << QStringLiteral("/proc/net/udp") << QStringLiteral("/proc/net/udp6");
+        stateCondition = QStringLiteral("1");
+    } else if (transportProto == QLatin1String("tcpandudp")) {
+        procFiles << QStringLiteral("/proc/net/tcp") << QStringLiteral("/proc/net/tcp6")
+                  << QStringLiteral("/proc/net/udp") << QStringLiteral("/proc/net/udp6");
+        stateCondition = QStringLiteral("FILENAME ~ /udp/ || $4 == \"0A\"");
+    } else {
+        return ErrorCode::InternalError;
     }
+
+    const QString script = QStringLiteral(
+            "awk '$2 ~ /:(%1)$/ && (%2) { print \"DP_PORT_BUSY\"; exit }' %3 2>/dev/null")
+                                   .arg(portPattern, stateCondition, procFiles.join(QLatin1Char(' ')));
 
     ErrorCode errorCode = sshSession.runScript(
             credentials, sshSession.replaceVars(script, amnezia::genBaseVars(credentials, container, QString(), QString())),
@@ -702,7 +748,7 @@ ErrorCode InstallController::isServerPortBusy(const ServerCredentials &credentia
         return errorCode;
     }
 
-    if (!stdOut.isEmpty()) {
+    if (stdOut.contains(QLatin1String("DP_PORT_BUSY"))) {
         return ErrorCode::ServerPortAlreadyAllocatedError;
     }
     return ErrorCode::NoError;
@@ -809,7 +855,7 @@ bool InstallController::isReinstallContainerRequired(DockerContainer container, 
 
 void InstallController::cancelInstallation()
 {
-    m_cancelInstallation = true;
+    m_cancelInstallation.store(true);
 }
 
 ErrorCode InstallController::installDockerWorker(const ServerCredentials &credentials, DockerContainer container, SshSession &sshSession)
@@ -925,7 +971,7 @@ ErrorCode InstallController::isUserInSudo(const ServerCredentials &credentials, 
 
 ErrorCode InstallController::isServerDpkgBusy(const ServerCredentials &credentials, SshSession &sshSession)
 {
-    m_cancelInstallation = false;
+    m_cancelInstallation.store(false);
     QString stdOut;
     auto cbReadStdOut = [&](const QString &data, libssh::Client &) {
         stdOut += data + "\n";
@@ -941,7 +987,7 @@ ErrorCode InstallController::isServerDpkgBusy(const ServerCredentials &credentia
     QFuture<ErrorCode> future = QtConcurrent::run([this, &stdOut, &cbReadStdOut, &cbReadStdErr, &credentials, &sshSession]() {
         // max 100 attempts
         for (int i = 0; i < 30; ++i) {
-            if (m_cancelInstallation) {
+            if (m_cancelInstallation.load()) {
                 return ErrorCode::ServerCancelInstallation;
             }
             stdOut.clear();
@@ -1234,6 +1280,7 @@ ErrorCode InstallController::scanServerForInstalledContainers(const QString &ser
 ErrorCode InstallController::installServer(const ServerCredentials &credentials, DockerContainer container, int port,
                                            TransportProto transportProto, bool &wasContainerInstalled)
 {
+    emit installationStageChanged(QStringLiteral("inspecting_server"));
     SshSession sshSession;
     QMap<DockerContainer, ContainerConfig> installedContainers;
     ErrorCode errorCode = getAlreadyInstalledContainers(credentials, installedContainers, sshSession);
@@ -1254,6 +1301,7 @@ ErrorCode InstallController::installServer(const ServerCredentials &credentials,
     }
 
     QMap<DockerContainer, ContainerConfig> preparedContainers;
+    emit installationStageChanged(QStringLiteral("creating_profile"));
     for (auto iterator = installedContainers.begin(); iterator != installedContainers.end(); iterator++) {
         DockerContainer container = iterator.key();
         ContainerConfig containerConfig = iterator.value();
@@ -1295,6 +1343,7 @@ ErrorCode InstallController::installServer(const ServerCredentials &credentials,
 ErrorCode InstallController::installContainer(const QString &serverId, DockerContainer container, int port,
                                               TransportProto transportProto, bool &wasContainerInstalled)
 {
+    emit installationStageChanged(QStringLiteral("inspecting_server"));
     auto adminConfig = m_serversRepository->selfHostedAdminConfig(serverId);
     if (!adminConfig.has_value()) {
         return ErrorCode::InternalError;
@@ -1324,6 +1373,7 @@ ErrorCode InstallController::installContainer(const QString &serverId, DockerCon
     }
 
     QString clientName = QString("Admin [%1]").arg(QSysInfo::prettyProductName());
+    emit installationStageChanged(QStringLiteral("creating_profile"));
     for (auto iterator = installedContainers.begin(); iterator != installedContainers.end(); iterator++) {
         ContainerConfig existingConfigModel = adminConfig->containerConfig(iterator.key());
         if (existingConfigModel.container == DockerContainer::None) {
@@ -1363,6 +1413,50 @@ ErrorCode InstallController::checkSshConnection(ServerCredentials &credentials, 
 
     output = sshSession.checkSshConnection(credentials, errorCode);
     return errorCode;
+}
+
+ErrorCode InstallController::checkServerPreflight(const ServerCredentials &credentials,
+                                                  QMap<QString, QString> &report)
+{
+    report.clear();
+
+    QString output;
+    auto readOutput = [&output](const QString &data, libssh::Client &) {
+        output += data;
+        if (!data.endsWith('\n')) {
+            output += '\n';
+        }
+        return ErrorCode::NoError;
+    };
+
+    SshSession sshSession;
+    const ErrorCode errorCode = sshSession.runScript(
+            credentials, amnezia::scriptData(SharedScriptType::preflight_server), readOutput, readOutput);
+    if (errorCode != ErrorCode::NoError) {
+        return errorCode;
+    }
+
+    const QStringList lines = output.split('\n', Qt::SkipEmptyParts);
+    for (const QString &line : lines) {
+        const qsizetype separator = line.indexOf('=');
+        if (separator <= 0) {
+            continue;
+        }
+        report.insert(line.left(separator).trimmed(), line.mid(separator + 1).trimmed());
+    }
+
+    static const QStringList requiredKeys {
+        QStringLiteral("architecture"), QStringLiteral("memory_mb"),
+        QStringLiteral("disk_free_mb"), QStringLiteral("package_manager"),
+        QStringLiteral("sudo_ready")
+    };
+    for (const QString &key : requiredKeys) {
+        if (!report.contains(key)) {
+            return ErrorCode::InternalError;
+        }
+    }
+
+    return ErrorCode::NoError;
 }
 
 bool InstallController::isServerAlreadyExists(const ServerCredentials &credentials, int &existingServerIndex)
@@ -1728,6 +1822,62 @@ ErrorCode InstallController::queryDockerContainerStatus(const QString &serverId,
         statusOut = 3;
     }
     return ErrorCode::NoError;
+}
+
+ErrorCode InstallController::queryServerOverview(const QString &serverId, DockerContainer container,
+                                                 QMap<QString, QString> &overview)
+{
+    overview.clear();
+    const auto adminConfig = m_serversRepository->selfHostedAdminConfig(serverId);
+    if (!adminConfig.has_value()) {
+        return ErrorCode::InternalError;
+    }
+    const ServerCredentials credentials = adminConfig->credentials();
+    if (!credentials.isValid() || container == DockerContainer::None) {
+        return ErrorCode::InternalError;
+    }
+
+    const QString containerName = ContainerUtils::containerToString(container);
+    QString protocolCommand = QStringLiteral("printf 'version=unknown\\npeers=0\\n'");
+    if (container == DockerContainer::Awg2 || container == DockerContainer::Awg
+        || container == DockerContainer::WireGuard) {
+        const QString tool = container == DockerContainer::Awg2 ? QStringLiteral("awg") : QStringLiteral("wg");
+        protocolCommand = QStringLiteral(
+                "version=$(sudo docker exec %1 %2 --version 2>/dev/null | head -n 1 || true); "
+                "peers=$(sudo docker exec %1 %2 show all dump 2>/dev/null | awk 'NR > 1 { count++ } END { print count+0 }'); "
+                "printf 'version=%s\\npeers=%s\\n' \"${version:-unknown}\" \"${peers:-0}\"")
+                .arg(containerName, tool);
+    }
+
+    const QString script = QStringLiteral(
+            "status=$(sudo docker inspect --format '{{.State.Status}}' %1 2>/dev/null || true); "
+            "started=$(sudo docker inspect --format '{{.State.StartedAt}}' %1 2>/dev/null || true); "
+            "image=$(sudo docker inspect --format '{{.Config.Image}}' %1 2>/dev/null || true); "
+            "printf 'status=%s\\nstarted_at=%s\\nimage=%s\\n' \"${status:-not_found}\" \"$started\" \"$image\"; "
+            "%2")
+            .arg(containerName, protocolCommand);
+
+    QString output;
+    auto readOutput = [&output](const QString &data, libssh::Client &) {
+        output += data;
+        if (!data.endsWith('\n')) output += '\n';
+        return ErrorCode::NoError;
+    };
+    SshSession sshSession;
+    const ErrorCode errorCode = sshSession.runScript(credentials, script, readOutput, readOutput);
+    if (errorCode != ErrorCode::NoError) {
+        return errorCode;
+    }
+
+    for (const QString &line : output.split('\n', Qt::SkipEmptyParts)) {
+        const qsizetype separator = line.indexOf('=');
+        if (separator > 0) {
+            overview.insert(line.left(separator).trimmed(), line.mid(separator + 1).trimmed());
+        }
+    }
+    overview.insert(QStringLiteral("container"), ContainerUtils::containerHumanNames().value(container));
+    overview.insert(QStringLiteral("checked_at"), QDateTime::currentDateTime().toString(Qt::ISODate));
+    return overview.contains(QStringLiteral("status")) ? ErrorCode::NoError : ErrorCode::InternalError;
 }
 
 ErrorCode InstallController::queryMtProxyDiagnostics(const QString &serverId, DockerContainer container, int listenPort,

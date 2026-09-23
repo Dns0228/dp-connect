@@ -86,8 +86,42 @@ PageType {
                 Layout.rightMargin: 16
 
                 textString: qsTr("The backup will contain your passwords and private keys for all servers added " +
-                                 "to AmneziaVPN. Keep this information in a secure place.")
+                                 "to DP Connect. Keep this information in a secure place.")
 
+                iconPath: "qrc:/images/controls/alert-circle.svg"
+            }
+
+            TextFieldWithHeaderType {
+                id: backupPassword
+                Layout.fillWidth: true
+                Layout.leftMargin: 16
+                Layout.rightMargin: 16
+                headerText: qsTr("Backup password")
+                textField.echoMode: TextInput.Password
+                textField.maximumLength: 256
+                textField.placeholderText: qsTr("At least 10 characters")
+            }
+
+            TextFieldWithHeaderType {
+                id: backupPasswordConfirmation
+                Layout.fillWidth: true
+                Layout.leftMargin: 16
+                Layout.rightMargin: 16
+                headerText: qsTr("Repeat password")
+                textField.echoMode: TextInput.Password
+                textField.maximumLength: 256
+            }
+
+            WarningType {
+                Layout.fillWidth: true
+                Layout.leftMargin: 16
+                Layout.rightMargin: 16
+                visible: backupPassword.textField.text.length > 0
+                         && (backupPassword.textField.text.length < 10
+                             || backupPassword.textField.text !== backupPasswordConfirmation.textField.text)
+                textString: backupPassword.textField.text.length < 10
+                            ? qsTr("Use at least 10 characters")
+                            : qsTr("Passwords do not match")
                 iconPath: "qrc:/images/controls/alert-circle.svg"
             }
 
@@ -100,25 +134,46 @@ PageType {
                 Layout.rightMargin: 16
 
                 text: qsTr("Make a backup")
+                enabled: backupPassword.textField.text.length >= 10
+                         && backupPassword.textField.text === backupPasswordConfirmation.textField.text
 
                 clickedFunc: function() {
                     var fileName = ""
                     if (GC.isMobile()) {
-                        fileName = "AmneziaVPN.backup"
+                        fileName = "DPConnect.backup"
                     } else {
                         fileName = SystemController.getFileName(qsTr("Save backup file"),
                                                                 qsTr("Backup files (*.backup)"),
-                                                                StandardPaths.standardLocations(StandardPaths.DocumentsLocation) + "/AmneziaVPN",
+                                                                StandardPaths.standardLocations(StandardPaths.DocumentsLocation) + "/DPConnect",
                                                                 true,
                                                                 ".backup")
                     }
                     if (fileName !== "") {
                         PageController.showBusyIndicator(true)
-                        SettingsController.backupAppConfig(fileName)
+                        var saved = SettingsController.backupAppConfig(fileName, backupPassword.textField.text)
                         PageController.showBusyIndicator(false)
-                        PageController.showNotificationMessage(qsTr("Backup file saved"))
+                        if (saved) {
+                            PageController.showNotificationMessage(qsTr("Backup file saved"))
+                        }
                     }
                 }
+            }
+
+            DividerType {
+                Layout.fillWidth: true
+                Layout.leftMargin: 16
+                Layout.rightMargin: 16
+            }
+
+            TextFieldWithHeaderType {
+                id: restorePassword
+                Layout.fillWidth: true
+                Layout.leftMargin: 16
+                Layout.rightMargin: 16
+                headerText: qsTr("Password for encrypted backup")
+                textField.echoMode: TextInput.Password
+                textField.maximumLength: 256
+                textField.placeholderText: qsTr("Leave empty for an old backup")
             }
 
             BasicButtonType {
@@ -171,7 +226,7 @@ PageType {
                 root.isRestoringBackup = true
                 PageController.showBusyIndicator(true)
                 Qt.callLater(function() {
-                    SettingsController.restoreAppConfig(filePath)
+                    SettingsController.restoreAppConfig(filePath, restorePassword.textField.text)
                     PageController.showBusyIndicator(false)
                     root.isRestoringBackup = false
                 })

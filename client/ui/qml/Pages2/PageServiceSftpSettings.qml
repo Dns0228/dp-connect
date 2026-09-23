@@ -183,11 +183,11 @@ PageType {
                 Layout.leftMargin: 16
                 Layout.rightMargin: 16
 
-                readonly property string windowsFirstLink: "<a href=\"https://github.com/billziss-gh/winfsp/releases/latest\" style=\"color: #FBB26A;\">WinFsp</a>"
-                readonly property string windowsSecondLink: "<a href=\"https://github.com/billziss-gh/sshfs-win/releases\" style=\"color: #FBB26A;\">SSHFS-Win</a>"
+                readonly property string windowsFirstLink: "<a href=\"https://github.com/billziss-gh/winfsp/releases/latest\" style=\"color: #77E0C2;\">WinFsp</a>"
+                readonly property string windowsSecondLink: "<a href=\"https://github.com/billziss-gh/sshfs-win/releases\" style=\"color: #77E0C2;\">SSHFS-Win</a>"
 
-                readonly property string macosFirstLink: "<a href=\"https://osxfuse.github.io/\" style=\"color: #FBB26A;\">macFUSE</a>"
-                readonly property string macosSecondLink: "<a href=\"https://osxfuse.github.io/\" style=\"color: #FBB26A;\">SSHFS</a>"
+                readonly property string macosFirstLink: "<a href=\"https://osxfuse.github.io/\" style=\"color: #77E0C2;\">macFUSE</a>"
+                readonly property string macosSecondLink: "<a href=\"https://osxfuse.github.io/\" style=\"color: #77E0C2;\">SSHFS</a>"
 
                 onLinkActivated: function(link) {
                     Qt.openUrlExternally(link)
@@ -232,7 +232,6 @@ PageType {
                 text: qsTr("Detailed instructions")
 
                 clickedFunc: function() {
-                    // Qt.openUrlExternally("https://github.com/amnezia-vpn/desktop-client/releases/latest")
                 }
             }
         }

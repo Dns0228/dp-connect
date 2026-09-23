@@ -130,7 +130,7 @@ PageType {
                         return
                     }
 
-                    PageController.goToPage(PageEnum.PageSetupWizardEasy)
+                    PageController.goToPage(PageEnum.PageSetupWizardPreflight)
                 }
             }
 
@@ -141,13 +141,13 @@ PageType {
                 Layout.rightMargin: 16
                 Layout.bottomMargin: 16
 
-                text: qsTr("All data you enter will remain strictly confidential and will not be shared or disclosed to the Amnezia or any third parties")
+                text: qsTr("These credentials are used to connect to your server via SSH.")
             }
 
             CardWithIconsType {
                 id: hostLink
 
-                visible: GC.isDesktop() && !IsMacOsNeBuild
+                visible: false
 
                 Layout.fillWidth: true
                 Layout.leftMargin: 16
@@ -155,10 +155,10 @@ PageType {
                 Layout.bottomMargin: 8
 
                 headerText: qsTr("Don't have a server?")
-                bodyText: qsTr("Amnezia hosting. VPN servers without complicated settings and headaches")
+                bodyText: qsTr("DP Connect hosting. VPN servers without complicated settings and headaches")
 
                 rightImageSource: "qrc:/images/controls/chevron-right.svg"
-                leftImageSource: "qrc:/images/controls/amnezia.svg"
+                leftImageSource: "qrc:/images/dp-connect-mark.svg"
 
                 onClicked: {
                     Qt.openUrlExternally(LanguageUiController.getCurrentHostUrl())
@@ -176,6 +176,7 @@ PageType {
                 Layout.rightMargin: 16
                 Layout.bottomMargin: 16
 
+                visible: false
                 headerText: qsTr("How to run your VPN server")
                 bodyText: qsTr("Where to get connection data, step-by-step instructions for buying a VPS")
 

@@ -119,6 +119,7 @@
         <file>Pages2/PageSettingsLogging.qml</file>
         <file>Pages2/PageSettingsServerData.qml</file>
         <file>Pages2/PageSettingsServerInfo.qml</file>
+        <file>Pages2/PageSettingsServerStatus.qml</file>
         <file>Pages2/PageSettingsServerProtocol.qml</file>
         <file>Pages2/PageSettingsServerProtocols.qml</file>
         <file>Pages2/PageSettingsServerServices.qml</file>
@@ -135,6 +136,7 @@
         <file>Pages2/PageSetupWizardApiServicesList.qml</file>
         <file>Pages2/PageSetupWizardConfigSource.qml</file>
         <file>Pages2/PageSetupWizardCredentials.qml</file>
+        <file>Pages2/PageSetupWizardPreflight.qml</file>
         <file>Pages2/PageSetupWizardEasy.qml</file>
         <file>Pages2/PageSetupWizardInstalling.qml</file>
         <file>Pages2/PageSetupWizardProtocols.qml</file>
@@ -158,4 +160,3 @@
         <file>Components/SmartScroll.qml</file>
     </qresource>
 </RCC>
-

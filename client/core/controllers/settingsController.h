@@ -38,7 +38,9 @@ public:
     void clearLogs();
 
     QByteArray backupAppConfig() const;
+    QByteArray backupAppConfig(const QString &passphrase) const;
     ErrorCode restoreAppConfigFromData(const QByteArray &data);
+    ErrorCode restoreAppConfigFromData(const QByteArray &data, const QString &passphrase);
     int unsupportedFormatConfigsSkippedCount() const;
 
     QString getAppVersion() const;
@@ -109,5 +111,4 @@ private:
 };
 
 #endif
-
 

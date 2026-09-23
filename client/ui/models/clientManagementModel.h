@@ -14,6 +14,7 @@ public:
         ClientNameRole,
         CreationDateRole,
         LatestHandshakeRole,
+        LatestHandshakeEpochRole,
         DataReceivedRole,
         DataSentRole,
         AllowedIpsRole

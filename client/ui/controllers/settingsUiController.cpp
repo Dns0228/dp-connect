@@ -139,6 +139,17 @@ void SettingsUiController::backupAppConfig(const QString &fileName)
     }
 }
 
+bool SettingsUiController::backupAppConfig(const QString &fileName, const QString &passphrase)
+{
+    const QByteArray data = m_settingsController->backupAppConfig(passphrase);
+    if (data.isEmpty() || !SystemController::saveFile(fileName, data)) {
+        qInfo() << "SettingsUiController::backupAppConfig: encryption, save or share failed";
+        if (data.isEmpty()) emit errorOccurred(ErrorCode::OpenSslFailed);
+        return false;
+    }
+    return true;
+}
+
 void SettingsUiController::restoreAppConfig(const QString &fileName)
 {
     QFile file(fileName);
@@ -149,6 +160,16 @@ void SettingsUiController::restoreAppConfig(const QString &fileName)
     }
 
     restoreAppConfigFromData(file.readAll());
+}
+
+void SettingsUiController::restoreAppConfig(const QString &fileName, const QString &passphrase)
+{
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly)) {
+        emit errorOccurred(ErrorCode::OpenError);
+        return;
+    }
+    restoreAppConfigFromData(file.readAll(), passphrase);
 }
 
 void SettingsUiController::restoreAppConfigFromData(const QByteArray &data)
@@ -164,6 +185,23 @@ void SettingsUiController::restoreAppConfigFromData(const QByteArray &data)
         emit autoStartChanged();
         emit startMinimizedChanged();
 
+        if (m_settingsController->unsupportedFormatConfigsSkippedCount() > 0) {
+            emit errorOccurred(ErrorCode::RestoreBackupUnsupportedConfigsSkipped);
+        }
+    } else {
+        emit errorOccurred(errorCode);
+    }
+}
+
+void SettingsUiController::restoreAppConfigFromData(const QByteArray &data, const QString &passphrase)
+{
+    const ErrorCode errorCode = m_settingsController->restoreAppConfigFromData(data, passphrase);
+    if (errorCode == ErrorCode::NoError) {
+        emit appLanguageChanged();
+        emit amneziaDnsToggled(m_settingsController->isAmneziaDnsEnabled());
+        emit restoreBackupFinished();
+        emit autoStartChanged();
+        emit startMinimizedChanged();
         if (m_settingsController->unsupportedFormatConfigsSkippedCount() > 0) {
             emit errorOccurred(ErrorCode::RestoreBackupUnsupportedConfigsSkipped);
         }

@@ -56,6 +56,8 @@ endif()
 
 qt_standard_project_setup()
 qt_add_executable(${PROJECT} MANUAL_FINALIZATION)
+# Preserve target references while giving the shipped executable its own identity.
+set_target_properties(${PROJECT} PROPERTIES OUTPUT_NAME "${CLIENT_APPLICATION_NAME}")
 target_include_directories(${PROJECT} PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
 )
@@ -249,7 +251,7 @@ install(TARGETS ${PROJECT}
 )
 
 if(APPLE)
-    set(RUNTIME_DEPS_DIR ${CMAKE_INSTALL_BINDIR}/AmneziaVPN.app/Contents/Frameworks)
+    set(RUNTIME_DEPS_DIR ${CMAKE_INSTALL_BINDIR}/${CLIENT_APPLICATION_NAME}.app/Contents/Frameworks)
 else()
     set(RUNTIME_DEPS_DIR ${CMAKE_INSTALL_BINDIR})
 endif()

@@ -25,6 +25,7 @@ public:
     {
         QString clientId;
         QString latestHandshake;
+        qint64 latestHandshakeEpoch = 0;
         QString dataReceived;
         QString dataSent;
         QString allowedIps;

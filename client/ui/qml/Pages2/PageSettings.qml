@@ -149,7 +149,7 @@ PageType {
 
         property string title: qsTr("News & Notifications")
         readonly property string leftImagePath: NewsModel.hasUnread && SettingsController.isNewsNotificationsEnabled() ? "qrc:/images/controls/news-unread.svg" : "qrc:/images/controls/news.svg"
-        property bool isVisible: ServersUiController.hasServersFromGatewayApi
+        property bool isVisible: false
         readonly property var clickedHandler: function() {
             if (!ServersUiController.hasServersFromGatewayApi) {
                 return;
@@ -174,8 +174,8 @@ PageType {
     QtObject {
         id: about
 
-        property string title: qsTr("About AmneziaVPN")
-        readonly property string leftImagePath: "qrc:/images/controls/amnezia.svg"
+        property string title: qsTr("About DP Connect")
+        readonly property string leftImagePath: "qrc:/images/dp-connect-mark.svg"
         property bool isVisible: true
         readonly property var clickedHandler: function() {
             PageController.goToPage(PageEnum.PageSettingsAbout)

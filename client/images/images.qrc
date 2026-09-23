@@ -3,6 +3,9 @@
         <file>../fonts/pt-root-ui_vf.ttf</file>
     </qresource>
     <qresource prefix="/images">
+        <file>dp-connect-mark.svg</file>
+        <file>dp-connect-logo.svg</file>
+        <file>dp-connect.png</file>
         <file>amneziaBigLogo.png</file>
         <file>AmneziaVPN.png</file>
         <file>controls/alert-circle.svg</file>
@@ -77,4 +80,3 @@
         <file>controls/monitor.svg</file>
     </qresource>
 </RCC>
-

@@ -27,13 +27,13 @@ PageType {
     property bool isSelfHostedConfig: true
 
     property string configExtension: ".vpn"
-    property string configCaption: qsTr("Save AmneziaVPN config")
-    property string configFileName: "amnezia_config"
+    property string configCaption: qsTr("Save DP Connect config")
+    property string configFileName: "dp_connect_config"
 
     // onVisibleChanged: {
     //     configExtension = ".vpn"
-    //     configCaption = qsTr("Save AmneziaVPN config")
-    //     configFileName = "amnezia_config"
+    //     configCaption = qsTr("Save DP Connect config")
+    //     configFileName = "dp_connect_config"
 
     //     if (visible) {
     //         var serverName = ServersModel.getProcessedServerData("name") || ServersModel.getProcessedServerData("hostName") || "Server"
@@ -323,7 +323,7 @@ PageType {
                               && (ExportController.config.startsWith("tg://")
                                   || ExportController.config.startsWith("https://t.me")))
                 horizontalAlignment: Text.AlignHCenter
-                text: qsTr("To read the QR code in the Amnezia app, tap + in the main menu → 'QR code'")
+                text: qsTr("To read the QR code in the DP Connect app, tap + in the main menu → 'QR code'")
             }
 
             WarningType {

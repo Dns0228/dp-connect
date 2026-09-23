@@ -106,11 +106,11 @@ PageType {
                             clickedFunction: function() {
                                 var fileName = ""
                                 if (GC.isMobile()) {
-                                    fileName = "AmneziaVPN.log"
+                                    fileName = "DPConnect.log"
                                 } else {
                                     fileName = SystemController.getFileName(qsTr("Save"),
                                                                             qsTr("Logs files (*.log)"),
-                                                                            StandardPaths.standardLocations(StandardPaths.DocumentsLocation) + "/AmneziaVPN",
+                                                                            StandardPaths.standardLocations(StandardPaths.DocumentsLocation) + "/DPConnect",
                                                                             true,
                                                                             ".log")
                                 }
@@ -224,8 +224,8 @@ PageType {
                 headerText: title
                 bodyText: description
 
-                showRecommendedBadge: featuredAmneziaConnection
-                recommendedText: featuredAmneziaConnection ? qsTr("Recommended") : ""
+                showRecommendedBadge: featuredConnection
+                recommendedText: featuredConnection ? qsTr("Recommended") : ""
 
                 rightImageSource: "qrc:/images/controls/chevron-right.svg"
                 leftImageSource: imageSource
@@ -239,69 +239,21 @@ PageType {
             }
         }
 
-        footer: ColumnLayout {
-            width: listView.width
-
-            BasicButtonType {
-                id: siteLink2
-                Layout.topMargin: 24
-                Layout.bottomMargin: 16
-                Layout.alignment: Qt.AlignHCenter
-                implicitHeight: 32
-
-                visible: Qt.platform.os !== "ios" && !IsMacOsNeBuild
-
-                defaultColor: AmneziaStyle.color.transparent
-                hoveredColor: AmneziaStyle.color.translucentWhite
-                pressedColor: AmneziaStyle.color.sheerWhite
-                disabledColor: AmneziaStyle.color.mutedGray
-                textColor: AmneziaStyle.color.goldenApricot
-
-                text: qsTr("Site Amnezia")
-
-                rightImageSource: "qrc:/images/controls/external-link.svg"
-
-                clickedFunc: function() {
-                    Qt.openUrlExternally(LanguageUiController.getCurrentSiteUrl())
-                }
-            }
-        }
     }
 
     property list<QtObject> variants: [
-        amneziaVpn,
         selfHostVpn,
         backupRestore,
         fileOpen,
-        qrScan,
-        restorePurchases,
-        siteLink
+        qrScan
     ]
     
     QtObject {
-        id: amneziaVpn
-
-        property string title: qsTr("VPN by Amnezia")
-        property string description: qsTr("The easiest way to connect to the VPN")
-        property string imageSource: "qrc:/images/controls/amnezia.svg"
-        property bool featuredAmneziaConnection: true
-        property bool isVisible: true
-        property var handler: function() {
-            PageController.showBusyIndicator(true)
-            var result = SubscriptionUiController.fillAvailableServices()
-            PageController.showBusyIndicator(false)
-            if (result) {
-                PageController.goToPage(PageEnum.PageSetupWizardApiServicesList)
-            }
-        }
-    }
-
-    QtObject {
         id: selfHostVpn
 
-        property bool featuredAmneziaConnection: false
+        property bool featuredConnection: true
         property string title: qsTr("Self-hosted VPN")
-        property string description: qsTr("Configure Amnezia VPN on your own server")
+        property string description: qsTr("Configure DP Connect on your own server")
         property string imageSource: "qrc:/images/controls/server.svg"
         property bool isVisible: true
         property var handler: function() {
@@ -312,7 +264,7 @@ PageType {
     QtObject {
         id: backupRestore
 
-        property bool featuredAmneziaConnection: false
+        property bool featuredConnection: false
         property string title: qsTr("Restore from backup")
         property string description: qsTr("")
         property string imageSource: "qrc:/images/controls/archive-restore.svg"
@@ -338,7 +290,7 @@ PageType {
     QtObject {
         id: fileOpen
 
-        property bool featuredAmneziaConnection: false
+        property bool featuredConnection: false
         property string title: qsTr("File with connection settings")
         property string description: qsTr("")
         property string imageSource: "qrc:/images/controls/folder-search-2.svg"
@@ -357,7 +309,7 @@ PageType {
     QtObject {
         id: qrScan
 
-        property bool featuredAmneziaConnection: false
+        property bool featuredConnection: false
         property string title: qsTr("QR code")
         property string description: qsTr("")
         property string imageSource: "qrc:/images/controls/scan-line.svg"
@@ -370,31 +322,4 @@ PageType {
         }
     }
 
-    QtObject {
-        id: restorePurchases
-
-        property bool featuredAmneziaConnection: false
-        property string title: qsTr("Restore purchases")
-        property string description: qsTr("")
-        property string imageSource: "qrc:/images/controls/refresh-cw.svg"
-        property bool isVisible: Qt.platform.os === "ios" || IsMacOsNeBuild || IsPlayBuild
-        property var handler: function() {
-            PageController.showBusyIndicator(true)
-            SubscriptionUiController.restoreServiceFromStore()
-            PageController.showBusyIndicator(false)
-        }
-    }
-
-    QtObject {
-        id: siteLink
-
-        property bool featuredAmneziaConnection: false
-        property string title: qsTr("I have nothing")
-        property string description: qsTr("")
-        property string imageSource: "qrc:/images/controls/help-circle.svg"
-        property bool isVisible: PageController.isStartPageVisible() && Qt.platform.os !== "ios" && !IsMacOsNeBuild
-        property var handler: function() {
-            Qt.openUrlExternally(LanguageUiController.getCurrentSiteUrl())
-        }
-    }
 }

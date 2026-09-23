@@ -9,6 +9,8 @@
 #include <QTemporaryFile>
 
 #include <openssl/pem.h>
+#include <openssl/crypto.h>
+#include <openssl/evp.h>
 #include <openssl/rand.h>
 #include <openssl/rsa.h>
 #include <openssl/x509.h>
@@ -38,8 +40,6 @@ WireguardConfigurator::WireguardConfigurator(SshSession* sshSession, bool isAwg,
             m_isAwg ? amnezia::protocols::awg::serverConfigPath : amnezia::protocols::wireguard::serverConfigPath;
     m_serverPublicKeyPath =
             m_isAwg ? amnezia::protocols::awg::serverPublicKeyPath : amnezia::protocols::wireguard::serverPublicKeyPath;
-    m_serverPskKeyPath =
-            m_isAwg ? amnezia::protocols::awg::serverPskKeyPath : amnezia::protocols::wireguard::serverPskKeyPath;
     m_configTemplate = m_isAwg ? ProtocolScriptType::awg_template : ProtocolScriptType::wireguard_template;
 
     m_protocolName = m_isAwg ? configKey::awg : configKey::wireguard;
@@ -48,31 +48,55 @@ WireguardConfigurator::WireguardConfigurator(SshSession* sshSession, bool isAwg,
 
 WireguardConfigurator::ConnectionData WireguardConfigurator::genClientKeys()
 {
-    // TODO review
-    constexpr size_t EDDSA_KEY_LENGTH = 32;
+    constexpr size_t KEY_LENGTH = 32;
 
     ConnectionData connData;
+    unsigned char presharedKey[KEY_LENGTH] = {};
 
-    unsigned char buff[EDDSA_KEY_LENGTH];
-    int ret = RAND_priv_bytes(buff, EDDSA_KEY_LENGTH);
-    if (ret <= 0)
+    if (RAND_priv_bytes(presharedKey, static_cast<int>(KEY_LENGTH)) != 1) {
+        OPENSSL_cleanse(presharedKey, sizeof(presharedKey));
         return connData;
+    }
 
-    EVP_PKEY *pKey = EVP_PKEY_new();
-    q_check_ptr(pKey);
-    pKey = EVP_PKEY_new_raw_private_key(EVP_PKEY_X25519, NULL, &buff[0], EDDSA_KEY_LENGTH);
+    EVP_PKEY_CTX *keyContext = EVP_PKEY_CTX_new_id(EVP_PKEY_X25519, nullptr);
+    EVP_PKEY *pKey = nullptr;
+    if (!keyContext || EVP_PKEY_keygen_init(keyContext) != 1
+        || EVP_PKEY_keygen(keyContext, &pKey) != 1 || !pKey) {
+        EVP_PKEY_CTX_free(keyContext);
+        OPENSSL_cleanse(presharedKey, sizeof(presharedKey));
+        return connData;
+    }
+    EVP_PKEY_CTX_free(keyContext);
 
-    size_t keySize = EDDSA_KEY_LENGTH;
+    size_t keySize = KEY_LENGTH;
 
-    // save private key
-    unsigned char priv[EDDSA_KEY_LENGTH];
-    EVP_PKEY_get_raw_private_key(pKey, priv, &keySize);
-    connData.clientPrivKey = QByteArray::fromRawData((char *)priv, keySize).toBase64();
+    unsigned char privateKey[KEY_LENGTH] = {};
+    if (EVP_PKEY_get_raw_private_key(pKey, privateKey, &keySize) != 1 || keySize != KEY_LENGTH) {
+        EVP_PKEY_free(pKey);
+        OPENSSL_cleanse(privateKey, sizeof(privateKey));
+        OPENSSL_cleanse(presharedKey, sizeof(presharedKey));
+        return connData;
+    }
+    connData.clientPrivKey = QByteArray(reinterpret_cast<const char *>(privateKey),
+                                        static_cast<qsizetype>(keySize)).toBase64();
+    OPENSSL_cleanse(privateKey, sizeof(privateKey));
 
-    // save public key
-    unsigned char pub[EDDSA_KEY_LENGTH];
-    EVP_PKEY_get_raw_public_key(pKey, pub, &keySize);
-    connData.clientPubKey = QByteArray::fromRawData((char *)pub, keySize).toBase64();
+    keySize = KEY_LENGTH;
+    unsigned char publicKey[KEY_LENGTH] = {};
+    if (EVP_PKEY_get_raw_public_key(pKey, publicKey, &keySize) != 1 || keySize != KEY_LENGTH) {
+        EVP_PKEY_free(pKey);
+        OPENSSL_cleanse(publicKey, sizeof(publicKey));
+        OPENSSL_cleanse(presharedKey, sizeof(presharedKey));
+        return ConnectionData{};
+    }
+    connData.clientPubKey = QByteArray(reinterpret_cast<const char *>(publicKey),
+                                       static_cast<qsizetype>(keySize)).toBase64();
+    connData.pskKey = QByteArray(reinterpret_cast<const char *>(presharedKey),
+                                 static_cast<qsizetype>(KEY_LENGTH)).toBase64();
+
+    EVP_PKEY_free(pKey);
+    OPENSSL_cleanse(publicKey, sizeof(publicKey));
+    OPENSSL_cleanse(presharedKey, sizeof(presharedKey));
 
     return connData;
 }
@@ -116,7 +140,7 @@ WireguardConfigurator::ConnectionData WireguardConfigurator::prepareWireguardCon
     }
     connData.port = portStr;
 
-    if (connData.clientPrivKey.isEmpty() || connData.clientPubKey.isEmpty()) {
+    if (connData.clientPrivKey.isEmpty() || connData.clientPubKey.isEmpty() || connData.pskKey.isEmpty()) {
         errorCode = ErrorCode::InternalError;
         return connData;
     }
@@ -168,13 +192,6 @@ WireguardConfigurator::ConnectionData WireguardConfigurator::prepareWireguardCon
     connData.serverPubKey =
             m_sshSession->getTextFileFromContainer(container, credentials, m_serverPublicKeyPath, errorCode);
     connData.serverPubKey.replace("\n", "");
-    if (errorCode != ErrorCode::NoError) {
-        return connData;
-    }
-
-    connData.pskKey = m_sshSession->getTextFileFromContainer(container, credentials, m_serverPskKeyPath, errorCode);
-    connData.pskKey.replace("\n", "");
-
     if (errorCode != ErrorCode::NoError) {
         return connData;
     }

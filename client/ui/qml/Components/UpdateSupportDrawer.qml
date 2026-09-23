@@ -44,52 +44,23 @@ DrawerType2 {
                 Layout.topMargin: 8
 
                 color: AmneziaStyle.color.textTertiary
-                text: qsTr("If the update won't install, message us")
+                text: qsTr("For project information, visit DP project on GitHub")
             }
 
             LabelWithButtonType {
                 Layout.fillWidth: true
                 Layout.topMargin: 16
 
-                text: qsTr("Telegram")
-                descriptionText: qsTr("We'll reply in chat")
-                leftImageSource: "qrc:/images/controls/telegram.svg"
+                text: qsTr("GitHub")
+                descriptionText: qsTr("DP project")
+                leftImageSource: "qrc:/images/controls/github.svg"
                 rightImageSource: "qrc:/images/controls/chevron-right.svg"
 
                 clickedFunction: function() {
-                    Qt.openUrlExternally(qsTr("https://t.me/amnezia_vpn_en"))
+                    Qt.openUrlExternally("https://github.com/Dns0228")
                 }
             }
 
-            DividerType {}
-
-            LabelWithButtonType {
-                Layout.fillWidth: true
-
-                text: qsTr("support@amnezia.org")
-                descriptionText: qsTr("Support email")
-                leftImageSource: "qrc:/images/controls/mail.svg"
-                rightImageSource: "qrc:/images/controls/chevron-right.svg"
-
-                clickedFunction: function() {
-                    Qt.openUrlExternally(qsTr("mailto:support@amnezia.org"))
-                }
-            }
-
-            DividerType {}
-
-            LabelWithButtonType {
-                Layout.fillWidth: true
-
-                text: qsTr("amnezia.org")
-                descriptionText: qsTr("Download the update manually")
-                leftImageSource: "qrc:/images/controls/amnezia.svg"
-                rightImageSource: "qrc:/images/controls/chevron-right.svg"
-
-                clickedFunction: function() {
-                    Qt.openUrlExternally(LanguageUiController.getCurrentSiteUrl(""))
-                }
-            }
         }
     }
 }

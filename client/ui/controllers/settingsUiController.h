@@ -52,8 +52,11 @@ public slots:
     void clearLogs();
 
     void backupAppConfig(const QString &fileName);
+    bool backupAppConfig(const QString &fileName, const QString &passphrase);
     void restoreAppConfig(const QString &fileName);
+    void restoreAppConfig(const QString &fileName, const QString &passphrase);
     void restoreAppConfigFromData(const QByteArray &data);
+    void restoreAppConfigFromData(const QByteArray &data, const QString &passphrase);
 
     QString getAppVersion();
 

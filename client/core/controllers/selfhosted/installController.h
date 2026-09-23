@@ -3,9 +3,11 @@
 
 #include <QObject>
 #include <QJsonObject>
+#include <QMap>
 #include <QScopedPointer>
 #include <QSharedPointer>
 #include <QProcess>
+#include <atomic>
 
 #include "core/utils/containerEnum.h"
 #include "core/utils/containers/containerUtils.h"
@@ -50,6 +52,8 @@ public:
     /// statusOut: 0 = not deployed, 1 = running, 2 = stopped, 3 = error
     ErrorCode queryDockerContainerStatus(const QString &serverId, DockerContainer container, int &statusOut);
 
+    ErrorCode queryServerOverview(const QString &serverId, DockerContainer container, QMap<QString, QString> &overview);
+
     ErrorCode queryMtProxyDiagnostics(const QString &serverId, DockerContainer container, int listenPort,
                                       MtProxyContainerDiagnostics &out);
 
@@ -73,6 +77,8 @@ public:
     
     ErrorCode checkSshConnection(ServerCredentials &credentials, QString &output,
                                  std::function<QString()> passphraseCallback = nullptr);
+
+    ErrorCode checkServerPreflight(const ServerCredentials &credentials, QMap<QString, QString> &report);
     
     bool isServerAlreadyExists(const ServerCredentials &credentials, int &existingServerIndex);
     
@@ -90,6 +96,7 @@ public:
     void addEmptyServer(const ServerCredentials &credentials);
 
 signals:
+    void installationStageChanged(const QString &stageId);
     void configValidated(bool isValid);
     void validationErrorOccurred(ErrorCode errorCode);
 
@@ -127,7 +134,7 @@ private:
 
     SecureServersRepository* m_serversRepository;
     SecureAppSettingsRepository* m_appSettingsRepository;
-    bool m_cancelInstallation = false;
+    std::atomic_bool m_cancelInstallation { false };
     QString m_tproxyInstallHostname;
     QString m_tproxyInstallEmail;
     

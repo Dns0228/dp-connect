@@ -141,6 +141,7 @@ void AmneziaApplication::init()
         Qt::QueuedConnection);
 
     m_engine->rootContext()->setContextProperty("Debug", &Logger::Instance());
+    m_engine->rootContext()->setContextProperty("AppUpdatesEnabled", bool(CLIENT_ENABLE_APP_UPDATES));
 
 #ifdef MACOS_NE
     m_engine->rootContext()->setContextProperty("IsMacOsNeBuild", true);

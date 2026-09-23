@@ -3,6 +3,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QDateTime>
+#include <QLocale>
 
 #include "core/utils/containerEnum.h"
 #include "core/utils/containers/containerUtils.h"
@@ -88,7 +89,9 @@ ErrorCode UsersController::wgShow(const DockerContainer container, const ServerC
     QString showBin = (container == DockerContainer::Awg2)
                        ? QStringLiteral("awg")
                        : QStringLiteral("wg");
-    const QString command = QString("sudo docker exec -i $CONTAINER_NAME bash -c '%1 show all'").arg(showBin);
+    // The dump format is tab-separated and stable across locales. Parsing the
+    // human-readable output made device statistics depend on the VPS language.
+    const QString command = QString("sudo docker exec -i $CONTAINER_NAME bash -c '%1 show all dump'").arg(showBin);
 
     QString script = sshSession->replaceVars(command, amnezia::genBaseVars(credentials, container, QString(), QString()));
     error = sshSession->runScript(credentials, script, cbReadStdOut);
@@ -101,61 +104,37 @@ ErrorCode UsersController::wgShow(const DockerContainer container, const ServerC
         return error;
     }
 
-    const auto getStrValue = [](const auto str) { return str.mid(str.indexOf(":") + 1).trimmed(); };
-
-    const auto changeHandshakeFormat = [](QString &latestHandshake) {
-        const std::vector<std::pair<QString, QString>> replaceMap = { { " days", "d" },    { " hours", "h" }, { " minutes", "m" },
-                                                                      { " seconds", "s" }, { " day", "d" },   { " hour", "h" },
-                                                                      { " minute", "m" },  { " second", "s" } };
-
-        for (const auto &item : replaceMap) {
-            latestHandshake.replace(item.first, item.second);
-        }
-    };
-
     const auto lines = stdOut.split('\n');
-    WgShowData currentPeer;
-    bool hasPeer = false;
-
     for (const QString &line : lines) {
-        const QString trimmedLine = line.trimmed();
-
-        if (trimmedLine.startsWith("peer:")) {
-            if (hasPeer) {
-                data.push_back(currentPeer);
-            }
-            currentPeer = WgShowData();
-            currentPeer.clientId = getStrValue(trimmedLine);
-            hasPeer = true;
-        } else if (hasPeer) {
-            if (trimmedLine.startsWith("latest handshake:")) {
-                auto latestHandshake = getStrValue(trimmedLine);
-                changeHandshakeFormat(latestHandshake);
-                currentPeer.latestHandshake = latestHandshake;
-            } else if (trimmedLine.startsWith("transfer:")) {
-                const auto transferredData = getStrValue(trimmedLine).split(",");
-                if (transferredData.size() == 2) {
-                    auto serverBytesReceived = transferredData.front().trimmed();
-                    auto serverBytesSent = transferredData.back().trimmed();
-                    if (serverBytesReceived.endsWith(" received")) {
-                        serverBytesReceived.chop(QStringLiteral(" received").length());
-                    }
-                    if (serverBytesSent.endsWith(" sent")) {
-                        serverBytesSent.chop(QStringLiteral(" sent").length());
-                    }
-                    currentPeer.dataReceived = serverBytesSent;
-                    currentPeer.dataSent = serverBytesReceived;
-                } else {
-                    logger.warning() << QString("Unexpected %1 show transfer format, skipping traffic stats for the peer")
-                                                .arg(showBin);
-                }
-            } else if (trimmedLine.startsWith("allowed ips:")) {
-                currentPeer.allowedIps = getStrValue(trimmedLine);
-            }
+        const QStringList fields = line.trimmed().split('\t');
+        // Interface rows have 4 fields. Peer rows have 8 fields:
+        // public-key, psk, endpoint, allowed-ips, handshake epoch, rx, tx, keepalive.
+        if (fields.size() < 8) {
+            continue;
         }
-    }
-    if (hasPeer) {
-        data.push_back(currentPeer);
+
+        bool handshakeOk = false;
+        bool receivedOk = false;
+        bool sentOk = false;
+        const qint64 handshakeEpoch = fields.at(4).toLongLong(&handshakeOk);
+        const qint64 serverReceived = fields.at(5).toLongLong(&receivedOk);
+        const qint64 serverSent = fields.at(6).toLongLong(&sentOk);
+        if (!handshakeOk || !receivedOk || !sentOk) {
+            logger.warning() << QString("Unexpected %1 dump values, skipping peer statistics").arg(showBin);
+            continue;
+        }
+
+        WgShowData peer;
+        peer.clientId = fields.at(0);
+        peer.allowedIps = fields.at(3);
+        peer.latestHandshakeEpoch = handshakeEpoch;
+        if (handshakeEpoch > 0) {
+            peer.latestHandshake = QLocale().toString(
+                    QDateTime::fromSecsSinceEpoch(handshakeEpoch).toLocalTime(), QLocale::ShortFormat);
+        }
+        peer.dataReceived = QLocale().formattedDataSize(serverSent, 1, QLocale::DataSizeTraditionalFormat);
+        peer.dataSent = QLocale().formattedDataSize(serverReceived, 1, QLocale::DataSizeTraditionalFormat);
+        data.push_back(peer);
     }
 
     return error;
@@ -190,7 +169,7 @@ ErrorCode UsersController::getOpenVpnClients(const DockerContainer container, co
                 client[configKey::clientId] = openvpnCertId;
 
                 QJsonObject userData;
-                userData[configKey::clientName] = QString("Client %1").arg(count);
+                userData[configKey::clientName] = tr("Device %1").arg(count);
                 client[configKey::userData] = userData;
 
                 clientsTable.push_back(client);
@@ -236,7 +215,7 @@ ErrorCode UsersController::getWireGuardClients(const DockerContainer container, 
             client[configKey::clientId] = wireguardKey;
 
             QJsonObject userData;
-            userData[configKey::clientName] = QString("Client %1").arg(count);
+            userData[configKey::clientName] = tr("Device %1").arg(count);
             client[configKey::userData] = userData;
 
             clientsTable.push_back(client);
@@ -299,7 +278,7 @@ ErrorCode UsersController::getXrayClients(const DockerContainer container, const
             client[configKey::clientId] = clientId;
 
             QJsonObject userData;
-            userData[configKey::clientName] = QString("Client %1").arg(count);
+            userData[configKey::clientName] = tr("Device %1").arg(count);
             client[configKey::userData] = userData;
 
             clientsTable.push_back(client);
@@ -376,21 +355,11 @@ ErrorCode UsersController::updateClients(const QString &serverId, const DockerCo
                 if (obj.contains(configKey::clientId) && obj[configKey::clientId].toString() == client.clientId) {
                     QJsonObject userData = obj[configKey::userData].toObject();
 
-                    if (!client.latestHandshake.isEmpty()) {
-                        userData[configKey::latestHandshake] = client.latestHandshake;
-                    }
-
-                    if (!client.dataReceived.isEmpty()) {
-                        userData[configKey::dataReceived] = client.dataReceived;
-                    }
-
-                    if (!client.dataSent.isEmpty()) {
-                        userData[configKey::dataSent] = client.dataSent;
-                    }
-
-                    if (!client.allowedIps.isEmpty()) {
-                        userData[configKey::allowedIps] = client.allowedIps;
-                    }
+                    userData[configKey::latestHandshake] = client.latestHandshake;
+                    userData[configKey::latestHandshakeEpoch] = QString::number(client.latestHandshakeEpoch);
+                    userData[configKey::dataReceived] = client.dataReceived;
+                    userData[configKey::dataSent] = client.dataSent;
+                    userData[configKey::allowedIps] = client.allowedIps;
 
                     obj[configKey::userData] = userData;
                     m_clientsTable.replace(i, obj);
@@ -863,4 +832,3 @@ ErrorCode UsersController::revokeClient(const QString &serverId, const Container
 
     return errorCode;
 }
-

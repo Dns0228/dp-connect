@@ -171,6 +171,7 @@ namespace amnezia
         constexpr QLatin1String userData("userData");
         constexpr QLatin1String creationDate("creationDate");
         constexpr QLatin1String latestHandshake("latestHandshake");
+        constexpr QLatin1String latestHandshakeEpoch("latestHandshakeEpoch");
         constexpr QLatin1String dataReceived("dataReceived");
         constexpr QLatin1String dataSent("dataSent");
 

@@ -1,9 +1,13 @@
 #include "settingsController.h"
 
+#include "core/utils/backupCrypto.h"
+
 #include <QDateTime>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QOperatingSystemVersion>
+
+#include <openssl/crypto.h>
 
 #include "version.h"
 #include "ui/utils/qAutoStart.h"
@@ -119,6 +123,11 @@ QByteArray SettingsController::backupAppConfig() const
     return QJsonDocument(config).toJson();
 }
 
+QByteArray SettingsController::backupAppConfig(const QString &passphrase) const
+{
+    return BackupCrypto::encrypt(backupAppConfig(), passphrase);
+}
+
 int SettingsController::unsupportedFormatConfigsSkippedCount() const
 {
     return m_serversRepository->unsupportedFormatConfigsCount();
@@ -175,6 +184,22 @@ ErrorCode SettingsController::restoreAppConfigFromData(const QByteArray &data)
 #endif
 
     return ErrorCode::NoError;
+}
+
+ErrorCode SettingsController::restoreAppConfigFromData(const QByteArray &data, const QString &passphrase)
+{
+    if (!BackupCrypto::isEncryptedBackup(data)) {
+        // Compatibility path for backups created by earlier DP Connect versions.
+        return restoreAppConfigFromData(data);
+    }
+
+    QByteArray decrypted;
+    if (!BackupCrypto::decrypt(data, passphrase, decrypted)) {
+        return ErrorCode::RestoreBackupInvalidError;
+    }
+    const ErrorCode result = restoreAppConfigFromData(decrypted);
+    OPENSSL_cleanse(decrypted.data(), static_cast<size_t>(decrypted.size()));
+    return result;
 }
 
 QString SettingsController::getAppVersion() const
@@ -370,4 +395,3 @@ QString SettingsController::nextAvailableServerName() const
 {
     return m_serversRepository->nextAvailableServerName();
 }
-
