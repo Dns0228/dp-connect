@@ -1,5 +1,5 @@
 if(NOT CLIENT_TARGET_NAME)
-    set(CLIENT_TARGET_NAME "AmneziaVPN" CACHE STRING "Client executable target name")
+    set(CLIENT_TARGET_NAME "DPConnect" CACHE STRING "Client executable target name")
 endif()
 if(NOT CLIENT_APPLICATION_NAME)
     set(CLIENT_APPLICATION_NAME "DPConnect" CACHE STRING "Application executable and settings identity")
