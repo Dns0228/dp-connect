@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CPackWiXPatch>
-    <CPackWiXFragment Id="CM_CP_AmneziaVPN.DPConnect_service.exe">
+    <CPackWiXFragment Id="CM_CP_DPConnect.DPConnect_service.exe">
         <ServiceInstall
                 Id="DPConnectServiceInstall"
                 Name="DPConnect-service"

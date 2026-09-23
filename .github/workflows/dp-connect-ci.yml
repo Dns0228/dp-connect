@@ -65,7 +65,7 @@ jobs:
           cpack = (root / "cmake/CPack.cmake").read_text(encoding="utf-8")
           installer_branding = [
               'set(CPACK_PACKAGE_NAME              "DP Connect")',
-              'set(CPACK_COMPONENT_AMNEZIAVPN_DISPLAY_NAME "DP Connect")',
+              'set(CPACK_COMPONENT_DPCONNECT_DISPLAY_NAME "DP Connect")',
           ]
           for expected in installer_branding:
               if expected not in cpack:

@@ -16,13 +16,13 @@ set(CPACK_POST_BUILD_SCRIPTS        ${CMAKE_CURRENT_LIST_DIR}/sign_packages.cmak
 set(CPACK_PROJECT_CONFIG_FILE       ${CMAKE_CURRENT_LIST_DIR}/CPackOptions.cmake)
 set(CPACK_RESOURCE_FILE_LICENSE     ${CMAKE_SOURCE_DIR}/deploy/data/LICENSE.txt)
 
-list(PREPEND CPACK_COMPONENTS_ALL AmneziaVPN)
+list(PREPEND CPACK_COMPONENTS_ALL DPConnect)
 
 # The component identifier is kept for compatibility with existing install and
 # signing rules. Give it a branded, user-facing name for every CPack generator,
 # including WiX/MSI (the IFW-specific settings below do not affect WiX).
-set(CPACK_COMPONENT_AMNEZIAVPN_DISPLAY_NAME "DP Connect")
-set(CPACK_COMPONENT_AMNEZIAVPN_DESCRIPTION "DP Connect by DP project")
+set(CPACK_COMPONENT_DPCONNECT_DISPLAY_NAME "DP Connect")
+set(CPACK_COMPONENT_DPCONNECT_DESCRIPTION "DP Connect by DP project")
 
 if(APPLE)
     set(CPACK_GENERATOR productbuild)
@@ -59,21 +59,21 @@ list(APPEND CPACK_WIX_EXTENSIONS    "WixToolset.Util.wixext")
 
 # === CPack productbuild generator settings ===
 set(CPACK_PRODUCTBUILD_IDENTIFIER       project.dp.connect)
-set(CPACK_PREFLIGHT_AMNEZIAVPN_SCRIPT   ${CMAKE_SOURCE_DIR}/deploy/data/macos/post_uninstall.sh)
-set(CPACK_POSTFLIGHT_AMNEZIAVPN_SCRIPT  ${CMAKE_SOURCE_DIR}/deploy/data/macos/post_install.sh)
+set(CPACK_PREFLIGHT_DPCONNECT_SCRIPT    ${CMAKE_SOURCE_DIR}/deploy/data/macos/post_uninstall.sh)
+set(CPACK_POSTFLIGHT_DPCONNECT_SCRIPT   ${CMAKE_SOURCE_DIR}/deploy/data/macos/post_install.sh)
 set(CPACK_POSTFLIGHT_UNINSTALL_SCRIPT   ${CMAKE_SOURCE_DIR}/deploy/data/macos/post_uninstall.sh)
 # provide custom CPack.distribution.dist.in
 list(APPEND CMAKE_MODULE_PATH           ${CMAKE_SOURCE_DIR}/deploy/data/macos)
 
 if(LINUX AND NOT ANDROID)
-    install(FILES ${CMAKE_SOURCE_DIR}/deploy/data/linux/AmneziaVPN.service DESTINATION "." RENAME DPConnect.service COMPONENT AmneziaVPN)
-    install(FILES ${CMAKE_SOURCE_DIR}/deploy/data/linux/AmneziaVPN.desktop DESTINATION "." RENAME DPConnect.desktop COMPONENT AmneziaVPN)
-    install(FILES ${CMAKE_SOURCE_DIR}/client/images/dp-connect.png DESTINATION "." RENAME DPConnect.png COMPONENT AmneziaVPN)
+    install(FILES ${CMAKE_SOURCE_DIR}/deploy/data/linux/AmneziaVPN.service DESTINATION "." RENAME DPConnect.service COMPONENT DPConnect)
+    install(FILES ${CMAKE_SOURCE_DIR}/deploy/data/linux/AmneziaVPN.desktop DESTINATION "." RENAME DPConnect.desktop COMPONENT DPConnect)
+    install(FILES ${CMAKE_SOURCE_DIR}/client/images/dp-connect.png DESTINATION "." RENAME DPConnect.png COMPONENT DPConnect)
     install(FILES
         ${CMAKE_SOURCE_DIR}/deploy/data/linux/post_install.sh
         ${CMAKE_SOURCE_DIR}/deploy/data/linux/post_uninstall.sh
         DESTINATION "."
-        COMPONENT AmneziaVPN
+        COMPONENT DPConnect
     )
 endif()
 
@@ -82,7 +82,7 @@ if(WIN32)
         ${CMAKE_SOURCE_DIR}/deploy/data/windows/post_install.cmd
         ${CMAKE_SOURCE_DIR}/deploy/data/windows/post_uninstall.cmd
         DESTINATION "."
-        COMPONENT AmneziaVPN
+        COMPONENT DPConnect
     )
 
     set(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS_SKIP TRUE)
@@ -90,7 +90,7 @@ if(WIN32)
     if(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS)
         install(PROGRAMS ${CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS}
             DESTINATION "."
-            COMPONENT AmneziaVPN
+            COMPONENT DPConnect
         )
     else()
         message(WARNING "MSVC runtime libraries were not found, packages will not ship them")
@@ -101,12 +101,12 @@ if (APPLE AND NOT IOS AND NOT MACOS_NE)
     install(FILES ${CMAKE_SOURCE_DIR}/deploy/data/macos/AmneziaVPN.plist
         DESTINATION "DPConnect.app/Contents/Resources"
         RENAME DPConnect.plist
-        COMPONENT AmneziaVPN
+        COMPONENT DPConnect
     )
 endif()
 
 include(CPackIFW)
-cpack_ifw_configure_component(AmneziaVPN
+cpack_ifw_configure_component(DPConnect
     DISPLAY_NAME "DP Connect"
     DESCRIPTION "DP Connect by DP project"
     VERSION ${AMNEZIAVPN_VERSION}
