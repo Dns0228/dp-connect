@@ -1,6 +1,10 @@
 #include "connectionController.h"
 
 #include <QJsonDocument>
+#include <QNetworkAccessManager>
+#include <QNetworkReply>
+#include <QNetworkRequest>
+#include <QUrl>
 
 #include "core/configurators/configuratorBase.h"
 #include "core/utils/protocolEnum.h"
@@ -26,7 +30,8 @@ ConnectionController::ConnectionController(SecureServersRepository* serversRepos
     : QObject(parent),
       m_serversRepository(serversRepository),
       m_appSettingsRepository(appSettingsRepository),
-      m_vpnConnection(vpnConnection)
+      m_vpnConnection(vpnConnection),
+      m_healthNetworkManager(new QNetworkAccessManager(this))
 {
     connect(m_vpnConnection, &VpnConnection::connectionStateChanged,
             this, &ConnectionController::onVpnConnectionStateChanged);
@@ -306,13 +311,13 @@ QList<DockerContainer> ConnectionController::stealthCandidatesForServer(const QS
         break;
     }
 
-    // REALITY is the least recognizable installed transport. DP WG follows as
-    // the fast UDP option; the remaining protocols provide progressively more
-    // compatible fallbacks for restricted networks.
+    // DP WG is the product's primary transport. REALITY remains the first
+    // fallback for networks that suppress UDP, followed by broadly compatible
+    // legacy transports.
     const QList<DockerContainer> priority {
-        DockerContainer::Xray,
         DockerContainer::Awg2,
         DockerContainer::Awg,
+        DockerContainer::Xray,
         DockerContainer::OpenVpn,
         DockerContainer::WireGuard,
         DockerContainer::Ipsec
@@ -361,12 +366,34 @@ ErrorCode ConnectionController::openNextStealthCandidate()
 void ConnectionController::onVpnConnectionStateChanged(Vpn::ConnectionState state)
 {
     if (state == Vpn::ConnectionState::Connecting) {
+        cancelStealthHealthCheck();
         m_switchingStealthCandidate = false;
         emit connectionStateChanged(state);
         return;
     }
 
+    if (m_waitingForHealthFallback && state == Vpn::ConnectionState::Disconnecting) {
+        return;
+    }
+
+    if (m_waitingForHealthFallback
+            && (state == Vpn::ConnectionState::Disconnected || state == Vpn::ConnectionState::Error)) {
+        m_waitingForHealthFallback = false;
+        const ErrorCode error = openNextStealthCandidate();
+        if (error == ErrorCode::NoError) {
+            return;
+        }
+    }
+
     if (m_switchingStealthCandidate && state == Vpn::ConnectionState::Disconnected) {
+        return;
+    }
+
+    if (state == Vpn::ConnectionState::Connected
+            && m_stealthSessionActive
+            && !m_userDisconnectRequested
+            && (m_stealthCandidateIndex + 1 < m_stealthCandidates.size())) {
+        startStealthHealthCheck();
         return;
     }
 
@@ -392,13 +419,114 @@ void ConnectionController::onVpnConnectionStateChanged(Vpn::ConnectionState stat
     }
 }
 
+void ConnectionController::startStealthHealthCheck()
+{
+    cancelStealthHealthCheck();
+
+    // Two independent HTTPS endpoints reduce false fallbacks when one provider
+    // is unavailable locally. A successful TLS/HTTP response proves that the
+    // selected tunnel carries real traffic, rather than only reporting an
+    // established local interface.
+    const QList<QUrl> endpoints {
+        QUrl(QStringLiteral("https://cp.cloudflare.com/generate_204")),
+        QUrl(QStringLiteral("https://connectivitycheck.gstatic.com/generate_204"))
+    };
+
+    m_healthCheckInProgress = true;
+    m_pendingHealthReplies = endpoints.size();
+    const quint64 generation = ++m_healthCheckGeneration;
+
+    for (const QUrl &endpoint : endpoints) {
+        QNetworkRequest request(endpoint);
+        request.setAttribute(QNetworkRequest::CacheLoadControlAttribute, QNetworkRequest::AlwaysNetwork);
+        request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
+        request.setRawHeader("Connection", "close");
+        request.setTransferTimeout(6000);
+
+        QNetworkReply *reply = m_healthNetworkManager->get(request);
+        m_healthReplies.append(reply);
+        connect(reply, &QNetworkReply::finished, this, [this, reply, generation]() {
+            if (generation != m_healthCheckGeneration || !m_healthCheckInProgress) {
+                reply->deleteLater();
+                return;
+            }
+
+            const int status = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
+            const bool reachable = reply->error() == QNetworkReply::NoError && status == 204;
+            reply->deleteLater();
+
+            if (reachable) {
+                finishStealthHealthCheck(true);
+                return;
+            }
+
+            if (--m_pendingHealthReplies == 0) {
+                finishStealthHealthCheck(false);
+            }
+        });
+    }
+}
+
+void ConnectionController::finishStealthHealthCheck(bool reachable)
+{
+    if (!m_healthCheckInProgress) {
+        return;
+    }
+
+    m_healthCheckInProgress = false;
+    ++m_healthCheckGeneration;
+    m_pendingHealthReplies = 0;
+
+    const auto replies = m_healthReplies;
+    m_healthReplies.clear();
+    for (const QPointer<QNetworkReply> &reply : replies) {
+        if (reply && !reply->isFinished()) {
+            reply->abort();
+        }
+    }
+
+    if (reachable) {
+        qInfo() << "DP Stealth: transport health check passed";
+        emit connectionStateChanged(Vpn::ConnectionState::Connected);
+        return;
+    }
+
+    qWarning() << "DP Stealth: tunnel established without internet access, switching transport";
+    if (m_stealthCandidateIndex + 1 < m_stealthCandidates.size()) {
+        m_waitingForHealthFallback = true;
+        m_switchingStealthCandidate = true;
+        emit closeConnectionRequested();
+        return;
+    }
+
+    emit connectionStateChanged(Vpn::ConnectionState::Error);
+    resetStealthSession();
+}
+
+void ConnectionController::cancelStealthHealthCheck()
+{
+    ++m_healthCheckGeneration;
+    m_healthCheckInProgress = false;
+    m_pendingHealthReplies = 0;
+
+    const auto replies = m_healthReplies;
+    m_healthReplies.clear();
+    for (const QPointer<QNetworkReply> &reply : replies) {
+        if (reply && !reply->isFinished()) {
+            reply->abort();
+        }
+    }
+}
+
 void ConnectionController::resetStealthSession()
 {
+    cancelStealthHealthCheck();
     m_activeServerId.clear();
     m_stealthCandidates.clear();
     m_stealthCandidateIndex = -1;
     m_stealthSessionActive = false;
     m_switchingStealthCandidate = false;
+    m_waitingForHealthFallback = false;
     if (!m_activeTransportName.isEmpty()) {
         m_activeTransportName.clear();
         emit activeTransportChanged(m_activeTransportName);

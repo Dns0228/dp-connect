@@ -6634,7 +6634,7 @@ Features:
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="151"/>
-        <source>DP WG is a modern VPN protocol based on WireGuard, combining simplified architecture with high performance across all devices. It addresses WireGuard&apos;s main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, making VPN traffic indistinguishable from regular internet traffic.
+        <source>DP WG is a modern VPN protocol based on WireGuard, combining simplified architecture with high performance across all devices. It addresses WireGuard&apos;s main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, making automated traffic classification substantially harder.
 
 DP WG is an excellent choice for those seeking a fast, stealthy VPN connection.
 
@@ -6642,17 +6642,17 @@ Features:
 * Available on all DP Connect platforms
 * Low battery consumption on mobile devices
 * Minimal settings required
-* Undetectable by traffic analysis systems (DPI)
+* Resistant to common DPI signatures and traffic analysis
 * Operates over UDP protocol</source>
-        <translation>DP WG — современный VPN-протокол на основе WireGuard, сочетающий простую архитектуру и высокую производительность на всех устройствах. Он устраняет основной недостаток WireGuard (лёгкое обнаружение трафика системами DPI) за счёт эффективного маскирования VPN-трафика под обычный интернет-трафик.
+        <translation>DP WG — современный VPN-протокол на основе WireGuard, сочетающий простую архитектуру и высокую производительность на всех устройствах. Он усложняет распознавание трафика системами DPI с помощью многоуровневой маскировки и уникальных параметров для каждой новой установки.
 
-Таким образом, DP WG идеально подойдёт тем, кто ищет быстрое и незаметное VPN-соединение.
+DP WG подходит для быстрого и устойчивого VPN-соединения в сетях с фильтрацией трафика.
 
 Особенности:
 * Доступен во всех версиях DP Connect
 * Низкое энергопотребление на мобильных устройствах
 * Минимум настроек
-* Незаметен для систем анализа трафика (DPI)
+* Устойчив к распространённым DPI-сигнатурам и анализу трафика
 * Работает по протоколу UDP</translation>
     </message>
     <message>

@@ -4,7 +4,9 @@
 #include <QObject>
 #include <QJsonObject>
 #include <QList>
+#include <QNetworkReply>
 #include <QPair>
+#include <QPointer>
 #include <memory>
 
 #include "core/utils/containerEnum.h"
@@ -19,6 +21,8 @@
 #include "vpnConnection.h"
 
 using namespace amnezia;
+
+class QNetworkAccessManager;
 
 class ConnectionController : public QObject
 {
@@ -85,6 +89,9 @@ private:
     QList<DockerContainer> stealthCandidatesForServer(const QString &serverId) const;
     ErrorCode openNextStealthCandidate();
     void onVpnConnectionStateChanged(Vpn::ConnectionState state);
+    void startStealthHealthCheck();
+    void finishStealthHealthCheck(bool reachable);
+    void cancelStealthHealthCheck();
     void resetStealthSession();
 
     SecureServersRepository* m_serversRepository;
@@ -97,6 +104,12 @@ private:
     bool m_stealthSessionActive = false;
     bool m_switchingStealthCandidate = false;
     bool m_userDisconnectRequested = false;
+    bool m_healthCheckInProgress = false;
+    bool m_waitingForHealthFallback = false;
+    int m_pendingHealthReplies = 0;
+    quint64 m_healthCheckGeneration = 0;
+    QNetworkAccessManager* m_healthNetworkManager = nullptr;
+    QList<QPointer<QNetworkReply>> m_healthReplies;
     QString m_activeTransportName;
 };
 

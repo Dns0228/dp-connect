@@ -15,7 +15,7 @@ DP Connect — клиент для собственного VPN от **DP projec
 - экран состояния сервера;
 - резервные копии с паролем, AES-256-GCM и PBKDF2-HMAC-SHA256.
 - устанавливаемый PWA-клиент с зашифрованным хранилищем профилей, QR-кодом и офлайн-режимом.
-- DP Stealth (бета): выбор XRay/REALITY или DP WG и автоматический переход на следующий установленный транспорт при ошибке подключения.
+- DP Stealth (бета): приоритет DP WG, проверка реального HTTPS-трафика и автоматический переход на следующий транспорт, если туннель заблокирован или не работает.
 
 Подробности находятся в [DP_CONNECT_CHANGES.md](DP_CONNECT_CHANGES.md), [DP_CONNECT_CRYPTO.md](DP_CONNECT_CRYPTO.md), [DP_CONNECT_IMPROVEMENTS.md](DP_CONNECT_IMPROVEMENTS.md) и [docs/DP_STEALTH.md](docs/DP_STEALTH.md).
 

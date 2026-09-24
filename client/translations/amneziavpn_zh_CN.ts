@@ -6574,7 +6574,7 @@ Features:
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="151"/>
-        <source>DP WG is a modern VPN protocol based on WireGuard, combining simplified architecture with high performance across all devices. It addresses WireGuard&apos;s main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, making VPN traffic indistinguishable from regular internet traffic.
+        <source>DP WG is a modern VPN protocol based on WireGuard, combining simplified architecture with high performance across all devices. It addresses WireGuard&apos;s main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, making automated traffic classification substantially harder.
 
 DP WG is an excellent choice for those seeking a fast, stealthy VPN connection.
 
@@ -6582,18 +6582,9 @@ Features:
 * Available on all DP Connect platforms
 * Low battery consumption on mobile devices
 * Minimal settings required
-* Undetectable by traffic analysis systems (DPI)
+* Resistant to common DPI signatures and traffic analysis
 * Operates over UDP protocol</source>
-        <translation>DP WG 是基于 WireGuard 的现代 VPN 协议，将简化的架构与所有设备上的高性能结合在一起。它通过先进的混淆技术解决了 WireGuard 的主要弱点（容易被 DPI 系统检测），使 VPN 流量与普通互联网流量无法区分。
-
-对于追求快速、隐蔽的 VPN 连接的用户，DP WG 是极佳的选择。
-
-特性：
-* 在所有 DP Connect 平台上均可使用
-* 移动设备上电量消耗低
-* 只需极少设置
-* 无法被流量分析系统（DPI）检测
-* 通过 UDP 协议运行</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="163"/>

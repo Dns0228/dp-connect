@@ -6515,7 +6515,7 @@ Features:
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="151"/>
-        <source>DP WG is a modern VPN protocol based on WireGuard, combining simplified architecture with high performance across all devices. It addresses WireGuard&apos;s main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, making VPN traffic indistinguishable from regular internet traffic.
+        <source>DP WG is a modern VPN protocol based on WireGuard, combining simplified architecture with high performance across all devices. It addresses WireGuard&apos;s main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, making automated traffic classification substantially harder.
 
 DP WG is an excellent choice for those seeking a fast, stealthy VPN connection.
 
@@ -6523,18 +6523,9 @@ Features:
 * Available on all DP Connect platforms
 * Low battery consumption on mobile devices
 * Minimal settings required
-* Undetectable by traffic analysis systems (DPI)
+* Resistant to common DPI signatures and traffic analysis
 * Operates over UDP protocol</source>
-        <translation>DP WG သည် WireGuard အပေါ်အခြေခံသော ခေတ်မီ VPN ပရိုတိုကောဖြစ်ပြီး ရှင်းလင်းသော ဖွဲ့စည်းပုံနှင့် စက်အားလုံးတွင် စွမ်းဆောင်ရည်မြင့်မားမှုကို တွဲဖက်ထားပါသည်။ WireGuard ၏ အဓိကအားနည်းချက် (DPI စနစ်များက အလွယ်တကူ ရှာဖွေတွေ့ရှိနိုင်ခြင်း) ကို အထက်တန်းကျသော ဖုံးကွယ်နည်းများဖြင့် ဖြေရှင်းထားသဖြင့် VPN ဒေတာစီးဆင်းမှုကို ပုံမှန်အင်တာနက် ဒေတာစီးဆင်းမှုမှ ခွဲခြားနိုင်ခြင်း မရှိပါ။
-
-လျင်မြန်၍ မထင်မရှားသော VPN ချိတ်ဆက်မှုကို ရှာနေသူများအတွက် DP WG သည် အလွန်ကောင်းမွန်သော ရွေးချယ်မှုဖြစ်ပါသည်။
-
-အင်္ဂါရပ်များ:
-* DP Connect ပလက်ဖောင်းအားလုံးတွင် ရရှိနိုင်သည်
-* မိုဘိုင်းစက်များတွင် ဘက်ထရီအသုံးပြုမှုနည်းသည်
-* ဆက်တင် အနည်းငယ်သာ လိုအပ်သည်
-* ဒေတာစီးဆင်းမှု ခွဲခြမ်းစိတ်ဖြာသည့် စနစ်များ (DPI) က ရှာဖွေတွေ့ရှိနိုင်ခြင်း မရှိပါ
-* UDP ပရိုတိုကောဖြင့် အလုပ်လုပ်သည်</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="163"/>

@@ -6555,7 +6555,7 @@ Características:
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="151"/>
-        <source>DP WG is a modern VPN protocol based on WireGuard, combining simplified architecture with high performance across all devices. It addresses WireGuard&apos;s main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, making VPN traffic indistinguishable from regular internet traffic.
+        <source>DP WG is a modern VPN protocol based on WireGuard, combining simplified architecture with high performance across all devices. It addresses WireGuard&apos;s main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, making automated traffic classification substantially harder.
 
 DP WG is an excellent choice for those seeking a fast, stealthy VPN connection.
 
@@ -6563,18 +6563,9 @@ Features:
 * Available on all DP Connect platforms
 * Low battery consumption on mobile devices
 * Minimal settings required
-* Undetectable by traffic analysis systems (DPI)
+* Resistant to common DPI signatures and traffic analysis
 * Operates over UDP protocol</source>
-        <translation>DP WG es un protocolo VPN moderno basado en WireGuard, que combina una arquitectura simplificada con un alto rendimiento en todos los dispositivos. Soluciona la principal vulnerabilidad de WireGuard (su fácil detección por sistemas DPI) mediante técnicas avanzadas de ofuscación, haciendo que el tráfico VPN sea indistinguible del tráfico normal de Internet.
-
-DP WG es una excelente elección para quienes buscan una conexión VPN rápida y sigilosa.
-
-Características:
-* Disponible en todas las plataformas de DP Connect
-* Bajo consumo de batería en dispositivos móviles
-* Requiere una configuración mínima
-* Indetectable por sistemas de análisis de tráfico (DPI)
-* Funciona sobre el protocolo UDP</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="163"/>

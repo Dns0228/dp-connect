@@ -36,24 +36,61 @@ ContainerConfig AwgInstaller::generateConfig(DockerContainer container, int port
 
 void AwgInstaller::generateAwgParameters(AwgServerConfig &serverConfig)
 {
-    QString junkPacketCount = QString::number(QRandomGenerator::global()->bounded(4, 7));
-    QString junkPacketMinSize = QString::number(10);
-    QString junkPacketMaxSize = QString::number(50);
+    QRandomGenerator *random = QRandomGenerator::system();
+    const auto boundedInclusive = [random](int minimum, int maximum) {
+        return random->bounded(minimum, maximum + 1);
+    };
 
-    serverConfig.junkPacketCount = junkPacketCount;
-    serverConfig.junkPacketMinSize = junkPacketMinSize;
-    serverConfig.junkPacketMaxSize = junkPacketMaxSize;
-    serverConfig.initPacketJunkSize = protocols::awg::defaultPadding;
-    serverConfig.responsePacketJunkSize = protocols::awg::defaultPadding;
-    serverConfig.cookieReplyPacketJunkSize = protocols::awg::defaultPadding;
-    serverConfig.transportPacketJunkSize = protocols::awg::defaultPadding;
+    const int junkPacketCount = boundedInclusive(4, 12);
+    const int junkPacketMinSize = boundedInclusive(8, 24);
+    const int junkPacketMaxSize = boundedInclusive(qMax(48, junkPacketMinSize + 16), 96);
 
-    serverConfig.initPacketMagicHeader = protocols::awg::defaultInitPacketMagicHeader;
-    serverConfig.responsePacketMagicHeader = protocols::awg::defaultResponsePacketMagicHeader;
-    serverConfig.underloadPacketMagicHeader = protocols::awg::defaultUnderloadPacketMagicHeader;
-    serverConfig.transportPacketMagicHeader = protocols::awg::defaultTransportPacketMagicHeader;
+    // Keep every obfuscated packet length distinct. Reusing a single padding
+    // value across all installations produces an avoidable statistical
+    // signature, while S1-S4 >= 12 is required by AWG 3.1 header protection.
+    QSet<int> packetSizes;
+    const auto choosePadding = [&packetSizes, &boundedInclusive](int baseSize, int maximumPadding) {
+        int padding = 12;
+        do {
+            padding = boundedInclusive(12, maximumPadding);
+        } while (packetSizes.contains(baseSize + padding));
+        packetSizes.insert(baseSize + padding);
+        return padding;
+    };
+    const int initPadding = choosePadding(AwgConstant::messageInitiationSize, protocols::awg::initPacketJunkSizeMax);
+    const int responsePadding = choosePadding(AwgConstant::messageResponseSize, protocols::awg::responsePacketJunkSizeMax);
+    const int cookiePadding = choosePadding(AwgConstant::messageCookieReplySize, protocols::awg::cookieReplyPacketJunkSizeMax);
+    const int transportPadding = choosePadding(AwgConstant::messageTransportSize, protocols::awg::cookieReplyPacketJunkSizeMax);
+
+    QSet<quint32> headers;
+    const auto chooseHeader = [&headers, random]() {
+        quint32 value = 0;
+        do {
+            value = random->generate() & 0x7fffffffU;
+        } while (value < 5 || headers.contains(value));
+        headers.insert(value);
+        return QString::number(value);
+    };
+
+    serverConfig.junkPacketCount = QString::number(junkPacketCount);
+    serverConfig.junkPacketMinSize = QString::number(junkPacketMinSize);
+    serverConfig.junkPacketMaxSize = QString::number(junkPacketMaxSize);
+    serverConfig.initPacketJunkSize = QString::number(initPadding);
+    serverConfig.responsePacketJunkSize = QString::number(responsePadding);
+    serverConfig.cookieReplyPacketJunkSize = QString::number(cookiePadding);
+    serverConfig.transportPacketJunkSize = QString::number(transportPadding);
+
+    serverConfig.initPacketMagicHeader = chooseHeader();
+    serverConfig.responsePacketMagicHeader = chooseHeader();
+    serverConfig.underloadPacketMagicHeader = chooseHeader();
+    serverConfig.transportPacketMagicHeader = chooseHeader();
 
     serverConfig.headerProtectionKey = WireguardConfigurator::genClientKeys().clientPrivKey;
+    const int contentPaddingMin = boundedInclusive(10, 30);
+    const int contentPaddingMax = boundedInclusive(90, 150);
+    serverConfig.contentPaddingAddition = QStringLiteral("%1-%2")
+            .arg(contentPaddingMin)
+            .arg(contentPaddingMax);
     serverConfig.rekeyAfterTime = protocols::awg::defaultRekeyAfterTime;
     serverConfig.rekeyTimeout = protocols::awg::defaultRekeyTimeout;
     serverConfig.rejectAfterTime = protocols::awg::defaultRejectAfterTime;
@@ -62,7 +99,15 @@ void AwgInstaller::generateAwgParameters(AwgServerConfig &serverConfig)
     serverConfig.randomTrailers = protocols::awg::defaultRandomTrailers;
     serverConfig.disableCookies = protocols::awg::defaultDisableCookies;
 
-    serverConfig.specialJunk1 = protocols::awg::defaultSpecialJunk1;
+    // Per-install random signature packets avoid giving every DP WG server the
+    // same pre-handshake byte pattern. I-packets do not carry key material.
+    serverConfig.specialJunk1 = QStringLiteral("<r %1>").arg(boundedInclusive(32, 96));
+    serverConfig.specialJunk2 = random->bounded(2) == 0
+            ? QString()
+            : QStringLiteral("<r %1>").arg(boundedInclusive(24, 80));
+    serverConfig.specialJunk3.clear();
+    serverConfig.specialJunk4.clear();
+    serverConfig.specialJunk5.clear();
 }
 
 ErrorCode AwgInstaller::extractConfigFromContainer(DockerContainer container, const ServerCredentials &credentials,
@@ -137,4 +182,3 @@ ErrorCode AwgInstaller::extractConfigFromContainer(DockerContainer container, co
 
     return ErrorCode::NoError;
 }
-

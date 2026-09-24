@@ -151,13 +151,13 @@ QMap<DockerContainer, QString> ContainerUtils::containerDetailedDescriptions()
           QObject::tr("DP WG is a modern VPN protocol based on WireGuard, "
                       "combining simplified architecture with high performance across all devices. "
                       "It addresses WireGuard's main vulnerability (easy detection by DPI systems) through advanced obfuscation techniques, "
-                      "making VPN traffic indistinguishable from regular internet traffic.\n"
+                      "making automated traffic classification substantially harder.\n"
                       "\nDP WG is an excellent choice for those seeking a fast, stealthy VPN connection.\n"
                       "\nFeatures:\n"
                       "* Available on all DP Connect platforms\n"
                       "* Low battery consumption on mobile devices\n"
                       "* Minimal settings required\n"
-                      "* Undetectable by traffic analysis systems (DPI)\n"
+                      "* Resistant to common DPI signatures and traffic analysis\n"
                       "* Operates over UDP protocol") },
         { DockerContainer::Xray,
           QObject::tr("REALITY is an innovative protocol developed by the creators of XRay, designed specifically to combat high levels of internet censorship. "
@@ -413,4 +413,3 @@ int ContainerUtils::installPageOrder(DockerContainer container)
     default: return 0;
     }
 }
-
