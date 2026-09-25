@@ -57,7 +57,7 @@ private:
     const QString ConnectedTrayIconName = "active.svg";
     const QString DisconnectedTrayIconName = "default.svg";
     const QString ErrorTrayIconName = "error.svg";
-    QString  websiteUrl = "https://amnezia.org";
+    QString  websiteUrl = "https://github.com/Dns0228/dp-connect";
 };
 
 #endif  // SYSTEMTRAYNOTIFICATIONHANDLER_H

@@ -5961,8 +5961,8 @@ Créez-en une à partir des paramètres actuels.</translation>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="18"/>
-        <source>Server check failed</source>
-        <translation>Échec de la vérification du serveur</translation>
+        <source>Could not check the server. Verify the VPS address, SSH access, and administrator permissions, then try again.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="19"/>
@@ -6392,8 +6392,8 @@ Créez-en une à partir des paramètres actuels.</translation>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="142"/>
-        <source>Internal error</source>
-        <translation>Erreur interne</translation>
+        <source>DP Connect could not complete the operation. Restart the application and try again.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="73"/>
@@ -7201,6 +7201,14 @@ Supprimez le serveur de l&apos;application pour continuer.</translation>
         <location filename="../ui/qml/main2.qml" line="407"/>
         <source>Cannot remove server during active connection</source>
         <translation>Impossible de supprimer un serveur pendant une connexion active</translation>
+    </message>
+</context>
+<context>
+    <name>PageController</name>
+    <message>
+        <location filename="../ui/controllers/qml/pageController.cpp" line="253"/>
+        <source>How to fix</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

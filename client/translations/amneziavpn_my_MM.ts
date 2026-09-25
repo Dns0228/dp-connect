@@ -5953,8 +5953,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="18"/>
-        <source>Server check failed</source>
-        <translation>ဆာဗာစစ်ဆေးမှု မအောင်မြင်ပါ</translation>
+        <source>Could not check the server. Verify the VPS address, SSH access, and administrator permissions, then try again.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="19"/>
@@ -6394,8 +6394,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="142"/>
-        <source>Internal error</source>
-        <translation>စက်တွင်းဖြစ်သော မှားယွင်းမှု</translation>
+        <source>DP Connect could not complete the operation. Restart the application and try again.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="73"/>
@@ -7198,6 +7198,14 @@ Remove the server from the app to continue.</source>
         <location filename="../ui/qml/main2.qml" line="407"/>
         <source>Cannot remove server during active connection</source>
         <translation>ချိတ်ဆက်မှုရှိနေချိန်အတွင်း ဆာဗာကို ဖယ်ရှား၍မရပါ</translation>
+    </message>
+</context>
+<context>
+    <name>PageController</name>
+    <message>
+        <location filename="../ui/controllers/qml/pageController.cpp" line="253"/>
+        <source>How to fix</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

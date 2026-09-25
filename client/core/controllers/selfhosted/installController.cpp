@@ -1420,6 +1420,11 @@ ErrorCode InstallController::checkServerPreflight(const ServerCredentials &crede
 {
     report.clear();
 
+    const QString preflightScript = amnezia::scriptData(SharedScriptType::preflight_server);
+    if (preflightScript.trimmed().isEmpty()) {
+        return ErrorCode::ServerCheckFailed;
+    }
+
     QString output;
     auto readOutput = [&output](const QString &data, libssh::Client &) {
         output += data;
@@ -1430,8 +1435,14 @@ ErrorCode InstallController::checkServerPreflight(const ServerCredentials &crede
     };
 
     SshSession sshSession;
+    // SshSession::runScript normally executes each line as a separate SSH
+    // command. The preflight script contains functions, loops and variables,
+    // so it must run in one shell process. Base64 keeps the command on one line
+    // without exposing the script to shell quoting issues.
+    const QString encodedScript = QString::fromLatin1(preflightScript.toUtf8().toBase64());
+    const QString command = QStringLiteral("printf '%s' '%1' | base64 -d | sh").arg(encodedScript);
     const ErrorCode errorCode = sshSession.runScript(
-            credentials, amnezia::scriptData(SharedScriptType::preflight_server), readOutput, readOutput);
+            credentials, command, readOutput, readOutput);
     if (errorCode != ErrorCode::NoError) {
         return errorCode;
     }
@@ -1452,7 +1463,7 @@ ErrorCode InstallController::checkServerPreflight(const ServerCredentials &crede
     };
     for (const QString &key : requiredKeys) {
         if (!report.contains(key)) {
-            return ErrorCode::InternalError;
+            return ErrorCode::ServerCheckFailed;
         }
     }
 

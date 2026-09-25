@@ -5958,8 +5958,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="18"/>
-        <source>Server check failed</source>
-        <translation>서버 확인에 실패했습니다</translation>
+        <source>Could not check the server. Verify the VPS address, SSH access, and administrator permissions, then try again.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="19"/>
@@ -6389,8 +6389,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="142"/>
-        <source>Internal error</source>
-        <translation>내부 오류</translation>
+        <source>DP Connect could not complete the operation. Restart the application and try again.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="73"/>
@@ -7198,6 +7198,14 @@ Remove the server from the app to continue.</source>
         <location filename="../ui/qml/main2.qml" line="407"/>
         <source>Cannot remove server during active connection</source>
         <translation>연결이 활성화된 동안에는 서버를 제거할 수 없습니다</translation>
+    </message>
+</context>
+<context>
+    <name>PageController</name>
+    <message>
+        <location filename="../ui/controllers/qml/pageController.cpp" line="253"/>
+        <source>How to fix</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

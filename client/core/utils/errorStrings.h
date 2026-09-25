@@ -8,6 +8,7 @@
 using namespace amnezia;
 
 QString errorString(ErrorCode code);
+QString errorMessage(ErrorCode code);
 
 QDebug operator<<(QDebug debug, const ErrorCode &e);
 

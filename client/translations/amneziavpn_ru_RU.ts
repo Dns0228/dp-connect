@@ -6038,8 +6038,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="18"/>
-        <source>Server check failed</source>
-        <translation>Проверка сервера завершилась неудачей</translation>
+        <source>Could not check the server. Verify the VPS address, SSH access, and administrator permissions, then try again.</source>
+        <translation>Не удалось проверить сервер. Проверьте адрес VPS, доступ по SSH и права администратора, затем повторите попытку.</translation>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="19"/>
@@ -6469,8 +6469,8 @@ Create one from the current settings.</source>
     </message>
     <message>
         <location filename="../core/utils/errorStrings.cpp" line="142"/>
-        <source>Internal error</source>
-        <translation>Внутренняя ошибка</translation>
+        <source>DP Connect could not complete the operation. Restart the application and try again.</source>
+        <translation>DP Connect не удалось завершить операцию. Перезапустите приложение и повторите попытку.</translation>
     </message>
     <message>
         <location filename="../core/utils/containers/containerUtils.cpp" line="73"/>
@@ -7334,5 +7334,13 @@ Remove the server from the app to continue.</source>
     <message><source>Image</source><translation>Образ</translation></message>
     <message><source>Last check</source><translation>Последняя проверка</translation></message>
     <message><source>Refresh</source><translation>Обновить</translation></message>
+</context>
+<context>
+    <name>PageController</name>
+    <message>
+        <location filename="../ui/controllers/qml/pageController.cpp" line="253"/>
+        <source>How to fix</source>
+        <translation>Как исправить</translation>
+    </message>
 </context>
 </TS>
